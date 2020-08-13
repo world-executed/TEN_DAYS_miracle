@@ -33,7 +33,7 @@ void PIT_5MS()
   sp = static_p;
   lp = static_p * 0.3;
   
-  recordMode = 3;
+  recordMode = 1;
   roadMode = 1;
   turnFlag = 0;
   LockFlag = 0;
@@ -66,13 +66,13 @@ void PIT_5MS()
   gyro_x_i+=gyro[0];
   angle=(int)(gyro_x_i*360.0/700000.0);
   
-  gyro_y_i+=(gyro[1]);
+  gyro_y_i+=abs(gyro[1])>10?gyro[1]:0;
   
   GetError();
   //DynamicPID();
   ADCTest();
   //modeSelect();
-  if (LockFlag == 0 && StopFlag == 0 && chukuFlag==0&&rukuFlag!=2) {        //没打死
+  if (LockFlag == 0 && StopFlag == 0 && chukuFlag==2&&rukuFlag<=1) {        //没打死
 	  if(recordMode != 3)
     		Dir_control(DirError);
 	  else if(recordMode == 3)

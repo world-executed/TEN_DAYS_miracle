@@ -16,14 +16,14 @@ void MainPage_Show()
 	oled_p6x8str(18,0,">>GO!<<");
 	oled_p6x8str(18,1,"v");            oled_printf_int32(30,1,SetLeftSpeed,4);
 	oled_p6x8str(18,2,"p");            oled_printf_int32(30,2,(int)(dirpid.p*100),4);
-	oled_p6x8str(18,3,"A");            oled_printf_int32(30,3,angle,4);	
-	oled_p6x8str(18,4,"er");           oled_printf_int32(30,4,dirpid.err,4);             
-	oled_p6x8str(18,5,"sv");           oled_printf_int32(30,5,(int)(servoShould[nowPos]),4);
+	oled_p6x8str(18,3,"J");            oled_printf_int32(30,3,jumpnum,4);	
+	oled_p6x8str(18,4,"gi");           oled_printf_int32(30,4,gyro_y_i,4);             
+	oled_p6x8str(18,5,"gy");           oled_printf_int32(30,5,gyro[1],4);
 	oled_p6x8str(18,6,"re");           oled_printf_int32(30,6,relation * 100,4);
 	oled_p6x8str(18,7,"*BACK*");
 	
 	for(int i = 0;i < 8;i++)
-		oled_p6x8str(62,i,"1");
+		oled_p6x8str(62,i,"!");
 	
 	oled_p6x8str(72,0,"MODE");            oled_printf_int32(102,0,eleArray[nowEleNum],4);
 	oled_p6x8str(72,1,"Servo");           oled_printf_int32(102,1,abs(MPWM),4);     
@@ -367,7 +367,7 @@ void Camera_Show()
   oled_dis_bmp(64,128,*mt9v03x_csi_image,th);
   oled_p6x8str(0,0,"   ");oled_printf_int32(0,0,th,3);
   oled_p6x8str(0,1,"   ");oled_printf_int32(0,1,jumpnum,3);
-  oled_p6x8str(0,2,"   ");oled_printf_int32(0,2,jumpnum_b,3);
+
   
 }
 
