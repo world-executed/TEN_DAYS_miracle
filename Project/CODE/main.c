@@ -1,16 +1,16 @@
 /*********************************************************************************************************************
 * COPYRIGHT NOTICE
-* Copyright (c) 2019,Öð·É¿Æ¼¼
+* Copyright (c) 2019,ï¿½ï¿½É¿Æ¼ï¿½
 * All rights reserved.
-* ¼¼ÊõÌÖÂÛQQÈº£ºÒ»Èº£º179029047(ÒÑÂú)  ¶þÈº£º244861897
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½QQÈºï¿½ï¿½Ò»Èºï¿½ï¿½179029047(ï¿½ï¿½ï¿½ï¿½)  ï¿½ï¿½Èºï¿½ï¿½244861897
 *
-* ÒÔÏÂËùÓÐÄÚÈÝ°æÈ¨¾ùÊôÖð·É¿Æ¼¼ËùÓÐ£¬Î´¾­ÔÊÐí²»µÃÓÃÓÚÉÌÒµÓÃÍ¾£¬
-* »¶Ó­¸÷Î»Ê¹ÓÃ²¢´«²¥±¾³ÌÐò£¬ÐÞ¸ÄÄÚÈÝÊ±±ØÐë±£ÁôÖð·É¿Æ¼¼µÄ°æÈ¨ÉùÃ÷¡£
+* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý°ï¿½È¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¿Æ¼ï¿½ï¿½ï¿½ï¿½Ð£ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½Í¾ï¿½ï¿½
+* ï¿½ï¿½Ó­ï¿½ï¿½Î»Ê¹ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ë±£ï¿½ï¿½ï¿½ï¿½É¿Æ¼ï¿½ï¿½Ä°ï¿½È¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 *
 * @file       		main
-* @company	   		³É¶¼Öð·É¿Æ¼¼ÓÐÏÞ¹«Ë¾
-* @author     		Öð·É¿Æ¼¼(QQ3184284598)
-* @version    		²é¿´docÄÚversionÎÄ¼þ °æ±¾ËµÃ÷
+* @company	   		ï¿½É¶ï¿½ï¿½ï¿½É¿Æ¼ï¿½ï¿½ï¿½ï¿½Þ¹ï¿½Ë¾
+* @author     		ï¿½ï¿½É¿Æ¼ï¿½(QQ3184284598)
+* @version    		ï¿½é¿´docï¿½ï¿½versionï¿½Ä¼ï¿½ ï¿½æ±¾Ëµï¿½ï¿½
 * @Software 		IAR 8.3 or MDK 5.24
 * @Target core		NXP RT1064DVL6A
 * @Taobao   		https://seekfree.taobao.com/
@@ -18,31 +18,25 @@
 ********************************************************************************************************************/
 
 
-//ÕûÌ×ÍÆ¼öIO²é¿´ProjecctÎÄ¼þ¼ÐÏÂµÄTXTÎÄ±¾
+//ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½IOï¿½é¿´Projecctï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Âµï¿½TXTï¿½Ä±ï¿½
 
 
 
-//´ò¿ªÐÂµÄ¹¤³Ì»òÕß¹¤³ÌÒÆ¶¯ÁËÎ»ÖÃÎñ±ØÖ´ÐÐÒÔÏÂ²Ù×÷
-//µÚÒ»²½ ¹Ø±ÕÉÏÃæËùÓÐ´ò¿ªµÄÎÄ¼þ
-//µÚ¶þ²½ project  clean  µÈ´ýÏÂ·½½ø¶ÈÌõ×ßÍê
+//ï¿½ï¿½ï¿½ÂµÄ¹ï¿½ï¿½Ì»ï¿½ï¿½ß¹ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½Â²ï¿½ï¿½ï¿½
+//ï¿½ï¿½Ò»ï¿½ï¿½ ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ò¿ªµï¿½ï¿½Ä¼ï¿½
+//ï¿½Ú¶ï¿½ï¿½ï¿½ project  clean  ï¿½È´ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-//ÏÂÔØ´úÂëÇ°Çë¸ù¾Ý×Ô¼ºÊ¹ÓÃµÄÏÂÔØÆ÷ÔÚ¹¤³ÌÀïÉèÖÃÏÂÔØÆ÷Îª×Ô¼ºËùÊ¹ÓÃµÄ
+//ï¿½ï¿½ï¿½Ø´ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½Ê¹ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Ô¼ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½
 
 #include "headfile.h"
 
 
-int8 ringflag=0;  //1ÎªÓÒ»· -1Îª×ó»·
-uint16 ring_th_ex=3500;
-uint16 ring_th_in=200;
-uint16 readyinring_st=0;
-uint16 readyinring_nd=0;
-uint8 ringflag_st=0;
-uint8 ringflag_nd=0;
+
 void signal();
 int normal = 1800;
 int mode9num = 0;
 
-uint16 readyruku=0;
+
 
 uint8 value=130;
 
@@ -52,15 +46,12 @@ int16 gyro[3];
 
 
 
-
-
-
 int main(void)
 {
   DisableGlobalIRQ();
-  board_init();//Îñ±Ø±£Áô£¬±¾º¯ÊýÓÃÓÚ³õÊ¼»¯MPU Ê±ÖÓ µ÷ÊÔ´®¿Ú
+  board_init();//ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½MPU Ê±ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½
   
-  //´Ë´¦±àÐ´ÓÃ»§´úÂë(ÀýÈç£ºÍâÉè³õÊ¼»¯´úÂëµÈ)
+  //ï¿½Ë´ï¿½ï¿½ï¿½Ð´ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ç£ºï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
   
   AllInit();
   while (1)
@@ -75,22 +66,7 @@ int main(void)
 
 
 
-void ringjudge_st()
-{
-  if(ADC[1]+ADC[2]>4000&&ADC[2]/ADC[1]>1.3&&ADC[4]+ADC[5]>5000)//youhuan  //1000,2400
-    ringflag_st=1;
-  
-  else
-    ringflag_st=0;
-}
 
-void ringjudge_nd()
-{
-  if(ADC[1]+ADC[2]>3200&&ADC[1]>2000&&ADC[0]+ADC[3]>5000)
-    ringflag_nd=1;
-  else
-    ringflag_nd=0;
-}
 
 
 
@@ -104,7 +80,7 @@ void modeSelect()
 		setRightSpeed_L = SetRightSpeed;
 	}
 	
-	if(roadMode == 9)             //³öÍä×ªÖ±µÀ
+	if(roadMode == 9)             //ï¿½ï¿½ï¿½ï¿½×ªÖ±ï¿½ï¿½
 	{
 		mode9num++;
 		if(mode9num > 15)
@@ -119,7 +95,7 @@ void modeSelect()
 		
 	}
 	
-	if(roadMode == 1 && abs(ADCLL - ADCRR) > 800)                //Ö±µÀÈëÍä
+	if(roadMode == 1 && abs(ADCLL - ADCRR) > 800)                //Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	{
 		roadMode = 6;
 		//beep = 1;
@@ -128,9 +104,9 @@ void modeSelect()
 		setRightSpeed_L = 1.0 * SetRightSpeed;
 	}
 	
-	if((roadMode == 6) /*&& (abs(ADCLL - normal)<300) && (abs(ADCRR - normal)<300)*/)       //¼´½«³öÍä
+	if((roadMode == 6) /*&& (abs(ADCLL - normal)<300) && (abs(ADCRR - normal)<300)*/)       //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	{
-		if(((ADCL0 - ADCR0)/ (ADCL - ADCR))< 0)		//Õý¸ºµßµ¹
+		if(((ADCL0 - ADCR0)/ (ADCL - ADCR))< 0)		//ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½
 		{
 			roadMode = 9;
 			//beep = 1;
@@ -163,7 +139,6 @@ void CarBegin()
 {
 	AllZero();
 	chukuFlag = 1;
-    PWML=PWMR=3000;
 }
 
 void RecordBegin()
@@ -185,18 +160,18 @@ void InmodeBegin()
 
 
 
-/***************************************************²»ÒªµÄ************************************************/
+/***************************************************ï¿½ï¿½Òªï¿½ï¿½************************************************/
 
 /*
-float acc_ratio = 1.6;      //¼ÓËÙ¶È¼Æ±ÈÀý    
-float gyro_ratio = 4.08;    //ÍÓÂÝÒÇ±ÈÀý    
+float acc_ratio = 1.6;      //ï¿½ï¿½ï¿½Ù¶È¼Æ±ï¿½ï¿½ï¿½    
+float gyro_ratio = 4.08;    //ï¿½ï¿½ï¿½ï¿½ï¿½Ç±ï¿½ï¿½ï¿½    
   
 
 //----------------------------------------------------------------    
-//  @brief      Ò»½×»¥²¹ÂË²¨    
-//  @param      angle_m     ¼ÓËÙ¶È¼ÆÊý¾Ý    
-//  @param      gyro_m      ÍÓÂÝÒÇÊý¾Ý    
-//  @return     float       Êý¾ÝÈÚºÏºóµÄ½Ç¶È    
+//  @brief      Ò»ï¿½×»ï¿½ï¿½ï¿½ï¿½Ë²ï¿½    
+//  @param      angle_m     ï¿½ï¿½ï¿½Ù¶È¼ï¿½ï¿½ï¿½ï¿½ï¿½    
+//  @param      gyro_m      ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    
+//  @return     float       ï¿½ï¿½ï¿½ï¿½ï¿½ÚºÏºï¿½Ä½Ç¶ï¿½    
 //----------------------------------------------------------------    
 float angle_calc(float angle_m, float gyro_m)    
 {    
@@ -207,22 +182,22 @@ float angle_calc(float angle_m, float gyro_m)
   static float last_angle;    
   static uint8 first_angle;    
   
-  if(!first_angle)//ÅÐ¶ÏÊÇ·ñÎªµÚÒ»´ÎÔËÐÐ±¾º¯Êý    
+  if(!first_angle)//ï¿½Ð¶ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½    
   {    
-    //Èç¹ûÊÇµÚÒ»´ÎÔËÐÐ£¬Ôò½«ÉÏ´Î½Ç¶ÈÖµÉèÖÃÎªÓë¼ÓËÙ¶ÈÖµÒ»ÖÂ    
+    //ï¿½ï¿½ï¿½ï¿½Çµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½Ï´Î½Ç¶ï¿½Öµï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ÖµÒ»ï¿½ï¿½    
     first_angle = 1;    
     last_angle = angle_m;    
   }    
   
   gyro_now = gyro_m * gyro_ratio;    
   
-  //¸ù¾Ý²âÁ¿µ½µÄ¼ÓËÙ¶ÈÖµ×ª»»Îª½Ç¶ÈÖ®ºóÓëÉÏ´ÎµÄ½Ç¶ÈÖµÇóÆ«²î    
+  //ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ù¶ï¿½Öµ×ªï¿½ï¿½Îªï¿½Ç¶ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ÎµÄ½Ç¶ï¿½Öµï¿½ï¿½Æ«ï¿½ï¿½    
   error_angle = (angle_m - last_angle)*acc_ratio;  
   
-  //¸ù¾ÝÆ«²îÓëÍÓÂÝÒÇ²âÁ¿µÃµ½µÄ½Ç¶ÈÖµ¼ÆËãµ±Ç°½Ç¶ÈÖµ    
+  //ï¿½ï¿½ï¿½ï¿½Æ«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ä½Ç¶ï¿½Öµï¿½ï¿½ï¿½ãµ±Ç°ï¿½Ç¶ï¿½Öµ    
   temp_angle = last_angle + (error_angle + gyro_now)*0.005;   
   
-  //±£´æµ±Ç°½Ç¶ÈÖµ    
+  //ï¿½ï¿½ï¿½æµ±Ç°ï¿½Ç¶ï¿½Öµ    
   last_angle = temp_angle;  
   
   return temp_angle;    
@@ -231,23 +206,26 @@ float angle_calc(float angle_m, float gyro_m)
 
 void MPU6050()
 {
-    get_accdata();	//»ñÈ¡¼ÓËÙ¶È¼ÆÊý¾Ý
-    get_gyro();		//»ñÈ¡ÍÓÂÝÒÇÊý¾Ý
+    get_accdata();	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ù¶È¼ï¿½ï¿½ï¿½ï¿½ï¿½
+    get_gyro();		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     acc[0]=mpu_acc_x-acc_offset[0];
     acc[1]=mpu_acc_y-acc_offset[1];
     acc[2]=mpu_acc_z-acc_offset[2];
     gyro[0]=mpu_gyro_x-gyro_offset[0];
     gyro[1]=mpu_gyro_y-gyro_offset[1];
     gyro[2]=mpu_gyro_z-gyro_offset[2];
+    gyro_x_i+=gyro[0];
+    angle=(int)(gyro_x_i*360.0/700000.0);
+    gyro_y_i+=gyro[1];
 }
 
 /*
-const float fRad2Deg = 57.295779513f; //»¡¶È»»Ëã½Ç¶È³ËµÄÏµÊý
-const float dt = 0.005; //Ê±¼äÖÜÆÚ
+const float fRad2Deg = 57.295779513f; //ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½Ç¶È³Ëµï¿½Ïµï¿½ï¿½
+const float dt = 0.005; //Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 float angle[3] = {0};
 float R = 0.98f;
 
-void ImuCalculate_Complementary(void)//¼ÆËã½Ç¶È
+void ImuCalculate_Complementary(void)//ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½
 {
   MPU6050();
     static float angle_last[3]={0};
@@ -270,8 +248,8 @@ void ImuCalculate_Complementary(void)//¼ÆËã½Ç¶È
 
 void GetAngle()
 {
-  get_accdata();	//»ñÈ¡¼ÓËÙ¶È¼ÆÊý¾Ý
-  get_gyro();		//»ñÈ¡ÍÓÂÝÒÇÊý¾Ý
+  get_accdata();	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ù¶È¼ï¿½ï¿½ï¿½ï¿½ï¿½
+  get_gyro();		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   Angle=atan2(mpu_acc_z,mpu_acc_x)*57.3;
 }
 static float angle_bias,angle_bias_last;
@@ -293,7 +271,7 @@ void getHist(uint8* pic,int *hist)
     p = (uint8 *)(pic + j * MT9V03X_CSI_W);
     for (uint8 i = 0; i < MT9V03X_CSI_W; i++)
     {
-      hist[p[i]]++; //Í³¼ÆÖ±·½Í¼
+      hist[p[i]]++; //Í³ï¿½ï¿½Ö±ï¿½ï¿½Í¼
     }
   }
 }
@@ -303,16 +281,16 @@ uint8 GetOSTUThreshold(int* HistGram)
 {
   int X, Y, Amount = 0;
   int PixelBack = 0, PixelFore = 0, PixelIntegralBack = 0, PixelIntegralFore = 0, PixelIntegral = 0;
-  double OmegaBack, OmegaFore, MicroBack, MicroFore, SigmaB, Sigma;              // Àà¼ä·½²î;
+  double OmegaBack, OmegaFore, MicroBack, MicroFore, SigmaB, Sigma;              // ï¿½ï¿½ä·½ï¿½ï¿½;
   int MinValue, MaxValue;
   int Threshold = 0;
   
   for (MinValue = 0; MinValue < 256 && HistGram[MinValue] == 0; MinValue++) ;
   for (MaxValue = 255; MaxValue > MinValue && HistGram[MinValue] == 0; MaxValue--) ;
-  if (MaxValue == MinValue) return MaxValue;          // Í¼ÏñÖÐÖ»ÓÐÒ»¸öÑÕÉ«             
-  if (MinValue + 1 == MaxValue) return MinValue;      // Í¼ÏñÖÐÖ»ÓÐ¶þ¸öÑÕÉ«
+  if (MaxValue == MinValue) return MaxValue;          // Í¼ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½É«             
+  if (MinValue + 1 == MaxValue) return MinValue;      // Í¼ï¿½ï¿½ï¿½ï¿½Ö»ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½É«
   
-  for (Y = MinValue; Y <= MaxValue; Y++) Amount += HistGram[Y];        //  ÏñËØ×ÜÊý
+  for (Y = MinValue; Y <= MaxValue; Y++) Amount += HistGram[Y];        //  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   
   PixelIntegral = 0;
   for (Y = MinValue; Y <= MaxValue; Y++) PixelIntegral += HistGram[Y] * Y;
@@ -347,17 +325,17 @@ static uint8 GetIterativeBestThreshold(uint8* HistGram)
   for (MinValue = 0; MinValue < 256 && HistGram[MinValue] == 0; MinValue++) ;
   for (MaxValue = 255; MaxValue > MinValue && HistGram[MinValue] == 0; MaxValue--) ;
   
-  if (MaxValue == MinValue) return MaxValue;          // Í¼ÏñÖÐÖ»ÓÐÒ»¸öÑÕÉ«             
-  if (MinValue + 1 == MaxValue) return MinValue;      // Í¼ÏñÖÐÖ»ÓÐ¶þ¸öÑÕÉ«
+  if (MaxValue == MinValue) return MaxValue;          // Í¼ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½É«             
+  if (MinValue + 1 == MaxValue) return MinValue;      // Í¼ï¿½ï¿½ï¿½ï¿½Ö»ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½É«
   
   Threshold = MinValue;
   NewThreshold = (MaxValue + MinValue) >> 1;
-  while (Threshold != NewThreshold)    // µ±Ç°ºóÁ½´Îµü´úµÄ»ñµÃãÐÖµÏàÍ¬Ê±£¬½áÊøµü´ú    
+  while (Threshold != NewThreshold)    // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Í¬Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½    
   {
     SumOne = 0; SumIntegralOne = 0;
     SumTwo = 0; SumIntegralTwo = 0;
     Threshold = NewThreshold;
-    for (X = MinValue; X <= Threshold; X++)         //¸ù¾ÝãÐÖµ½«Í¼Ïñ·Ö¸î³ÉÄ¿±êºÍ±³¾°Á½²¿·Ö£¬Çó³öÁ½²¿·ÖµÄÆ½¾ù»Ò¶ÈÖµ      
+    for (X = MinValue; X <= Threshold; X++)         //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Í¼ï¿½ï¿½Ö¸ï¿½ï¿½Ä¿ï¿½ï¿½Í±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Æ½ï¿½ï¿½ï¿½Ò¶ï¿½Öµ      
     {
       SumIntegralOne += HistGram[X] * X;
       SumOne += HistGram[X];
@@ -369,16 +347,16 @@ static uint8 GetIterativeBestThreshold(uint8* HistGram)
       SumTwo += HistGram[X];
     }
     MeanValueTwo = SumIntegralTwo / SumTwo;
-    NewThreshold = (MeanValueOne + MeanValueTwo) >> 1;       //Çó³öÐÂµÄãÐÖµ
+    NewThreshold = (MeanValueOne + MeanValueTwo) >> 1;       //ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½Öµ
     Iter++;
     if (Iter >= 1000) return -1;
   }
   return Threshold;
 }
 
-static uint8 IsDimodal(double* HistGram)       // ¼ì²âÖ±·½Í¼ÊÇ·ñÎªË«·åµÄ
+static uint8 IsDimodal(double* HistGram)       // ï¿½ï¿½ï¿½Ö±ï¿½ï¿½Í¼ï¿½Ç·ï¿½ÎªË«ï¿½ï¿½ï¿½
     {
-        // ¶ÔÖ±·½Í¼µÄ·å½øÐÐ¼ÆÊý£¬Ö»ÓÐ·åÊýÎ»2²ÅÎªË«·å 
+        // ï¿½ï¿½Ö±ï¿½ï¿½Í¼ï¿½Ä·ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½Ð·ï¿½ï¿½ï¿½Î»2ï¿½ï¿½ÎªË«ï¿½ï¿½ 
         int Count = 0;
         for (int Y = 1; Y < 255; Y++)
         {
@@ -397,25 +375,25 @@ static uint8 IsDimodal(double* HistGram)       // ¼ì²âÖ±·½Í¼ÊÇ·ñÎªË«·åµÄ
 static uint8 GetIntermodesThreshold(uint8* HistGram)
     {
         int Y, Iter = 0, Index;
-        double HistGramC[256] = {0};           // »ùÓÚ¾«¶ÈÎÊÌâ£¬Ò»¶¨ÒªÓÃ¸¡µãÊýÀ´´¦Àí£¬·ñÔòµÃ²»µ½ÕýÈ·µÄ½á¹û
-        double HistGramCC[256] = {0};          // Çó¾ùÖµµÄ¹ý³Ì»áÆÆ»µÇ°ÃæµÄÊý¾Ý£¬Òò´ËÐèÒªÁ½·ÝÊý¾Ý
+        double HistGramC[256] = {0};           // ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â£¬Ò»ï¿½ï¿½Òªï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½Ä½ï¿½ï¿½
+        double HistGramCC[256] = {0};          // ï¿½ï¿½ï¿½Öµï¿½Ä¹ï¿½ï¿½Ì»ï¿½ï¿½Æ»ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         for (Y = 0; Y < 256; Y++)
         {
             HistGramC[Y] = HistGram[Y];
             HistGramCC[Y] = HistGram[Y];
         }
-        // Í¨¹ýÈýµãÇó¾ùÖµÀ´Æ½»¬Ö±·½Í¼
-        while (IsDimodal(HistGramCC) == 0)                                                  // ÅÐ¶ÏÊÇ·ñÒÑ¾­ÊÇË«·åµÄÍ¼ÏñÁË      
+        // Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Æ½ï¿½ï¿½Ö±ï¿½ï¿½Í¼
+        while (IsDimodal(HistGramCC) == 0)                                                  // ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½Ë«ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½      
         {
-            HistGramCC[0] = (HistGramC[0] + HistGramC[0] + HistGramC[1]) / 3;                   // µÚÒ»µã
+            HistGramCC[0] = (HistGramC[0] + HistGramC[0] + HistGramC[1]) / 3;                   // ï¿½ï¿½Ò»ï¿½ï¿½
             for (Y = 1; Y < 255; Y++)
-                HistGramCC[Y] = (HistGramC[Y - 1] + HistGramC[Y] + HistGramC[Y + 1]) / 3;       // ÖÐ¼äµÄµã
-            HistGramCC[255] = (HistGramC[254] + HistGramC[255] + HistGramC[255]) / 3;           // ×îºóÒ»µã
+                HistGramCC[Y] = (HistGramC[Y - 1] + HistGramC[Y] + HistGramC[Y + 1]) / 3;       // ï¿½Ð¼ï¿½Äµï¿½
+            HistGramCC[255] = (HistGramC[254] + HistGramC[255] + HistGramC[255]) / 3;           // ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
             for (uint8 i=0;i<255;i++){HistGramCC[i]=HistGramC[i];}
             Iter++;
-            if (Iter >= 10000) return -1;                                                       // ËÆºõÖ±·½Í¼ÎÞ·¨Æ½»¬ÎªË«·åµÄ£¬·µ»Ø´íÎó´úÂë
+            if (Iter >= 10000) return -1;                                                       // ï¿½Æºï¿½Ö±ï¿½ï¿½Í¼ï¿½Þ·ï¿½Æ½ï¿½ï¿½ÎªË«ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ø´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         }
-// ãÐÖµÎªÁ½·åÖµµÄÆ½¾ùÖµ
+// ï¿½ï¿½ÖµÎªï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Æ½ï¿½ï¿½Öµ
         int Peak[2] = {0};
         for (Y = 1, Index = 0; Y < 255; Y++)
             if (HistGramCC[Y - 1] < HistGramCC[Y] && HistGramCC[Y + 1] < HistGramCC[Y]) Peak[Index++] = Y - 1;
@@ -423,16 +401,16 @@ static uint8 GetIntermodesThreshold(uint8* HistGram)
     }
 
 
-#define Acc_Gain 0.0002440f			//¼ÓËÙ¶È×ª»»µ¥Î»(³õÊ¼»¯¼ÓËÙ¶È¼ÆÁ¿³Ì+-4g£¬ÓÉÓÚmpu6050µÄÊý¾Ý¼Ä´æÆ÷ÊÇ16Î»µÄ£¬LSBa = 2*4 / 65535.0)
-#define Gyro_Gain 0.0609756f		//½ÇËÙ¶È×ª»»Îª½Ç¶È(LSBg = 2000*2 / 65535)
-#define Gyro_Gr 0.0010641f			//½ÇËÙ¶È×ª»»³É»¡¶È(3.1415 / 180 * LSBg)
+#define Acc_Gain 0.0002440f			//ï¿½ï¿½ï¿½Ù¶ï¿½×ªï¿½ï¿½ï¿½ï¿½Î»(ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È¼ï¿½ï¿½ï¿½ï¿½ï¿½+-4gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½mpu6050ï¿½ï¿½ï¿½ï¿½ï¿½Ý¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½16Î»ï¿½Ä£ï¿½LSBa = 2*4 / 65535.0)
+#define Gyro_Gain 0.0609756f		//ï¿½ï¿½ï¿½Ù¶ï¿½×ªï¿½ï¿½Îªï¿½Ç¶ï¿½(LSBg = 2000*2 / 65535)
+#define Gyro_Gr 0.0010641f			//ï¿½ï¿½ï¿½Ù¶ï¿½×ªï¿½ï¿½ï¿½É»ï¿½ï¿½ï¿½(3.1415 / 180 * LSBg)
 #define G 9.80665f					// m/s^2
 
 short ax,ay,az;
 short gx,gy,gz;
 
 
-static float invSqrt(float x) 		//¿ìËÙ¼ÆËã 1/Sqrt(x)
+static float invSqrt(float x) 		//ï¿½ï¿½ï¿½Ù¼ï¿½ï¿½ï¿½ 1/Sqrt(x)
 {
 	float halfx = 0.5f * x;
 	float y = x;
@@ -448,11 +426,11 @@ static float invSqrt(float x) 		//¿ìËÙ¼ÆËã 1/Sqrt(x)
 
 #define Kp 1.50f
 #define Ki 0.005f
-#define halfT 0.0025f						//¼ÆËãÖÜÆÚµÄÒ»°ë£¬µ¥Î»s
+#define halfT 0.0025f						//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Ò»ï¿½ë£¬ï¿½ï¿½Î»s
 
-float Yaw,Pitch,Roll;				//ÎÒÒª¸øÆäËûÎÄ¼þÓÃËùÒÔ¶¨ÒåÁËextern£¬²»ÓÃ¹Ü
-float q0 = 1, q1 = 0, q2 = 0, q3 = 0;		//ËÄÔªÊý
-float exInt = 0, eyInt = 0, ezInt = 0;		//²æ»ý¼ÆËãÎó²îµÄÀÛ¼Æ»ý·Ö
+float Yaw,Pitch,Roll;				//ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½externï¿½ï¿½ï¿½ï¿½ï¿½Ã¹ï¿½
+float q0 = 1, q1 = 0, q2 = 0, q3 = 0;		//ï¿½ï¿½Ôªï¿½ï¿½
+float exInt = 0, eyInt = 0, ezInt = 0;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Û¼Æ»ï¿½ï¿½ï¿½
 
 
 void Imu_Update()
@@ -465,8 +443,8 @@ void Imu_Update()
     gy=(float)gyro[1]* Gyro_Gr;
     gz=(float)gyro[2]* Gyro_Gr;
 	uint8 i;
-	float vx,vy,vz;							//Êµ¼ÊÖØÁ¦¼ÓËÙ¶È
-	float ex,ey,ez;							//²æ»ý¼ÆËãµÄÎó²î
+	float vx,vy,vz;							//Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
+	float ex,ey,ez;							//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	float norm;
 	
  	float q0q0 = q0*q0;
@@ -483,46 +461,46 @@ void Imu_Update()
 	if(ax*ay*az == 0)
 		return;
 	
-	//¼ÓËÙ¶È¼Æ²âÁ¿µÄÖØÁ¦·½Ïò(»úÌå×ø±êÏµ)
+	//ï¿½ï¿½ï¿½Ù¶È¼Æ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ)
 	norm = invSqrt(ax*ax + ay+ay + az*az);
 	ax = ax * norm;
 	ay = ay * norm;
 	az = az * norm;
 	
-	//ËÄÔªÊýÍÆ³öµÄÊµ¼ÊÖØÁ¦·½Ïò(»úÌå×ø±êÏµ)
+	//ï¿½ï¿½Ôªï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ)
 	vx = 2*(q1q3 - q0q2);												
   	vy = 2*(q0q1 + q2q3);
   	vz = q0q0 - q1q1 - q2q2 + q3q3;
 	
-	//²æ»ýÎó²î
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	ex = (ay*vz - az*vy);
 	ey = (az*vx - ax*vz);
 	ez = (ax*vy - ay*vx);
 	
-	//²æ»ýÎó²î»ý·ÖÎª½ÇËÙ¶È
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ù¶ï¿½
 	exInt = exInt + ex * Ki;
 	eyInt = eyInt + ey * Ki;
 	ezInt = ezInt + ez * Ki;
 	
-	//½ÇËÙ¶È²¹³¥
+	//ï¿½ï¿½ï¿½Ù¶È²ï¿½ï¿½ï¿½
 	gx = gx + Kp*ex + exInt;
 	gy = gy + Kp*ey + eyInt;
 	gz = gz + Kp*ez + ezInt;
 	
-	//¸üÐÂËÄÔªÊý
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
   	q0 = q0 + (-q1*gx - q2*gy - q3*gz)*halfT;
   	q1 = q1 + (q0*gx + q2*gz - q3*gy)*halfT;
   	q2 = q2 + (q0*gy - q1*gz + q3*gx)*halfT;
   	q3 = q3 + (q0*gz + q1*gy - q2*gx)*halfT;	
 	
-	//µ¥Î»»¯ËÄÔªÊý
+	//ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½
   	norm = invSqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
   	q0 = q0 * norm;
   	q1 = q1 * norm;
   	q2 = q2 * norm;  
   	q3 = q3 * norm;
 	
-	//ËÄÔªÊý·´½âÅ·À­½Ç
+	//ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å·ï¿½ï¿½ï¿½ï¿½
 	Yaw = atan2(2.f * (q1q2 + q0q3), q0q0 + q1q1 - q2q2 - q3q3)* 57.3f;
 	Pitch = -asin(2.f * (q1q3 - q0q2))* 57.3f;
 	Roll = atan2(2.f * q2q3 + 2.f * q0q1, q0q0 - q1q1 - q2q2 + q3q3)* 57.3f;

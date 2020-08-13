@@ -2,5 +2,6 @@
 #define _allOLED_h
 
 extern int page;
+void OLED_switch();
 
 #endif

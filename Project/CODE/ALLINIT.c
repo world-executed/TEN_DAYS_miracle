@@ -79,10 +79,14 @@ void AllInit()
   adc_init(ADC_1,ADC1_CH8_B19,ADC_12BIT);
 
   gpio_init (D16, GPO,0,GPIO_PIN_CONFIG); //蜂鸣器初始化
-  
+  oled_p6x8str(0,0,"Camera Initializing");
   mt9v03x_csi_init();//初始化摄像头 使用CSI接口
+  oled_p6x8str(0,2,"IIC Initializing");
   simiic_init();		//模拟IIC初始化
+  oled_p6x8str(0,4,"MPU6050 Initializing");
 	mpu6050_init();		//初始化六轴加速度计陀螺仪
+  systick_delay_ms(200);
+  oled_fill(0x00);
 
     gyro_offset[0]=-20;
     gyro_offset[1]=40;

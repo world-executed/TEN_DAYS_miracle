@@ -7,9 +7,9 @@ extern uint8 chukuFlag;
 extern uint8 rukuFlag;
 extern uint8 th;
 extern uint8 jumpnum;
-extern uint8 jumpnum_b;
 void hillProcess();
 void ruku();
 void chuku();
+void StopCar();
 
 #endif

@@ -54,12 +54,39 @@ void SpeedControl()
 
 void setSpeed() 
 {
+/***********************
+StopFlag==1       pwm=0
+StopFlag==0       pwm=PWM
+chukuFlag==0      pwm=0
+chukuFlag==1      pwm=3000
+chukuFlag==2      pwm=PWM
+rukuFlag==0       pwm=PWM
+rukuFlag==1       pwm=3000
+rukuFlag==2       pwm=3000
+rukuFlag==3       pwm=0
+***********************/
   PWML=range(PWML,0,5000);
   PWMR=range(PWMR,0,5000);
-  if(StopFlag&&chukuFlag==0||rukuFlag==3)
+  
+    
+  if(chukuFlag==0||rukuFlag==3)//在库中
     PWML=PWMR=0;
+  else if(chukuFlag==1)
+    PWML=PWMR=5000;// 出库速度
+  else if(rukuFlag==1||rukuFlag==2)
+    PWML=PWMR=1500;//入库速度
+  else//正常行驶
+  {
+    if(StopFlag==1)
+    {PWML=PWMR=0;/*StopCar();*/}
+  }
+  
+  
+
   pwm_duty(PWM1_MODULE0_CHB_D13,0);//左反
   pwm_duty(PWM1_MODULE0_CHA_D12,PWML);//左正
   pwm_duty(PWM1_MODULE1_CHB_D15,PWMR);//右正
   pwm_duty(PWM1_MODULE1_CHA_D14,0);//右反
+
+
 }

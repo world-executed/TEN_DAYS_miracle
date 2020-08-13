@@ -19,8 +19,8 @@ float Yaw,Pitch,Roll;
 
 void CSI_IRQHandler(void)
 {
-	CSI_DriverIRQHandler();     //µ÷ÓÃSDK×Ô´øµÄÖÐ¶Ïº¯Êý Õâ¸öº¯Êý×îºó»áµ÷ÓÃÎÒÃÇÉèÖÃµÄ»Øµ÷º¯Êý
-	__DSB();                    //Êý¾ÝÍ¬²½¸ôÀë
+	CSI_DriverIRQHandler();     //ï¿½ï¿½ï¿½ï¿½SDKï¿½Ô´ï¿½ï¿½ï¿½ï¿½Ð¶Ïºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÃµÄ»Øµï¿½ï¿½ï¿½ï¿½ï¿½
+	__DSB();                    //ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 }
 
 void PIT_1MS()
@@ -44,14 +44,14 @@ void PIT_5MS()
 		PosCalculate();
 		eleMatch();
 		
-		if(status[nowPos] != 1) //ÍäµÀ
+		if(status[nowPos] != 1) //ï¿½ï¿½ï¿½
 		{
 			dirpid.p = sp;
 			gpio_set(D16,1);
 		}
 		else
 		{
-			gpio_set(D16,0);    //Ö±µÀ
+			gpio_set(D16,0);    //Ö±ï¿½ï¿½
 			dirpid.p = lp;
 		}
 	}
@@ -61,22 +61,17 @@ void PIT_5MS()
 	dip[2]=gpio_get(C27);
 	dip[3]=gpio_get(C28);
 	//Imu_Update();
-	//Prepare_Data();
 	//ImuCalculate_Complementary();
+	//Prepare_Data();
 	MPU6050();
-	gyro_x_i+=gyro[0];
-	angle=(int)(gyro_x_i*360.0/700000.0);
-	
-	gyro_y_i+=(gyro[1]);
-	
-	GetError();
-	//DynamicPID();
-	ADCTest();
-	//modeSelect();
-	if (LockFlag == 0 && StopFlag == 0 && chukuFlag==2&&rukuFlag!=2) {        //Ã»´òËÀ
-		if(recordMode != 3)
-			Dir_control(DirError);
-		else if(recordMode == 3)
+  GetError();
+  //DynamicPID();
+  ADCTest();
+  //modeSelect();
+  if (LockFlag == 0 && StopFlag == 0 && chukuFlag==2&&rukuFlag==0) {        //Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê»
+	  if(recordMode != 3)
+    		Dir_control(DirError);
+	  else if(recordMode == 3)
 		{
 			//relatedCal();
 			//relation = 0.5;
@@ -89,11 +84,11 @@ void PIT_5MS()
 		
 		if(turnFlag == 1)
 		{
-			pwm_duty(PWM4_MODULE2_CHA_C30, 90+700);      //ÓÒ×ª
+			pwm_duty(PWM4_MODULE2_CHA_C30, 90+700);      //ï¿½ï¿½×ª
 		}
 		if(turnFlag == -1)
 		{
-			pwm_duty(PWM4_MODULE2_CHA_C30, -90+700);      //×ó×ª
+			pwm_duty(PWM4_MODULE2_CHA_C30, -90+700);      //ï¿½ï¿½×ª
 		}
 		
 		CountNum++;
@@ -145,32 +140,12 @@ void PIT_5MS()
 	OSC[6]=leftSpeedInt/10;
 	OSC[7]=rightSpeedInt/10;
 	vcan_sendware(OSC,sizeof(OSC));
-	
-	
-	if(ringflag_st)
-		readyinring_st++;
-	if(readyinring_st)
-	{
-		readyinring_st++;
-		readyinring_st%=500;
-	}
-	
-	if(ringflag_nd)
-		readyinring_nd++;
-	if(readyinring_nd)
-	{
-		readyinring_nd++;
-		readyinring_nd%=500;
-	}
-	setSpeed();
-	hillProcess();
-	chuku();
-	
-	if(hillFlag==3)
-		ruku();
-	
-	
-	
+  ring_int();
+  
+  hillProcess();
+  chuku();
+  ruku();
+  setSpeed();
 }
 
 
@@ -199,7 +174,7 @@ void GPIO2_Combined_16_31_IRQHandler(void)
 {
 	if(GET_GPIO_FLAG(C16))
 	{
-		CLEAR_GPIO_FLAG(C16);//Çå³ýÖÐ¶Ï±êÖ¾Î»
+		CLEAR_GPIO_FLAG(C16);//ï¿½ï¿½ï¿½ï¿½Ð¶Ï±ï¿½Ö¾Î»
 	}
 	
 	
@@ -211,12 +186,12 @@ void GPIO2_Combined_0_15_IRQHandler(void)
 {
 	if(GET_GPIO_FLAG(MT9V03X_VSYNC_PIN))
 	{
-		//²»ÓÃÇå³ý±êÖ¾Î»£¬±êÖ¾Î»ÔÚmt9v03x_vsyncº¯ÊýÄÚ²¿»áÇå³ý
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½Ö¾Î»ï¿½ï¿½mt9v03x_vsyncï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(1 == flexio_camera_type)mt9v03x_vsync();
 	}
 	if(GET_GPIO_FLAG(SCC8660_VSYNC_PIN))
 	{
-		//²»ÓÃÇå³ý±êÖ¾Î»£¬±êÖ¾Î»ÔÚscc8660_vsyncº¯ÊýÄÚ²¿»áÇå³ý
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾Î»ï¿½ï¿½ï¿½ï¿½Ö¾Î»ï¿½ï¿½scc8660_vsyncï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(2 == flexio_camera_type)scc8660_vsync();
 	}
 }

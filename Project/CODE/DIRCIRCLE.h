@@ -12,9 +12,7 @@ extern int16 ADCR;
 extern int16 ADCLY;
 extern int16 ADCRY;
 
-extern uint8 ringstate;
-extern uint8 inring_st;
-extern uint8 inring_nd;
+
 
 extern int16 MPWM;
 extern float DirError;
@@ -50,7 +48,7 @@ extern DIRPID dirpid;
 void DirControl();
 void Dir_control(float error);
 void RDir_control(float error, float relation);
-void ringProcess();
+
 void GetError();
 
 #endif
