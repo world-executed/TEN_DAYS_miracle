@@ -1,7 +1,7 @@
 #include "headfile.h"
 
-int16 SetLeftSpeed  = 60;
-int16 SetRightSpeed = 60;
+int16 SetLeftSpeed  = 30;
+int16 SetRightSpeed = 30;
 int setLeftSpeed_L = 0;
 int setRightSpeed_L = 0;
 int leftSpeedInt = 0;

@@ -31,11 +31,11 @@
 #include "headfile.h"
 
 
- int8 ringflag=0;  //1为右环 -1为左环
- uint16 ring_th_ex=3500;
- uint16 ring_th_in=200;
-  uint16 readyinring_st=0;
-  uint16 readyinring_nd=0;
+int8 ringflag=0;  //1为右环 -1为左环
+uint16 ring_th_ex=3500;
+uint16 ring_th_in=200;
+uint16 readyinring_st=0;
+uint16 readyinring_nd=0;
 uint8 ringflag_st=0;
 uint8 ringflag_nd=0;
 void signal();
@@ -68,15 +68,7 @@ int main(void)
 	  
     OLED_switch();
 	
-    		if(recordMode == 1)
-		{
-			if(finishFlag == 1)
-			{
-				recordMode = 2;	
-				page = 4;
-			}
-		}
-    }
+  }
 }
 
 
@@ -145,8 +137,6 @@ void modeSelect()
 		}
 	}
 
-
- 
   if(ADC[5] > 4000 && ADC[4] > 4000)
     dirpid.p = lp;
 }
@@ -179,6 +169,12 @@ void CarBegin()
 void RecordBegin()
 {
 	AllZero();
+	SetLeftSpeed = 30;
+	SetLeftSpeed = 30;
+	chukuFlag = 1;
+    PWML=PWMR=3000;
+	oled_fill(0x00);
+	recording = 1;
 }
 
 		
@@ -186,6 +182,8 @@ void InmodeBegin()
 {
 	AllZero();
 }
+
+
 
 /***************************************************不要的************************************************/
 

@@ -113,9 +113,8 @@ void ruku()
       pwm_duty(PWM1_MODULE1_CHA_D14,0);//”“∑¥
     }
   }
-  
-  
 }
+
 void chuku()
 {
   if(chukuFlag)
@@ -133,8 +132,7 @@ void chuku()
     pwm_duty(PWM1_MODULE1_CHB_D15,3000);//”“’˝   
     }
     else
-      chukuFlag=0;
+      chukuFlag=2;
 
   }
-  
 }

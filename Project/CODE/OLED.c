@@ -6,9 +6,17 @@ uint8 cursor=0;
 
 
 int page = 0;
-//0:主菜单 1:菜单选择 2:全部参数 3:记录模式1 4:记录模式2 5:记录模式3
+//0:主菜单 1:菜单选择 2:全部参数 3:记录模式1 4:记录模式2 5:记录模式3 6:摄像头 7:查看记录值
 
-
+int maxposL = 0;
+int minposL = 10000;
+int maxposR = 0;
+int minposR = 10000;
+int maxservo = 0;
+int minservo = 10000;
+int maxangle = 0;
+int minangle = 10000;
+int allNum = 0;
 
 void MainPage_Show()
 {
@@ -225,42 +233,79 @@ void Record1_Show()
 	oled_p6x8str(18,7,"      back");         
 }
 
+void Record1_Show_recording()
+{
+	oled_p6x8str(0,cursor + 6,"->");
+	oled_p6x8str(0,0,"-----RECORD MODE-----");
+
+	oled_p6x8str(0,4,"     RECORDING...");
+}
+
 void Record1()
 {
-	Record1_Show();
-	
-	if(key_check(KEY_D) ==  KEY_DOWN)
+	if(recording == 0)
 	{
-		oled_p6x8str(0,cursor + 6,"  ");
-		cursor+=1;
-		cursor%=2;
-		oled_p6x8str(0,cursor + 6,"->");
-		while(!key_check(KEY_D));
-	}
-	
-	else if(key_check(KEY_U) ==  KEY_DOWN)
-	{
-		oled_p6x8str(0,cursor + 6,"  ");
-		if(cursor==0)
-			cursor=2;
-		cursor-=1;
-		oled_p6x8str(0,cursor + 6,"->");
-		while(!key_check(KEY_U));
-	}
-	
-	if(key_check(KEY_A) ==  KEY_DOWN)
-	{
-		switch(cursor + 6)
+		Record1_Show();
+		
+		if(key_check(KEY_D) ==  KEY_DOWN)
 		{
-		case 6:
-			RecordBegin();recordMode = 1;cursor = 0;break;
-		case 7:
-			page = 1;cursor = 0;recordMode = 0;oled_fill(0x00);break;
-		default:
-			break;
+			oled_p6x8str(0,cursor + 6,"  ");
+			cursor+=1;
+			cursor%=2;
+			oled_p6x8str(0,cursor + 6,"->");
+			while(!key_check(KEY_D));
 		}
-		while(!key_check(KEY_A));
+		
+		else if(key_check(KEY_U) ==  KEY_DOWN)
+		{
+			oled_p6x8str(0,cursor + 6,"  ");
+			if(cursor==0)
+				cursor=2;
+			cursor-=1;
+			oled_p6x8str(0,cursor + 6,"->");
+			while(!key_check(KEY_U));
+		}
+		
+		if(key_check(KEY_A) ==  KEY_DOWN)
+		{
+			switch(cursor + 6)
+			{
+			case 6:
+				recordMode = 1;RecordBegin();cursor = 0;break;
+			case 7:
+				page = 1;cursor = 0;recordMode = 0;oled_fill(0x00);break;
+			default:
+				break;
+			}
+			while(!key_check(KEY_A));
+		}
 	}
+	else if(recording == 1)
+	{
+		Record1_Show_recording();
+	}
+}
+
+void Temshow_calculate()
+{
+	for(allNum = 0; allNum < 10000; allNum++)
+	{
+		if(posL[allNum] == -10000)
+			break;
+	}
+	
+	for(int i = 0; i < allNum; i++)
+	{
+		if (posL[i] > maxposL) maxposL = posL[i];	
+		if (posL[i] < minposL) minposL = posL[i];
+		if (posR[i] > maxposR) maxposR = posR[i];	
+		if (posR[i] < minposR) minposR = posR[i];
+		if (servo[i] > maxservo) maxservo = servo[i];	
+		if (servo[i] < minservo) minservo = servo[i];
+		if (angle_int[i] > maxangle) maxangle = angle_int[i];	
+		if (angle_int[i] < minangle) minangle = angle_int[i];
+	}
+	
 }
 
 void Record2_Show()
@@ -302,7 +347,7 @@ void Record2()
 		switch(cursor + 6)
 		{
 		case 6:
-			ScanCalculate();page = 5;cursor = 0;break;
+			/*ScanCalculate();*/Temshow_calculate();page = 7;cursor = 0;break;
 		case 7:
 			page = 1;cursor = 0;recordMode = 0;oled_fill(0x00);break;
 		default:
@@ -390,6 +435,29 @@ void Camera()
     }
 }
 
+
+
+void Temshow_show()
+{
+	oled_fill(0x00);
+	
+	oled_p6x8str(0,0,"Lmax");           oled_printf_int32(40,1,maxposL ,4);
+	oled_p6x8str(0,1,"Lmin");           oled_printf_int32(40,2,minposL ,4);
+	oled_p6x8str(0,2,"Rmax");           oled_printf_int32(40,3,maxposR ,4);	
+	oled_p6x8str(0,3,"Rmin");           oled_printf_int32(40,4,minposR ,4);             
+	oled_p6x8str(0,4,"Smax");           oled_printf_int32(40,5,maxservo,4);
+	oled_p6x8str(0,5,"Smin");           oled_printf_int32(40,6,minservo,4);
+	oled_p6x8str(0,6,"Amax");           oled_printf_int32(40,5,maxangle,4);
+	oled_p6x8str(0,7,"Amin");           oled_printf_int32(40,6,minangle,4);
+	
+	oled_p6x8str(80,0,"Num");           oled_printf_int32(80,1,allNum ,4);
+}
+
+void Temshow()
+{
+	Temshow_show();
+}
+
 void OLED_switch()
 {
 	switch(page)
@@ -401,6 +469,7 @@ void OLED_switch()
 	case 4: Record2();break;
 	case 5: Record3();break;
     case 6: Camera();break;
+	case 7: Temshow();break;
 	default:
 		break;
 	}
