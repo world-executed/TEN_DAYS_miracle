@@ -31,27 +31,18 @@
 #include "headfile.h"
 
 
- int8 ringflag=0;  //1为右环 -1为左环
- uint16 ring_th_ex=3500;
- uint16 ring_th_in=200;
-  uint16 readyinring_st=0;
-  uint16 readyinring_nd=0;
-uint8 ringflag_st=0;
-uint8 ringflag_nd=0;
+
 void signal();
 int normal = 1800;
 int mode9num = 0;
 
-uint16 readyruku=0;
+
 
 uint8 value=130;
 
 
 int16 acc[3];
 int16 gyro[3];
-
-
-
 
 
 
@@ -83,22 +74,7 @@ int main(void)
 
 
 
-void ringjudge_st()
-{
-  if(ADC[1]+ADC[2]>4000&&ADC[2]/ADC[1]>1.3&&ADC[4]+ADC[5]>5000)//youhuan  //1000,2400
-    ringflag_st=1;
-  
-  else
-    ringflag_st=0;
-}
 
-void ringjudge_nd()
-{
-  if(ADC[1]+ADC[2]>3200&&ADC[1]>2000&&ADC[0]+ADC[3]>5000)
-    ringflag_nd=1;
-  else
-    ringflag_nd=0;
-}
 
 
 
@@ -173,7 +149,6 @@ void CarBegin()
 {
 	AllZero();
 	chukuFlag = 1;
-    PWML=PWMR=3000;
 }
 
 void RecordBegin()
@@ -241,6 +216,9 @@ void MPU6050()
     gyro[0]=mpu_gyro_x-gyro_offset[0];
     gyro[1]=mpu_gyro_y-gyro_offset[1];
     gyro[2]=mpu_gyro_z-gyro_offset[2];
+    gyro_x_i+=gyro[0];
+    angle=(int)(gyro_x_i*360.0/700000.0);
+    gyro_y_i+=gyro[1];
 }
 
 /*

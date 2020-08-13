@@ -63,16 +63,13 @@ void PIT_5MS()
   //Prepare_Data();
   //ImuCalculate_Complementary();
   MPU6050();
-  gyro_x_i+=gyro[0];
-  angle=(int)(gyro_x_i*360.0/700000.0);
-  
-  gyro_y_i+=abs(gyro[1])>10?gyro[1]:0;
+ 
   
   GetError();
   //DynamicPID();
   ADCTest();
   //modeSelect();
-  if (LockFlag == 0 && StopFlag == 0 && chukuFlag==2&&rukuFlag<=1) {        //没打死
+  if (LockFlag == 0 && StopFlag == 0 && chukuFlag==2&&rukuFlag==0) {        //没打死、正常行驶
 	  if(recordMode != 3)
     		Dir_control(DirError);
 	  else if(recordMode == 3)
@@ -126,28 +123,12 @@ void PIT_5MS()
   vcan_sendware(OSC,sizeof(OSC));
   
   
-  if(ringflag_st)
-    readyinring_st++;
-  if(readyinring_st)
-  {
-    readyinring_st++;
-    readyinring_st%=500;
-  }
+  ring_int();
   
-  if(ringflag_nd)
-    readyinring_nd++;
-  if(readyinring_nd)
-  {
-    readyinring_nd++;
-    readyinring_nd%=500;
-  }
-  setSpeed();
   hillProcess();
   chuku();
-  
-  if(hillFlag==3)
   ruku();
-
+  setSpeed();
 
   
 }
