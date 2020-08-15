@@ -25,8 +25,8 @@
 //int calNum = 4600;			//数组长度
 int centerK = 10;			//舵机理想值忽略范围 
 int interval = 3;			//斜率检测间隔
-int kTestThrH = 15;			//斜率检测阈值-high
-int kTestThrL = 7;			//斜率检测阈值-low
+int kTestThrH = 20;			//斜率检测阈值-high
+int kTestThrL = 14;			//斜率检测阈值-low
 int kFlatThr = 10;			//斜率滤波检测阈值
 int k[4600] = {0};			//斜率存储数组		********数组长度?
 //8int status[4600] = {0};		//状态存储数组					
@@ -38,7 +38,7 @@ int servoShould[calNum] = {0};	//舵机理想打角数组
 int eleLenth[eleLen] = {0};		//单元素编码器长度 
 int fullAngle = 7000;		//整圈角度积分
 
-int status[calNum] 		= {-30000};
+int status[calNum] 		= {-30000};	//...?
 int posL[calNum] 		= {-30000};
 int posR[calNum] 		= {-30000};
 int angle_int[calNum] 	= {-30000};
@@ -53,6 +53,7 @@ int finishFlag = 0;
 int eleNum = 0;
 int nowEleNum = 0;
 int recording = 0;
+int period = 30;
 
 void Flat90();
 void Flat2();
@@ -65,11 +66,19 @@ void Flat1();
 void elementFind();
 void eachLenth();
 void aveServo();
+void statusDelay(int period);
+
+#define speed  7
+int flag_status = 0;
+int point_status[128];
+int pixel_status[calNum] ={0};
+int print_status = 127 * speed;
+
 
 //赛道计算主程序
 int ScanCalculate() 
 {
-	for(int i = 0; i < calNum; i++)
+	for(int i = 0; i<calNum; i++)
 	{
 		status[i] = 1;
 	}
@@ -128,9 +137,11 @@ int ScanCalculate()
 	Flat09();
 	Flat1();
 	
+	
 	elementFind();
 	eachLenth();
-	//aveServo();
+	aveServo();
+	statusDelay(period);
 	
 	for(int i = 0; i < calNum; i++)
 	{
@@ -143,6 +154,13 @@ int ScanCalculate()
 		printf("%d,",status[i] * 100);
 	}
 	//
+}
+
+void statusDelay(int period)
+{
+	for(int j = 0; j < period; j++)
+		for(int i = 0; i < allNum; i++)
+			status[i] = status[i + 1];
 }
 
 //滤去转右弯中的出入弯 
@@ -452,6 +470,21 @@ void aveServo()
 
 /******************************未在计算函数中*************************************/ 
 
+void statusZero()
+{
+	for(int i = 0; i < calNum; i++)
+	{
+		status[i] 		= 1;	
+		posL[i] 		= -10000;
+		pixel_status[i] = 0;
+	}
+	for(int j = 0; j < 128; j++)
+		point_status[j] = 0;
+	
+	flag_status = 0;
+	print_status = 127;
+}
+
 //长度复位 
 void clearLenth()
 {
@@ -504,5 +537,113 @@ void PosCalculate()
 	
 	//平均位置解算
 	nowPos = (nowPosL + nowPosR) / 2;
+}
+
+/*************************赛道元素识别波形********************************/
+
+
+
+void scroll_status()
+{
+	if(key_check(KEY_R) ==  KEY_DOWN && print_status < calNum)
+	{
+	  for(int i = 0; i < 127; i++)
+	  {
+		point_status[i] = point_status[i+1];
+	  }
+	  point_status[127] = pixel_status[print_status];
+	  print_status += speed;
+	}
+	else if(key_check(KEY_L) ==  KEY_DOWN && print_status >= 127 * speed)
+	{
+	  for(int i = 127; i > 0; i--)
+	  {
+		point_status[i] = point_status[i-1];
+	  }
+	  point_status[0] = pixel_status[print_status - 127 * speed];
+	  print_status -= speed;
+	}
+}
+
+void init_status(int max, int min)
+{
+  	for(int i = 0; i < calNum; i++)
+	{
+  		pixel_status[i] = (int)(((float)status[i] / (max - min)) * 63 + 0.5);         //0~63
+	}
+  
+	for(int k = 0; k < 128; k += 1)
+	{
+		point_status[k] = pixel_status[k * speed];
+	}
+	flag_status = 1;
+}
+
+void printPoint_status()
+{
+  int pixel,line,set = 0;
+  
+  for(int i = 0; i < 128; i++)            //列
+  {
+    for(int j = 0;j<8;j++)
+      oled_putpixel(i,j,0);
+    int number = 1;
+    pixel = point_status[i];
+    line = pixel / 8;
+    line = range(line, 0, 7);
+    set = pixel % 8;
+    for(set;set > 0;set--)
+      number = number * 2;
+    if(line!=7 || i > 30)
+      oled_putpixel(i,line,number);
+  }
+}
+
+void waveScan_status()
+{
+  if(!flag_status)
+    init_status(10,-1);
+  scroll_status();
+  printPoint_status();
+  //oled_p6x8str(0,7,"     ");
+  //oled_printf_int32(0,7,ADCRR,4);
+}
+
+
+/***********************************摄像头灰度检测*************************************/
+int point_camara[128];
+
+void initCamaraWave(int max, int min, int line)
+{
+  	for(int i = 0; i < 128; i++)
+	{
+  		point_camara[i] = (int)(((float)mt9v03x_csi_image[line][i] / (max - min)) * 63 + 0.5);         //0~63
+	}
+}
+
+void printPoint_camara()
+{
+  int pixel,line,set = 0;
+  
+  for(int i = 0; i < 128; i++)            //列
+  {
+    for(int j = 0;j<8;j++)
+      oled_putpixel(i,j,0);
+    int number = 1;
+    pixel = point_camara[i];
+    line = pixel / 8;
+    line = range(line, 0, 7);
+    set = pixel % 8;
+    for(set;set > 0;set--)
+      number = number * 2;
+    if(line!=7 || i > 30)
+      oled_putpixel(i,line,number);
+  }
+}
+
+void waveScan_Camara(int line)
+{
+  initCamaraWave(256,0,line);
+  printPoint_camara();
 }
 

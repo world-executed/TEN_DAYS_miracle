@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"E:\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "C:\Users\10422\Desktop\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.general.xcl" --backend -f "C:\Users\10422\Desktop\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.driver.xcl" 
+"G:\iar\common\bin\cspybat" -f "C:\Users\a1876\Documents\GitHub\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.general.xcl" --backend -f "C:\Users\a1876\Documents\GitHub\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"E:\IAR Systems\Embedded Workbench 8.2\common\bin\cspybat" -f "C:\Users\10422\Desktop\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\10422\Desktop\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.driver.xcl" 
+"G:\iar\common\bin\cspybat" -f "C:\Users\a1876\Documents\GitHub\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\a1876\Documents\GitHub\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.driver.xcl" 
 
 @echo off 
 :end

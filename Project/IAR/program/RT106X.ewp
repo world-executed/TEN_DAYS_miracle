@@ -1133,6 +1133,12 @@
             <name>$PROJ_DIR$\..\..\CODE\OLED.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\CODE\RING.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\CODE\RING.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\CODE\SCANCALCULATE.c</name>
         </file>
         <file>

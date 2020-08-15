@@ -3,5 +3,6 @@
 
 extern int page;
 void OLED_switch();
+extern int allNum;
 
 #endif

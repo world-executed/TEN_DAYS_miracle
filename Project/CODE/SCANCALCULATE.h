@@ -20,4 +20,15 @@ extern int finishFlag;
 extern int eleArray[eleLen];
 extern int nowEleNum;
 extern int recording;
+
+int ScanCalculate();
+void PosCalculate();
+void eleMatch();
+void waveScan_status();
+void waveScan_Camara(int line);
+
+extern int kTestThrH;	
+extern int kTestThrL;	
+extern int period;
+
 #endif

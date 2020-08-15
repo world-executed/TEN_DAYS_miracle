@@ -4,7 +4,7 @@ uint8 hillFlag=0;
 int8 FANGXIANG=1;//1Ϊ˳ʱ�룬-1Ϊ��ʱ��
 uint8 chukuFlag=0;
 uint8 rukuFlag=0;
-uint8 th=110;
+uint8 th=128;
 uint8 jumpnum=0;
 uint8 jumpnum_b=0;
 int32 gyro_x_i_ruku=0;
@@ -53,8 +53,6 @@ void ruku()
       rukuFlag=1;//Ԥʶ��
     if(jumpnum_b>16&&hillFlag==3&&rukuFlag<=1)
       rukuFlag=2;
-
-    
   }
   
   
@@ -80,8 +78,6 @@ void chuku()
   else
     FANGXIANG=-1;
   
-  
-  
   if(chukuFlag==1)
   {
     int8 servo_bias=100-(int)(FANGXIANG*angle*0.9);
@@ -93,6 +89,7 @@ void chuku()
     }
     else
     {
+		AllZero();
       chukuFlag=2;
     }
     

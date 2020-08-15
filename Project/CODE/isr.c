@@ -30,10 +30,11 @@ void PIT_1MS()
 
 void PIT_5MS()
 {
+	
 	SpeedControl();
 	
 	sp = static_p;
-	lp = static_p * 0.3;
+	lp = static_p * 0.5;
 	
 	roadMode = 1;
 	turnFlag = 0;
@@ -64,14 +65,14 @@ void PIT_5MS()
 	//ImuCalculate_Complementary();
 	//Prepare_Data();
 	MPU6050();
-  GetError();
-  //DynamicPID();
-  ADCTest();
-  //modeSelect();
-  if (LockFlag == 0 && StopFlag == 0 && chukuFlag==2&&rukuFlag==0) {        //û������������ʻ
-	  if(recordMode != 3)
-    		Dir_control(DirError);
-	  else if(recordMode == 3)
+	GetError();
+	//DynamicPID();
+	ADCTest();
+	//modeSelect();
+	if (LockFlag == 0 && StopFlag == 0 && chukuFlag == 2 && rukuFlag==0) {        //û������������ʻ
+		if(recordMode != 3)
+			Dir_control(DirError);
+		else if(recordMode == 3)
 		{
 			//relatedCal();
 			//relation = 0.5;
@@ -108,9 +109,9 @@ void PIT_5MS()
 	
 	if(ringstate==0)
 		ringjudge_st();
-	if(ringstate==1)
-		//ringjudge_nd();
-		
+	if(ringstate==1);
+	//ringjudge_nd();
+	
 	if(recording)
 	{
 		posL[recordNum]		 = leftSpeedInt / 10;
@@ -119,33 +120,41 @@ void PIT_5MS()
 		angle_int[recordNum] = gyro_x_i / 100;
 		recordNum += 1;
 		
+		/*
 		if(chukuFlag == 2)
-		AllZero();
-	
-		if(rukuFlag == 2)
 		{
-			oled_fill(0x00);
+			AllZero();
+			chukuFlag = -1;
+		}
+		*/
+		
+		if(rukuFlag == 3)
+		{
 			recording = 0;
 			page = 4;
+			oled_fill(0x00);
 		}
 	}
-		
-		
-	OSC[0]=0;
-	OSC[1]=LeftSpeed;
-	OSC[2]=SetLeftSpeed;
-	OSC[3]=PWML/100.0;
-	OSC[4]=mpu_acc_y;
-	OSC[5]=mpu_acc_z;
+	
+	
+	OSC[0]=ADCL;
+	OSC[1]=ADCR;
+	OSC[2]=gyro_x_i / 100;
+	OSC[3]=MPWM * 10;
+	OSC[4]=dirpid.p * 10;
+	OSC[5]=0;
 	OSC[6]=leftSpeedInt/10;
 	OSC[7]=rightSpeedInt/10;
 	vcan_sendware(OSC,sizeof(OSC));
-  ring_int();
-  
-  hillProcess();
-  chuku();
-  ruku();
-  setSpeed();
+	
+	ring_int();
+	
+	hillProcess();
+	chuku();
+	ruku();
+	setSpeed();
+	
+	OLED_switch();
 }
 
 

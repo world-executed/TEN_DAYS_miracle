@@ -6,7 +6,7 @@ uint8 cursor=0;
 
 
 int page = 0;
-//0:主菜单 1:菜单选择 2:全部参数 3:记录模式1 4:记录模式2 5:记录模式3 6:摄像头 7:查看记录值
+//0:主菜单 1:菜单选择 2:全部参数 3:记录模式1 4:记录模式2 5:记录模式3 6:摄像头/灰度检测 7:查看记录值 8:赛道元素识别波形 
 
 int maxposL = 0;
 int minposL = 10000;
@@ -18,16 +18,19 @@ int maxangle = 0;
 int minangle = 10000;
 int allNum = 0;
 
+int camaraScanMode = 1;
+int statusAdjustMode = 0;
+
 void MainPage_Show()
 {
 	oled_p6x8str(0,cursor,"->");
 	oled_p6x8str(18,0,">>GO!<<");
 	oled_p6x8str(18,1,"v");            oled_printf_int32(30,1,SetLeftSpeed,4);
-	oled_p6x8str(18,2,"p");            oled_printf_int32(30,2,(int)(dirpid.p*100),4);
+	oled_p6x8str(18,2,"p");            oled_printf_int32(30,2,(int)(static_p * 100),4);
 	oled_p6x8str(18,3,"J");            oled_printf_int32(30,3,jumpnum,4);	
 	oled_p6x8str(18,4,"gi");           oled_printf_int32(30,4,gyro_y_i/100,4);             
 	oled_p6x8str(18,5,"gy");           oled_printf_int32(30,5,gyro[1],4);
-	oled_p6x8str(18,6,"F");           oled_printf_int32(30,6,FANGXIANG,4);
+	oled_p6x8str(18,6,"re");           oled_printf_int32(30,6,relation * 100,4);
 	oled_p6x8str(18,7,"*BACK*");
 	
 	for(int i = 0;i < 8;i++)
@@ -288,9 +291,10 @@ void Record1()
 
 void Temshow_calculate()
 {
-	for(allNum = 0; allNum < 10000; allNum++)
+	for(int j = 0; j < 10000; j++)
 	{
-		if(posL[allNum] == -10000)
+		allNum = j;
+		if(posL[j] == -10000)
 			break;
 	}
 	
@@ -315,8 +319,8 @@ void Record2_Show()
 	//oled_p6x8str(0,2,"Please put the car in");
 	//oled_p6x8str(0,3,"the garage, and then");
 	//oled_p6x8str(0,4,"select RECORD button.");
-	oled_p6x8str(18,6,">>>CALCULATE<<<");         
-	oled_p6x8str(18,7,"    back");         
+	oled_p6x8str(18,6," >>>CALCULATE<<<");         
+	oled_p6x8str(18,7,"    back");      
 }
 
 void Record2()
@@ -347,7 +351,7 @@ void Record2()
 		switch(cursor + 6)
 		{
 		case 6:
-			/*ScanCalculate();*/Temshow_calculate();page = 7;cursor = 0;break;
+			/*ScanCalculate();*/Temshow_calculate();ScanCalculate();oled_fill(0x00);page = 7;cursor = 0;break;
 		case 7:
 			page = 1;cursor = 0;recordMode = 0;oled_fill(0x00);break;
 		default:
@@ -359,11 +363,11 @@ void Record2()
 
 void Record3_Show()
 {
-	oled_p6x8str(0,cursor + 6,"->");
+	oled_p6x8str(0,cursor + 3,"->");
 	oled_p6x8str(0,0,"--FINISH CALCULATE--");
-	//oled_p6x8str(0,2,"Please put the car in");
-	//oled_p6x8str(0,3,"the garage, and then");
-	//oled_p6x8str(0,4,"select RECORD button.");
+	oled_p6x8str(18,3,"v");            oled_printf_int32(30,3,SetLeftSpeed,4);
+	oled_p6x8str(18,4,"p");            oled_printf_int32(30,4,(int)(static_p * 100),4);
+	oled_p6x8str(18,5,"re");           oled_printf_int32(30,5,relation * 100,4);
 	oled_p6x8str(18,6,">>>INMODE<<<");         
 	oled_p6x8str(18,7,"    back");         
 }
@@ -373,6 +377,128 @@ void Record3()
 	Record3_Show();
 	
 	if(key_check(KEY_D) ==  KEY_DOWN)
+	{
+		oled_p6x8str(0,cursor + 3,"  ");
+		cursor+=1;
+		cursor%=5;
+		oled_p6x8str(0,cursor + 3,"->");
+		while(!key_check(KEY_D));
+	}
+	
+	else if(key_check(KEY_U) ==  KEY_DOWN)
+	{
+		oled_p6x8str(0,cursor + 3,"  ");
+		if(cursor==0)
+			cursor=5;
+		cursor-=1;
+		oled_p6x8str(0,cursor + 3,"->");
+		while(!key_check(KEY_U));
+	}
+	
+	if(key_check(KEY_A) ==  KEY_DOWN)
+	{
+		switch(cursor + 3)
+		{
+		case 6:
+			recordMode = 3;InmodeBegin();cursor = 0;oled_fill(0x00);break;
+		case 7:
+			page = 4;cursor = 0;oled_fill(0x00);break;
+		default:
+			break;
+		}
+		while(!key_check(KEY_A));
+	}
+	
+	if(key_check(KEY_L) ==  KEY_DOWN)
+	{
+		switch(cursor+ 3)
+		{
+		case 3:
+			SetLeftSpeed-=5;SetRightSpeed-=5;SetLeftSpeed=SetLeftSpeed<0?0:SetLeftSpeed;SetRightSpeed=SetRightSpeed<0?0:SetRightSpeed;oled_printf_int32(30,3,SetLeftSpeed,4);break;
+		case 4:
+			static_p-=0.01;static_p=static_p<0?0:static_p;oled_printf_int32(30,4,(int)(dirpid.p*100),4);  break;
+		case 5:
+			relation-=0.01;relation=relation<0?0:relation;oled_printf_int32(30,5,(int)(relation*100),4);  break;
+		default:
+			break;
+		}
+	}
+	
+	else if(key_check(KEY_R) ==  KEY_DOWN)
+	{
+		switch(cursor+ 3)
+		{
+		case 3:
+			SetLeftSpeed+=5;SetRightSpeed+=5;oled_printf_int32(30,3,SetLeftSpeed,4);break;
+		case 4:
+			static_p+=0.01;oled_printf_int32(30,4,(int)(static_p*100),4);  break;
+		case 5:
+			relation+=0.01;relation=relation>1?1:relation;oled_printf_int32(30,5,(int)(relation*100),4);  break;
+		default:
+			break;
+		}
+	}
+	
+}
+
+void Camera_Show()
+{
+  
+  oled_dis_bmp(64,128,*mt9v03x_csi_image,th);
+  oled_p6x8str(0,0,"   ");oled_printf_int32(0,0,th,3);
+  oled_p6x8str(0,1,"   ");oled_printf_int32(0,1,jumpnum,3);
+}
+
+void Camera()
+{
+	if(camaraScanMode)
+		Camera_Show();
+	else
+		waveScan_Camara(20);
+	
+	if(key_check(KEY_A) ==  KEY_DOWN)
+	{
+		page = 1;oled_fill(0x00);
+		while(!key_check(KEY_A));
+	}
+    if(key_check(KEY_L) ==  KEY_DOWN)
+    {
+      if(th!=0)th--;
+    }
+    if(key_check(KEY_R) ==  KEY_DOWN)
+    {
+      if(th!=255)th++;
+    }
+	if(key_check(KEY_D) ==  KEY_DOWN)
+    {
+      camaraScanMode = (camaraScanMode + 1) % 2;
+    }
+}
+
+
+
+void Temshow_show()
+{
+	oled_p6x8str(0,0,"Lmax");           oled_printf_int32(32,0,maxposL ,4);
+	oled_p6x8str(0,1,"Lmin");           oled_printf_int32(32,1,minposL ,4);
+	oled_p6x8str(0,2,"Rmax");           oled_printf_int32(32,2,maxposR ,4);	
+	oled_p6x8str(0,3,"Rmin");           oled_printf_int32(32,3,minposR ,4);             
+	oled_p6x8str(72,0,"Smax");           oled_printf_int32(96,0,maxservo,4);
+	oled_p6x8str(72,1,"Smin");           oled_printf_int32(96,1,minservo,4);
+	oled_p6x8str(72,2,"Amax");           oled_printf_int32(96,2,maxangle,4);
+	oled_p6x8str(72,3,"Amin");           oled_printf_int32(96,3,minangle,4);
+	oled_p6x8str(20,4,"Num");           oled_printf_int32(80,4,allNum ,4);
+	
+	oled_p6x8str(0,cursor + 6,"->");
+	oled_p6x8str(18,6,">>>INMODE<<<");         
+	oled_p6x8str(18,7,"    back");     
+}
+
+void Temshow()
+{
+	Temshow_show();
+	
+		if(key_check(KEY_D) ==  KEY_DOWN)
 	{
 		oled_p6x8str(0,cursor + 6,"  ");
 		cursor+=1;
@@ -396,7 +522,7 @@ void Record3()
 		switch(cursor + 6)
 		{
 		case 6:
-			recordMode = 3;InmodeBegin();cursor = 0;break;
+			oled_fill(0x00);page = 8;cursor = 0;break;
 		case 7:
 			page = 1;cursor = 0;recordMode = 0;oled_fill(0x00);break;
 		default:
@@ -406,56 +532,102 @@ void Record3()
 	}
 }
 
-void Camera_Show()
-{
-  
-  oled_dis_bmp(64,128,*mt9v03x_csi_image,th);
-  oled_p6x8str(0,0,"   ");oled_printf_int32(0,0,th,3);
-  oled_p6x8str(0,1,"   ");oled_printf_int32(0,1,jumpnum,3);
 
-  
+void statusAdjust_show()
+{
+	oled_p6x8str(0,cursor + 3,"->");
+	oled_p6x8str(0,0,"--STATUS ADJUST--");
+	oled_p6x8str(18,3,"KH");            oled_printf_int32(30,3,kTestThrH,4);
+	oled_p6x8str(18,4,"KL");            oled_printf_int32(30,4,kTestThrL,4);
+	oled_p6x8str(18,5,"pe");           	oled_printf_int32(30,5,period,4);
+	oled_p6x8str(18,6,">>>CALCULATE<<<");         
+	oled_p6x8str(18,7,"  >>>INMODE<<<");       
 }
 
-void Camera()
+
+
+void statusAdjust()
 {
-	Camera_Show();
+	statusAdjust_show();
+	
+	if(key_check(KEY_D) ==  KEY_DOWN)
+	{
+		oled_p6x8str(0,cursor + 3,"  ");
+		cursor+=1;
+		cursor%=5;
+		oled_p6x8str(0,cursor + 3,"->");
+		while(!key_check(KEY_D));
+	}
+	
+	else if(key_check(KEY_U) ==  KEY_DOWN)
+	{
+		oled_p6x8str(0,cursor + 3,"  ");
+		if(cursor==0)
+			cursor=5;
+		cursor-=1;
+		oled_p6x8str(0,cursor + 3,"->");
+		while(!key_check(KEY_U));
+	}
 	
 	if(key_check(KEY_A) ==  KEY_DOWN)
 	{
-		page = 1;oled_fill(0x00);
+		switch(cursor + 3)
+		{
+		case 6:
+			statusZero();ScanCalculate();statusAdjustMode = 0;oled_fill(0x00);page = 7;cursor = 0;break;
+		case 7:
+			page = 5;cursor = 0;oled_fill(0x00);break;
+		default:
+			break;
+		}
 		while(!key_check(KEY_A));
 	}
-    if(key_check(KEY_L) ==  KEY_DOWN)
-    {
-      if(th!=0)th--;
-    }
-    if(key_check(KEY_R) ==  KEY_DOWN)
-    {
-      if(th!=255)th++;
-    }
+	
+	if(key_check(KEY_L) ==  KEY_DOWN)
+	{
+		switch(cursor + 3)
+		{
+		case 3:
+			kTestThrH-=1;kTestThrH=kTestThrH<0?0:kTestThrH;oled_printf_int32(30,3,kTestThrH,4);break;
+		case 4:
+			kTestThrL-=1;kTestThrL=kTestThrL<0?0:kTestThrL;oled_printf_int32(30,4,kTestThrL,4);  break;
+		case 5:
+			period-=1;period=period<0?0:period;oled_printf_int32(30,5,period,4);  break;
+		default:
+			break;
+		}
+	}
+	
+	else if(key_check(KEY_R) ==  KEY_DOWN)
+	{
+		switch(cursor + 3)
+		{
+		case 3:
+			kTestThrH+=1;kTestThrH+=1;oled_printf_int32(30,3,kTestThrH,4);break;
+		case 4:
+			kTestThrL+=1;oled_printf_int32(30,4,kTestThrL,4);  break;
+		case 5:
+			period+=1;oled_printf_int32(30,5,period,4);  break;
+		default:
+			break;
+		}
+	}
+	
 }
 
 
-
-void Temshow_show()
+void statusShow()
 {
-	oled_fill(0x00);
+	if(!statusAdjustMode)
+		waveScan_status();
+	else
+		statusAdjust();
 	
-	oled_p6x8str(0,0,"Lmax");           oled_printf_int32(40,1,maxposL ,4);
-	oled_p6x8str(0,1,"Lmin");           oled_printf_int32(40,2,minposL ,4);
-	oled_p6x8str(0,2,"Rmax");           oled_printf_int32(40,3,maxposR ,4);	
-	oled_p6x8str(0,3,"Rmin");           oled_printf_int32(40,4,minposR ,4);             
-	oled_p6x8str(0,4,"Smax");           oled_printf_int32(40,5,maxservo,4);
-	oled_p6x8str(0,5,"Smin");           oled_printf_int32(40,6,minservo,4);
-	oled_p6x8str(0,6,"Amax");           oled_printf_int32(40,5,maxangle,4);
-	oled_p6x8str(0,7,"Amin");           oled_printf_int32(40,6,minangle,4);
-	
-	oled_p6x8str(80,0,"Num");           oled_printf_int32(80,1,allNum ,4);
-}
-
-void Temshow()
-{
-	Temshow_show();
+	if(key_check(KEY_A) ==  KEY_DOWN)
+	{
+		oled_fill(0x00);
+		statusAdjustMode = 1;
+	}
 }
 
 void OLED_switch()
@@ -470,6 +642,7 @@ void OLED_switch()
 	case 5: Record3();break;
     case 6: Camera();break;
 	case 7: Temshow();break;
+	case 8: statusShow();break;
 	default:
 		break;
 	}

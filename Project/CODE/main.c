@@ -1,16 +1,16 @@
 /*********************************************************************************************************************
 * COPYRIGHT NOTICE
-* Copyright (c) 2019,��ɿƼ�
+* Copyright (c) 2019,・ｽ・ｽﾉｿﾆｼ・ｽ
 * All rights reserved.
-* ��������QQȺ��һȺ��179029047(����)  ��Ⱥ��244861897
+* ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽQQﾈｺ・ｽ・ｽﾒｻﾈｺ・ｽ・ｽ179029047(・ｽ・ｽ・ｽ・ｽ)  ・ｽ・ｽﾈｺ・ｽ・ｽ244861897
 *
-* �����������ݰ�Ȩ������ɿƼ����У�δ����������������ҵ��;��
-* ��ӭ��λʹ�ò������������޸�����ʱ���뱣����ɿƼ��İ�Ȩ������
+* ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾝｰ・ｽﾈｨ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾉｿﾆｼ・ｽ・ｽ・ｽ・ｽﾐ｣・ｽﾎｴ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾒｵ・ｽ・ｽﾍｾ・ｽ・ｽ
+* ・ｽ・ｽﾓｭ・ｽ・ｽﾎｻﾊｹ・ｽﾃｲ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾞｸ・ｽ・ｽ・ｽ・ｽ・ｽﾊｱ・ｽ・ｽ・ｽ・｣・ｽ・ｽ・ｽ・ｽﾉｿﾆｼ・ｽ・ｽﾄｰ・ｽﾈｨ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
 *
 * @file       		main
-* @company	   		�ɶ���ɿƼ����޹�˾
-* @author     		��ɿƼ�(QQ3184284598)
-* @version    		�鿴doc��version�ļ� �汾˵��
+* @company	   		・ｽﾉｶ・ｽ・ｽ・ｽﾉｿﾆｼ・ｽ・ｽ・ｽ・ｽﾞｹ・ｽﾋｾ
+* @author     		・ｽ・ｽﾉｿﾆｼ・ｽ(QQ3184284598)
+* @version    		・ｽ鯀ｴdoc・ｽ・ｽversion・ｽﾄｼ・ｽ ・ｽ豎ｾﾋｵ・ｽ・ｽ
 * @Software 		IAR 8.3 or MDK 5.24
 * @Target core		NXP RT1064DVL6A
 * @Taobao   		https://seekfree.taobao.com/
@@ -18,15 +18,15 @@
 ********************************************************************************************************************/
 
 
-//�����Ƽ�IO�鿴Projecct�ļ����µ�TXT�ı�
+//・ｽ・ｽ・ｽ・ｽ・ｽﾆｼ・ｽIO・ｽ鯀ｴProjecct・ｽﾄｼ・ｽ・ｽ・ｽ・ｽﾂｵ・ｽTXT・ｽﾄｱ・ｽ
 
 
 
-//���µĹ��̻��߹����ƶ���λ�����ִ�����²���
-//��һ�� �ر��������д򿪵��ļ�
-//�ڶ��� project  clean  �ȴ��·�����������
+//・ｽ・ｽ・ｽﾂｵﾄｹ・ｽ・ｽﾌｻ・ｽ・ｽﾟｹ・ｽ・ｽ・ｽ・ｽﾆｶ・ｽ・ｽ・ｽﾎｻ・ｽ・ｽ・ｽ・ｽ・ｽﾖｴ・ｽ・ｽ・ｽ・ｽ・ｽﾂｲ・ｽ・ｽ・ｽ
+//・ｽ・ｽﾒｻ・ｽ・ｽ ・ｽﾘｱ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾐｴｪｵ・ｽ・ｽﾄｼ・ｽ
+//・ｽﾚｶ・ｽ・ｽ・ｽ project  clean  ・ｽﾈｴ・ｽ・ｽﾂｷ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
 
-//���ش���ǰ������Լ�ʹ�õ��������ڹ���������������Ϊ�Լ���ʹ�õ�
+//・ｽ・ｽ・ｽﾘｴ・ｽ・ｽ・ｽﾇｰ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾔｼ・ｽﾊｹ・ｽﾃｵ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾚｹ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾎｪ・ｽﾔｼ・ｽ・ｽ・ｽﾊｹ・ｽﾃｵ・ｽ
 
 #include "headfile.h"
 
@@ -37,7 +37,6 @@ int normal = 1800;
 int mode9num = 0;
 
 
-
 uint8 value=130;
 
 
@@ -46,30 +45,20 @@ int16 gyro[3];
 
 
 
+	
 int main(void)
 {
   DisableGlobalIRQ();
-  board_init();//��ر��������������ڳ�ʼ��MPU ʱ�� ���Դ���
+  board_init();//・ｽ・ｽﾘｱ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾚｳ・ｽﾊｼ・ｽ・ｽMPU ﾊｱ・ｽ・ｽ ・ｽ・ｽ・ｽﾔｴ・ｽ・ｽ・ｽ
   
-  //�˴���д�û�����(���磺�����ʼ�������)
+  //・ｽﾋｴ・ｽ・ｽ・ｽﾐｴ・ｽﾃｻ・ｽ・ｽ・ｽ・ｽ・ｽ(・ｽ・ｽ・ｽ逎ｺ・ｽ・ｽ・ｽ・ｽ・ｽﾊｼ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ)
   
   AllInit();
   while (1)
   {
-	  
-    OLED_switch();
-	
+    
   }
 }
-
-
-
-
-
-
-
-
-
 
 void modeSelect()
 {
@@ -80,7 +69,7 @@ void modeSelect()
 		setRightSpeed_L = SetRightSpeed;
 	}
 	
-	if(roadMode == 9)             //����תֱ��
+	if(roadMode == 9)             //・ｽ・ｽ・ｽ・ｽﾗｪﾖｱ・ｽ・ｽ
 	{
 		mode9num++;
 		if(mode9num > 15)
@@ -95,7 +84,7 @@ void modeSelect()
 		
 	}
 	
-	if(roadMode == 1 && abs(ADCLL - ADCRR) > 800)                //ֱ������
+	if(roadMode == 1 && abs(ADCLL - ADCRR) > 800)                //ﾖｱ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
 	{
 		roadMode = 6;
 		//beep = 1;
@@ -104,9 +93,9 @@ void modeSelect()
 		setRightSpeed_L = 1.0 * SetRightSpeed;
 	}
 	
-	if((roadMode == 6) /*&& (abs(ADCLL - normal)<300) && (abs(ADCRR - normal)<300)*/)       //��������
+	if((roadMode == 6) /*&& (abs(ADCLL - normal)<300) && (abs(ADCRR - normal)<300)*/)       //・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
 	{
-		if(((ADCL0 - ADCR0)/ (ADCL - ADCR))< 0)		//�����ߵ�
+		if(((ADCL0 - ADCR0)/ (ADCL - ADCR))< 0)		//・ｽ・ｽ・ｽ・ｽ・ｽﾟｵ・ｽ
 		{
 			roadMode = 9;
 			//beep = 1;
@@ -133,12 +122,17 @@ void AllZero()
 	gyro_y_i = 0;
 	gyro_z_i = 0;
 
+	rukuFlag = 0;
+	chukuFlag = 0;
+	hillFlag = 0;
+	ringstate = 0;
 }
 
 void CarBegin()
 {
 	AllZero();
 	chukuFlag = 1;
+	recordMode = 0;
 }
 
 void RecordBegin()
@@ -147,7 +141,6 @@ void RecordBegin()
 	SetLeftSpeed = 30;
 	SetLeftSpeed = 30;
 	chukuFlag = 1;
-    PWML=PWMR=3000;
 	oled_fill(0x00);
 	recording = 1;
 }
@@ -156,22 +149,23 @@ void RecordBegin()
 void InmodeBegin()
 {
 	AllZero();
+	chukuFlag = 1;
 }
 
 
 
-/***************************************************��Ҫ��************************************************/
+/***************************************************・ｽ・ｽﾒｪ・ｽ・ｽ************************************************/
 
 /*
-float acc_ratio = 1.6;      //���ٶȼƱ���    
-float gyro_ratio = 4.08;    //�����Ǳ���    
+float acc_ratio = 1.6;      //・ｽ・ｽ・ｽﾙｶﾈｼﾆｱ・ｽ・ｽ・ｽ    
+float gyro_ratio = 4.08;    //・ｽ・ｽ・ｽ・ｽ・ｽﾇｱ・ｽ・ｽ・ｽ    
   
 
 //----------------------------------------------------------------    
-//  @brief      һ�׻����˲�    
-//  @param      angle_m     ���ٶȼ�����    
-//  @param      gyro_m      ����������    
-//  @return     float       �����ںϺ�ĽǶ�    
+//  @brief      ﾒｻ・ｽﾗｻ・ｽ・ｽ・ｽ・ｽﾋｲ・ｽ    
+//  @param      angle_m     ・ｽ・ｽ・ｽﾙｶﾈｼ・ｽ・ｽ・ｽ・ｽ・ｽ    
+//  @param      gyro_m      ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ    
+//  @return     float       ・ｽ・ｽ・ｽ・ｽ・ｽﾚｺﾏｺ・ｽﾄｽﾇｶ・ｽ    
 //----------------------------------------------------------------    
 float angle_calc(float angle_m, float gyro_m)    
 {    
@@ -182,22 +176,22 @@ float angle_calc(float angle_m, float gyro_m)
   static float last_angle;    
   static uint8 first_angle;    
   
-  if(!first_angle)//�ж��Ƿ�Ϊ��һ�����б�����    
+  if(!first_angle)//・ｽﾐｶ・ｽ・ｽﾇｷ・ｽﾎｪ・ｽ・ｽﾒｻ・ｽ・ｽ・ｽ・ｽ・ｽﾐｱ・ｽ・ｽ・ｽ・ｽ・ｽ    
   {    
-    //����ǵ�һ�����У����ϴνǶ�ֵ����Ϊ����ٶ�ֵһ��    
+    //・ｽ・ｽ・ｽ・ｽﾇｵ・ｽﾒｻ・ｽ・ｽ・ｽ・ｽ・ｽﾐ｣・ｽ・ｽ・ｽ・ｽﾏｴﾎｽﾇｶ・ｽﾖｵ・ｽ・ｽ・ｽ・ｽﾎｪ・ｽ・ｽ・ｽ・ｽﾙｶ・ｽﾖｵﾒｻ・ｽ・ｽ    
     first_angle = 1;    
     last_angle = angle_m;    
   }    
   
   gyro_now = gyro_m * gyro_ratio;    
   
-  //���ݲ������ļ��ٶ�ֵת��Ϊ�Ƕ�֮�����ϴεĽǶ�ֵ��ƫ��    
+  //・ｽ・ｽ・ｽﾝｲ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾄｼ・ｽ・ｽﾙｶ・ｽﾖｵﾗｪ・ｽ・ｽﾎｪ・ｽﾇｶ・ｽﾖｮ・ｽ・ｽ・ｽ・ｽ・ｽﾏｴﾎｵﾄｽﾇｶ・ｽﾖｵ・ｽ・ｽﾆｫ・ｽ・ｽ    
   error_angle = (angle_m - last_angle)*acc_ratio;  
   
-  //����ƫ���������ǲ����õ��ĽǶ�ֵ���㵱ǰ�Ƕ�ֵ    
+  //・ｽ・ｽ・ｽ・ｽﾆｫ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾇｲ・ｽ・ｽ・ｽ・ｽﾃｵ・ｽ・ｽﾄｽﾇｶ・ｽﾖｵ・ｽ・ｽ・ｽ羞ｱﾇｰ・ｽﾇｶ・ｽﾖｵ    
   temp_angle = last_angle + (error_angle + gyro_now)*0.005;   
   
-  //���浱ǰ�Ƕ�ֵ    
+  //・ｽ・ｽ・ｽ豬ｱﾇｰ・ｽﾇｶ・ｽﾖｵ    
   last_angle = temp_angle;  
   
   return temp_angle;    
@@ -206,8 +200,8 @@ float angle_calc(float angle_m, float gyro_m)
 
 void MPU6050()
 {
-    get_accdata();	//��ȡ���ٶȼ�����
-    get_gyro();		//��ȡ����������
+    get_accdata();	//・ｽ・ｽﾈ｡・ｽ・ｽ・ｽﾙｶﾈｼ・ｽ・ｽ・ｽ・ｽ・ｽ
+    get_gyro();		//・ｽ・ｽﾈ｡・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
     acc[0]=mpu_acc_x-acc_offset[0];
     acc[1]=mpu_acc_y-acc_offset[1];
     acc[2]=mpu_acc_z-acc_offset[2];
@@ -220,12 +214,12 @@ void MPU6050()
 }
 
 /*
-const float fRad2Deg = 57.295779513f; //���Ȼ���Ƕȳ˵�ϵ��
-const float dt = 0.005; //ʱ������
+const float fRad2Deg = 57.295779513f; //・ｽ・ｽ・ｽﾈｻ・ｽ・ｽ・ｽﾇｶﾈｳﾋｵ・ｽﾏｵ・ｽ・ｽ
+const float dt = 0.005; //ﾊｱ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
 float angle[3] = {0};
 float R = 0.98f;
 
-void ImuCalculate_Complementary(void)//����Ƕ�
+void ImuCalculate_Complementary(void)//・ｽ・ｽ・ｽ・ｽﾇｶ・ｽ
 {
   MPU6050();
     static float angle_last[3]={0};
@@ -248,8 +242,8 @@ void ImuCalculate_Complementary(void)//����Ƕ�
 
 void GetAngle()
 {
-  get_accdata();	//��ȡ���ٶȼ�����
-  get_gyro();		//��ȡ����������
+  get_accdata();	//・ｽ・ｽﾈ｡・ｽ・ｽ・ｽﾙｶﾈｼ・ｽ・ｽ・ｽ・ｽ・ｽ
+  get_gyro();		//・ｽ・ｽﾈ｡・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
   Angle=atan2(mpu_acc_z,mpu_acc_x)*57.3;
 }
 static float angle_bias,angle_bias_last;
@@ -271,7 +265,7 @@ void getHist(uint8* pic,int *hist)
     p = (uint8 *)(pic + j * MT9V03X_CSI_W);
     for (uint8 i = 0; i < MT9V03X_CSI_W; i++)
     {
-      hist[p[i]]++; //ͳ��ֱ��ͼ
+      hist[p[i]]++; //ﾍｳ・ｽ・ｽﾖｱ・ｽ・ｽﾍｼ
     }
   }
 }
@@ -281,16 +275,16 @@ uint8 GetOSTUThreshold(int* HistGram)
 {
   int X, Y, Amount = 0;
   int PixelBack = 0, PixelFore = 0, PixelIntegralBack = 0, PixelIntegralFore = 0, PixelIntegral = 0;
-  double OmegaBack, OmegaFore, MicroBack, MicroFore, SigmaB, Sigma;              // ��䷽��;
+  double OmegaBack, OmegaFore, MicroBack, MicroFore, SigmaB, Sigma;              // ・ｽ・ｽ莵ｽ・ｽ・ｽ;
   int MinValue, MaxValue;
   int Threshold = 0;
   
   for (MinValue = 0; MinValue < 256 && HistGram[MinValue] == 0; MinValue++) ;
   for (MaxValue = 255; MaxValue > MinValue && HistGram[MinValue] == 0; MaxValue--) ;
-  if (MaxValue == MinValue) return MaxValue;          // ͼ����ֻ��һ����ɫ             
-  if (MinValue + 1 == MaxValue) return MinValue;      // ͼ����ֻ�ж�����ɫ
+  if (MaxValue == MinValue) return MaxValue;          // ﾍｼ・ｽ・ｽ・ｽ・ｽﾖｻ・ｽ・ｽﾒｻ・ｽ・ｽ・ｽ・ｽﾉｫ             
+  if (MinValue + 1 == MaxValue) return MinValue;      // ﾍｼ・ｽ・ｽ・ｽ・ｽﾖｻ・ｽﾐｶ・ｽ・ｽ・ｽ・ｽ・ｽﾉｫ
   
-  for (Y = MinValue; Y <= MaxValue; Y++) Amount += HistGram[Y];        //  ��������
+  for (Y = MinValue; Y <= MaxValue; Y++) Amount += HistGram[Y];        //  ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
   
   PixelIntegral = 0;
   for (Y = MinValue; Y <= MaxValue; Y++) PixelIntegral += HistGram[Y] * Y;
@@ -325,17 +319,17 @@ static uint8 GetIterativeBestThreshold(uint8* HistGram)
   for (MinValue = 0; MinValue < 256 && HistGram[MinValue] == 0; MinValue++) ;
   for (MaxValue = 255; MaxValue > MinValue && HistGram[MinValue] == 0; MaxValue--) ;
   
-  if (MaxValue == MinValue) return MaxValue;          // ͼ����ֻ��һ����ɫ             
-  if (MinValue + 1 == MaxValue) return MinValue;      // ͼ����ֻ�ж�����ɫ
+  if (MaxValue == MinValue) return MaxValue;          // ﾍｼ・ｽ・ｽ・ｽ・ｽﾖｻ・ｽ・ｽﾒｻ・ｽ・ｽ・ｽ・ｽﾉｫ             
+  if (MinValue + 1 == MaxValue) return MinValue;      // ﾍｼ・ｽ・ｽ・ｽ・ｽﾖｻ・ｽﾐｶ・ｽ・ｽ・ｽ・ｽ・ｽﾉｫ
   
   Threshold = MinValue;
   NewThreshold = (MaxValue + MinValue) >> 1;
-  while (Threshold != NewThreshold)    // ��ǰ�����ε����Ļ����ֵ��ͬʱ����������    
+  while (Threshold != NewThreshold)    // ・ｽ・ｽﾇｰ・ｽ・ｽ・ｽ・ｽ・ｽﾎｵ・ｽ・ｽ・ｽ・ｽﾄｻ・ｽ・ｽ・ｽ・ｽﾖｵ・ｽ・ｽﾍｬﾊｱ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ    
   {
     SumOne = 0; SumIntegralOne = 0;
     SumTwo = 0; SumIntegralTwo = 0;
     Threshold = NewThreshold;
-    for (X = MinValue; X <= Threshold; X++)         //������ֵ��ͼ��ָ��Ŀ��ͱ��������֣���������ֵ�ƽ���Ҷ�ֵ      
+    for (X = MinValue; X <= Threshold; X++)         //・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾖｵ・ｽ・ｽﾍｼ・ｽ・ｽﾖｸ・ｽ・ｽﾄｿ・ｽ・ｽﾍｱ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾖ｣・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾖｵ・ｽﾆｽ・ｽ・ｽ・ｽﾒｶ・ｽﾖｵ      
     {
       SumIntegralOne += HistGram[X] * X;
       SumOne += HistGram[X];
@@ -347,16 +341,16 @@ static uint8 GetIterativeBestThreshold(uint8* HistGram)
       SumTwo += HistGram[X];
     }
     MeanValueTwo = SumIntegralTwo / SumTwo;
-    NewThreshold = (MeanValueOne + MeanValueTwo) >> 1;       //����µ���ֵ
+    NewThreshold = (MeanValueOne + MeanValueTwo) >> 1;       //・ｽ・ｽ・ｽ・ｽﾂｵ・ｽ・ｽ・ｽﾖｵ
     Iter++;
     if (Iter >= 1000) return -1;
   }
   return Threshold;
 }
 
-static uint8 IsDimodal(double* HistGram)       // ���ֱ��ͼ�Ƿ�Ϊ˫���
+static uint8 IsDimodal(double* HistGram)       // ・ｽ・ｽ・ｽﾖｱ・ｽ・ｽﾍｼ・ｽﾇｷ・ｽﾎｪﾋｫ・ｽ・ｽ・ｽ
     {
-        // ��ֱ��ͼ�ķ���м�����ֻ�з���λ2��Ϊ˫�� 
+        // ・ｽ・ｽﾖｱ・ｽ・ｽﾍｼ・ｽﾄｷ・ｽ・ｽ・ｽﾐｼ・ｽ・ｽ・ｽ・ｽ・ｽﾖｻ・ｽﾐｷ・ｽ・ｽ・ｽﾎｻ2・ｽ・ｽﾎｪﾋｫ・ｽ・ｽ 
         int Count = 0;
         for (int Y = 1; Y < 255; Y++)
         {
@@ -375,25 +369,25 @@ static uint8 IsDimodal(double* HistGram)       // ���ֱ��ͼ�Ƿ�Ϊ�
 static uint8 GetIntermodesThreshold(uint8* HistGram)
     {
         int Y, Iter = 0, Index;
-        double HistGramC[256] = {0};           // ���ھ������⣬һ��Ҫ�ø�����������������ò�����ȷ�Ľ��
-        double HistGramCC[256] = {0};          // ���ֵ�Ĺ��̻��ƻ�ǰ������ݣ������Ҫ��������
+        double HistGramC[256] = {0};           // ・ｽ・ｽ・ｽﾚｾ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ筌ｬﾒｻ・ｽ・ｽﾒｪ・ｽﾃｸ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾃｲ・ｽ・ｽ・ｽ・ｽ・ｽﾈｷ・ｽﾄｽ・ｽ・ｽ
+        double HistGramCC[256] = {0};          // ・ｽ・ｽ・ｽﾖｵ・ｽﾄｹ・ｽ・ｽﾌｻ・ｽ・ｽﾆｻ・ｽﾇｰ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾝ｣・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾒｪ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
         for (Y = 0; Y < 256; Y++)
         {
             HistGramC[Y] = HistGram[Y];
             HistGramCC[Y] = HistGram[Y];
         }
-        // ͨ���������ֵ��ƽ��ֱ��ͼ
-        while (IsDimodal(HistGramCC) == 0)                                                  // �ж��Ƿ��Ѿ���˫���ͼ����      
+        // ﾍｨ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾖｵ・ｽ・ｽﾆｽ・ｽ・ｽﾖｱ・ｽ・ｽﾍｼ
+        while (IsDimodal(HistGramCC) == 0)                                                  // ・ｽﾐｶ・ｽ・ｽﾇｷ・ｽ・ｽﾑｾ・ｽ・ｽ・ｽﾋｫ・ｽ・ｽ・ｽﾍｼ・ｽ・ｽ・ｽ・ｽ      
         {
-            HistGramCC[0] = (HistGramC[0] + HistGramC[0] + HistGramC[1]) / 3;                   // ��һ��
+            HistGramCC[0] = (HistGramC[0] + HistGramC[0] + HistGramC[1]) / 3;                   // ・ｽ・ｽﾒｻ・ｽ・ｽ
             for (Y = 1; Y < 255; Y++)
-                HistGramCC[Y] = (HistGramC[Y - 1] + HistGramC[Y] + HistGramC[Y + 1]) / 3;       // �м�ĵ�
-            HistGramCC[255] = (HistGramC[254] + HistGramC[255] + HistGramC[255]) / 3;           // ���һ��
+                HistGramCC[Y] = (HistGramC[Y - 1] + HistGramC[Y] + HistGramC[Y + 1]) / 3;       // ・ｽﾐｼ・ｽﾄｵ・ｽ
+            HistGramCC[255] = (HistGramC[254] + HistGramC[255] + HistGramC[255]) / 3;           // ・ｽ・ｽ・ｽﾒｻ・ｽ・ｽ
             for (uint8 i=0;i<255;i++){HistGramCC[i]=HistGramC[i];}
             Iter++;
-            if (Iter >= 10000) return -1;                                                       // �ƺ�ֱ��ͼ�޷�ƽ��Ϊ˫��ģ����ش������
+            if (Iter >= 10000) return -1;                                                       // ・ｽﾆｺ・ｽﾖｱ・ｽ・ｽﾍｼ・ｽﾞｷ・ｽﾆｽ・ｽ・ｽﾎｪﾋｫ・ｽ・ｽﾄ｣・ｽ・ｽ・ｽ・ｽﾘｴ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
         }
-// ��ֵΪ����ֵ��ƽ��ֵ
+// ・ｽ・ｽﾖｵﾎｪ・ｽ・ｽ・ｽ・ｽﾖｵ・ｽ・ｽﾆｽ・ｽ・ｽﾖｵ
         int Peak[2] = {0};
         for (Y = 1, Index = 0; Y < 255; Y++)
             if (HistGramCC[Y - 1] < HistGramCC[Y] && HistGramCC[Y + 1] < HistGramCC[Y]) Peak[Index++] = Y - 1;
@@ -401,16 +395,16 @@ static uint8 GetIntermodesThreshold(uint8* HistGram)
     }
 
 
-#define Acc_Gain 0.0002440f			//���ٶ�ת����λ(��ʼ�����ٶȼ�����+-4g������mpu6050�����ݼĴ�����16λ�ģ�LSBa = 2*4 / 65535.0)
-#define Gyro_Gain 0.0609756f		//���ٶ�ת��Ϊ�Ƕ�(LSBg = 2000*2 / 65535)
-#define Gyro_Gr 0.0010641f			//���ٶ�ת���ɻ���(3.1415 / 180 * LSBg)
+#define Acc_Gain 0.0002440f			//・ｽ・ｽ・ｽﾙｶ・ｽﾗｪ・ｽ・ｽ・ｽ・ｽﾎｻ(・ｽ・ｽﾊｼ・ｽ・ｽ・ｽ・ｽ・ｽﾙｶﾈｼ・ｽ・ｽ・ｽ・ｽ・ｽ+-4g・ｽ・ｽ・ｽ・ｽ・ｽ・ｽmpu6050・ｽ・ｽ・ｽ・ｽ・ｽﾝｼﾄｴ・ｽ・ｽ・ｽ・ｽ・ｽ16ﾎｻ・ｽﾄ｣・ｽLSBa = 2*4 / 65535.0)
+#define Gyro_Gain 0.0609756f		//・ｽ・ｽ・ｽﾙｶ・ｽﾗｪ・ｽ・ｽﾎｪ・ｽﾇｶ・ｽ(LSBg = 2000*2 / 65535)
+#define Gyro_Gr 0.0010641f			//・ｽ・ｽ・ｽﾙｶ・ｽﾗｪ・ｽ・ｽ・ｽﾉｻ・ｽ・ｽ・ｽ(3.1415 / 180 * LSBg)
 #define G 9.80665f					// m/s^2
 
 short ax,ay,az;
 short gx,gy,gz;
 
 
-static float invSqrt(float x) 		//���ټ��� 1/Sqrt(x)
+static float invSqrt(float x) 		//・ｽ・ｽ・ｽﾙｼ・ｽ・ｽ・ｽ 1/Sqrt(x)
 {
 	float halfx = 0.5f * x;
 	float y = x;
@@ -426,11 +420,11 @@ static float invSqrt(float x) 		//���ټ��� 1/Sqrt(x)
 
 #define Kp 1.50f
 #define Ki 0.005f
-#define halfT 0.0025f						//�������ڵ�һ�룬��λs
+#define halfT 0.0025f						//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾚｵ・ｽﾒｻ・ｽ・ｬ・ｽ・ｽﾎｻs
 
-float Yaw,Pitch,Roll;				//��Ҫ�������ļ������Զ�����extern�����ù�
-float q0 = 1, q1 = 0, q2 = 0, q3 = 0;		//��Ԫ��
-float exInt = 0, eyInt = 0, ezInt = 0;		//������������ۼƻ���
+float Yaw,Pitch,Roll;				//・ｽ・ｽﾒｪ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾄｼ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾔｶ・ｽ・ｽ・ｽ・ｽ・ｽextern・ｽ・ｽ・ｽ・ｽ・ｽﾃｹ・ｽ
+float q0 = 1, q1 = 0, q2 = 0, q3 = 0;		//・ｽ・ｽﾔｪ・ｽ・ｽ
+float exInt = 0, eyInt = 0, ezInt = 0;		//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾛｼﾆｻ・ｽ・ｽ・ｽ
 
 
 void Imu_Update()
@@ -443,8 +437,8 @@ void Imu_Update()
     gy=(float)gyro[1]* Gyro_Gr;
     gz=(float)gyro[2]* Gyro_Gr;
 	uint8 i;
-	float vx,vy,vz;							//ʵ���������ٶ�
-	float ex,ey,ez;							//�����������
+	float vx,vy,vz;							//ﾊｵ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾙｶ・ｽ
+	float ex,ey,ez;							//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
 	float norm;
 	
  	float q0q0 = q0*q0;
@@ -461,46 +455,46 @@ void Imu_Update()
 	if(ax*ay*az == 0)
 		return;
 	
-	//���ٶȼƲ�������������(��������ϵ)
+	//・ｽ・ｽ・ｽﾙｶﾈｼﾆｲ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ(・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾏｵ)
 	norm = invSqrt(ax*ax + ay+ay + az*az);
 	ax = ax * norm;
 	ay = ay * norm;
 	az = az * norm;
 	
-	//��Ԫ���Ƴ���ʵ����������(��������ϵ)
+	//・ｽ・ｽﾔｪ・ｽ・ｽ・ｽﾆｳ・ｽ・ｽ・ｽﾊｵ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ(・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾏｵ)
 	vx = 2*(q1q3 - q0q2);												
   	vy = 2*(q0q1 + q2q3);
   	vz = q0q0 - q1q1 - q2q2 + q3q3;
 	
-	//������
+	//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
 	ex = (ay*vz - az*vy);
 	ey = (az*vx - ax*vz);
 	ez = (ax*vy - ay*vx);
 	
-	//���������Ϊ���ٶ�
+	//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾎｪ・ｽ・ｽ・ｽﾙｶ・ｽ
 	exInt = exInt + ex * Ki;
 	eyInt = eyInt + ey * Ki;
 	ezInt = ezInt + ez * Ki;
 	
-	//���ٶȲ���
+	//・ｽ・ｽ・ｽﾙｶﾈｲ・ｽ・ｽ・ｽ
 	gx = gx + Kp*ex + exInt;
 	gy = gy + Kp*ey + eyInt;
 	gz = gz + Kp*ez + ezInt;
 	
-	//������Ԫ��
+	//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾔｪ・ｽ・ｽ
   	q0 = q0 + (-q1*gx - q2*gy - q3*gz)*halfT;
   	q1 = q1 + (q0*gx + q2*gz - q3*gy)*halfT;
   	q2 = q2 + (q0*gy - q1*gz + q3*gx)*halfT;
   	q3 = q3 + (q0*gz + q1*gy - q2*gx)*halfT;	
 	
-	//��λ����Ԫ��
+	//・ｽ・ｽﾎｻ・ｽ・ｽ・ｽ・ｽﾔｪ・ｽ・ｽ
   	norm = invSqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
   	q0 = q0 * norm;
   	q1 = q1 * norm;
   	q2 = q2 * norm;  
   	q3 = q3 * norm;
 	
-	//��Ԫ������ŷ����
+	//・ｽ・ｽﾔｪ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾅｷ・ｽ・ｽ・ｽ・ｽ
 	Yaw = atan2(2.f * (q1q2 + q0q3), q0q0 + q1q1 - q2q2 - q3q3)* 57.3f;
 	Pitch = -asin(2.f * (q1q3 - q0q2))* 57.3f;
 	Roll = atan2(2.f * q2q3 + 2.f * q0q1, q0q0 - q1q1 - q2q2 + q3q3)* 57.3f;

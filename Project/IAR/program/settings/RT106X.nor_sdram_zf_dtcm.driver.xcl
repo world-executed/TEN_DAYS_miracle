@@ -6,7 +6,7 @@
 
 "-p" 
 
-"E:\IAR Systems\Embedded Workbench 8.2\arm\CONFIG\debugger\NXP\MIMXRT1064xxx6A.ddf" 
+"G:\iar\arm\CONFIG\debugger\NXP\MIMXRT1064xxx6A.ddf" 
 
 "--semihosting" 
 

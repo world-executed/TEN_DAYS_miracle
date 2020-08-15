@@ -1,7 +1,7 @@
 #include "headfile.h"
 
-int16 SetLeftSpeed  = 30;
-int16 SetRightSpeed = 30;
+int16 SetLeftSpeed  = 55;
+int16 SetRightSpeed = 55;
 int setLeftSpeed_L = 0;
 int setRightSpeed_L = 0;
 int leftSpeedInt = 0;
@@ -71,7 +71,9 @@ rukuFlag==3       pwm=0
     
   if(chukuFlag==0||rukuFlag==3)//在库中
     PWML=PWMR=0;
-  else if(chukuFlag==1)
+  else if(chukuFlag==1 && recording == 1)
+    PWML=PWMR=3000;// 出库速度
+   else if(chukuFlag==1 && recording == 0)
     PWML=PWMR=5000;// 出库速度
   else if(rukuFlag==1||rukuFlag==2)
     PWML=PWMR=1500;//入库速度
