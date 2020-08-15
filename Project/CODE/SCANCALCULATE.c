@@ -38,12 +38,13 @@ int servoShould[calNum] = {0};	//舵机理想打角数组
 int eleLenth[eleLen] = {0};		//单元素编码器长度 
 int fullAngle = 7000;		//整圈角度积分
 
-int status[calNum] 		= {-30000};	//...?
-int posL[calNum] 		= {-30000};
-int posR[calNum] 		= {-30000};
-int angle_int[calNum] 	= {-30000};
-int servo[calNum] 		= {-30000};
-float servotem[calNum]	= {-30000.0};
+int status[calNum] 		= {0};	//...?
+int posL[calNum] 		= {0};
+int posR[calNum] 		= {0};
+int angle_int[calNum] 	= {0};
+int servo[calNum] 		= {0};
+float servotem[calNum]	= {0};
+int status_tem[calNum]  = {0};
 
 int nowPosL = 3;
 int nowPosR = 3;
@@ -68,7 +69,7 @@ void eachLenth();
 void aveServo();
 void statusDelay(int period);
 
-#define speed  7
+#define speed  10
 int flag_status = 0;
 int point_status[128];
 int pixel_status[calNum] ={0};
@@ -153,14 +154,13 @@ int ScanCalculate()
 		*/
 		printf("%d,",status[i] * 100);
 	}
-	//
 }
 
 void statusDelay(int period)
 {
 	for(int j = 0; j < period; j++)
 		for(int i = 0; i < allNum; i++)
-			status[i] = status[i + 1];
+			status_tem[i] = status[i + 1];
 }
 
 //滤去转右弯中的出入弯 
@@ -474,8 +474,9 @@ void statusZero()
 {
 	for(int i = 0; i < calNum; i++)
 	{
-		status[i] 		= 1;	
+		status_tem[i] 		= 0;	
 		posL[i] 		= -10000;
+		
 		pixel_status[i] = 0;
 	}
 	for(int j = 0; j < 128; j++)
@@ -514,7 +515,7 @@ void eleMatch()
 void PosCalculate()
 {
 	//左轮位置解算
-	for(int i = nowPosL - 3; i < 4600; i++)
+	for(int i = nowPosL - 3; i < calNum; i++)
 	{
 		if(posL[i] > (leftSpeedInt / 10))
 		{
@@ -525,7 +526,7 @@ void PosCalculate()
 	}
 	
 	//右轮位置解算
-	for(int j = nowPosR - 3; j < 4600; j++)
+	for(int j = nowPosR - 3; j < calNum; j++)
 	{
 		if(posR[j] > (rightSpeedInt / 10))
 		{

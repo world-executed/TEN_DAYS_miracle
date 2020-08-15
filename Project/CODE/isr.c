@@ -1,5 +1,8 @@
 #include "headfile.h"
 
+//用recordNum代替allNum
+float speedK = 0.5;
+
 uint8 pit=0;
 int CountNum = 0;
 uint8 StopFlag = 1;
@@ -30,22 +33,19 @@ void PIT_1MS()
 
 void PIT_5MS()
 {
-	
 	SpeedControl();
 	
 	sp = static_p;
-	lp = static_p * 0.5;
+	lp = static_p * speedK;
 	
 	roadMode = 1;
-	turnFlag = 0;
-	LockFlag = 0;
 	
 	if(recordMode == 3)
 	{
 		PosCalculate();
 		eleMatch();
 		
-		if(status[nowPos] != 1) //���
+		if(status_tem[nowPos] != 1) //���
 		{
 			dirpid.p = sp;
 			gpio_set(D16,1);
@@ -61,6 +61,7 @@ void PIT_5MS()
 	dip[1]=gpio_get(C26); //0zuo
 	dip[2]=gpio_get(C27);
 	dip[3]=gpio_get(C28);
+	
 	//Imu_Update();
 	//ImuCalculate_Complementary();
 	//Prepare_Data();
@@ -69,9 +70,13 @@ void PIT_5MS()
 	//DynamicPID();
 	ADCTest();
 	//modeSelect();
+	
 	if (LockFlag == 0 && StopFlag == 0 && chukuFlag == 2 && rukuFlag==0) {        //û������������ʻ
 		if(recordMode != 3)
+		{
 			Dir_control(DirError);
+			dirpid.p = static_p;
+		}
 		else if(recordMode == 3)
 		{
 			//relatedCal();
@@ -82,7 +87,6 @@ void PIT_5MS()
 	}
 	else
 	{
-		
 		if(turnFlag == 1)
 		{
 			pwm_duty(PWM4_MODULE2_CHA_C30, 90+700);      //��ת
@@ -136,7 +140,7 @@ void PIT_5MS()
 		}
 	}
 	
-	
+	/*
 	OSC[0]=ADCL;
 	OSC[1]=ADCR;
 	OSC[2]=gyro_x_i / 100;
@@ -146,7 +150,7 @@ void PIT_5MS()
 	OSC[6]=leftSpeedInt/10;
 	OSC[7]=rightSpeedInt/10;
 	vcan_sendware(OSC,sizeof(OSC));
-	
+	*/
 	ring_int();
 	
 	hillProcess();

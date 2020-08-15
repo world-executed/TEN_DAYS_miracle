@@ -40,8 +40,11 @@ void SpeedControl()
 	} else if(MPWM > 35){	//×ó×ª
 		setRightSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM));
 		setLeftSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM)) * (0.97530982 - 0.00425803 * abs(MPWM));
-	}
-	
+	}	else {
+		setRightSpeed_L = SetLeftSpeed;
+	    setLeftSpeed_L = SetLeftSpeed; 
+	}	
+
 	PWML+=PID_control(&pid_l,setLeftSpeed_L,LeftSpeed);
 	PWMR+=PID_control(&pid_r,setRightSpeed_L,RightSpeed);
 	

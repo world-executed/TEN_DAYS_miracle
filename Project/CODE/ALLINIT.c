@@ -39,8 +39,6 @@ void PID_init()
     dirpid.lasterr=0;
     dirpid.preverr=0;
     
-    sp = static_p;
-    lp = static_p * 0.5;
 }
 
 void AllInit()

@@ -13,6 +13,7 @@ extern int posR[calNum] ;
 extern int servoShould[calNum];
 extern float servotem[calNum];
 extern int servo[calNum];
+extern int status_tem[calNum];
 
 extern int nowPos;
 extern int recordMode;
@@ -20,6 +21,7 @@ extern int finishFlag;
 extern int eleArray[eleLen];
 extern int nowEleNum;
 extern int recording;
+
 
 int ScanCalculate();
 void PosCalculate();
@@ -30,5 +32,6 @@ void waveScan_Camara(int line);
 extern int kTestThrH;	
 extern int kTestThrL;	
 extern int period;
-
+extern int nowPosL;
+extern int nowPosR;
 #endif

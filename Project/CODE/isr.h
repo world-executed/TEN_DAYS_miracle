@@ -46,5 +46,6 @@ extern int roadMode;
 extern int gyro_x_i;
 extern int gyro_y_i;
 extern int gyro_z_i;
+extern float speedK;
 
 #endif

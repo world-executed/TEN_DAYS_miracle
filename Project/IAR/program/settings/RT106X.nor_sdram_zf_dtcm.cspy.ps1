@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "G:\iar\common\bin\cspybat" -f "C:\Users\a1876\Documents\GitHub\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.general.xcl" --backend -f "C:\Users\a1876\Documents\GitHub\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.driver.xcl" 
+& "G:\iar\common\bin\cspybat" -f "C:\Users\a1876\Desktop\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.general.xcl" --backend -f "C:\Users\a1876\Desktop\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.driver.xcl" 
 }
 else
 {
-& "G:\iar\common\bin\cspybat" -f "C:\Users\a1876\Documents\GitHub\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.general.xcl" --debug_file=$debugfile --backend -f "C:\Users\a1876\Documents\GitHub\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.driver.xcl" 
+& "G:\iar\common\bin\cspybat" -f "C:\Users\a1876\Desktop\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.general.xcl" --debug_file=$debugfile --backend -f "C:\Users\a1876\Desktop\RT1064_TEN_DAYS\Project\IAR\program\settings\RT106X.nor_sdram_zf_dtcm.driver.xcl" 
 }

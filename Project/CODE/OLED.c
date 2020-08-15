@@ -1,3 +1,21 @@
+/***********************************************************************************************************************************************************************************************************		
+																															
+			CarBegin()----------						RecordBegin();																											InmodeBegin();
+				+			   +								+																													+
+				\			   \								\																			statusShow():							\
+			MainPage()	->	Menu()	->	All();					\							Temshow_calculate();																	\
+			   + 			  \		->  Record1();	------------------->	Record2();	*>	ScanCalculate();		*>	Temshow_show()	->  waveScan_status()						\	
+			   ----------------													+												+			statusAdjust()		->	Record3();	-----	
+									->	Camera();								\											   	\					\								\
+																				\												\			  		V								\
+																				\											     ------------ScanCalculate()						\
+																				\																									\
+																				-----------------------------------------------------------------------------------------------------
+
+
+
+**************************************************************************************************************************************************************************************************************/
+
 #include "headfile.h"
 //起跑程序请使用CarBegin()函数
 //记录程序请使用RecordBegin()函数
@@ -363,8 +381,9 @@ void Record2()
 
 void Record3_Show()
 {
-	oled_p6x8str(0,cursor + 3,"->");
+	oled_p6x8str(0,cursor + 2,"->");
 	oled_p6x8str(0,0,"--FINISH CALCULATE--");
+	oled_p6x8str(18,2,"k");            oled_printf_int32(30,2,speedK * 100,4);
 	oled_p6x8str(18,3,"v");            oled_printf_int32(30,3,SetLeftSpeed,4);
 	oled_p6x8str(18,4,"p");            oled_printf_int32(30,4,(int)(static_p * 100),4);
 	oled_p6x8str(18,5,"re");           oled_printf_int32(30,5,relation * 100,4);
@@ -378,29 +397,29 @@ void Record3()
 	
 	if(key_check(KEY_D) ==  KEY_DOWN)
 	{
-		oled_p6x8str(0,cursor + 3,"  ");
+		oled_p6x8str(0,cursor + 2,"  ");
 		cursor+=1;
-		cursor%=5;
-		oled_p6x8str(0,cursor + 3,"->");
+		cursor%=6;
+		oled_p6x8str(0,cursor + 2,"->");
 		while(!key_check(KEY_D));
 	}
 	
 	else if(key_check(KEY_U) ==  KEY_DOWN)
 	{
-		oled_p6x8str(0,cursor + 3,"  ");
+		oled_p6x8str(0,cursor + 2,"  ");
 		if(cursor==0)
-			cursor=5;
+			cursor=6;
 		cursor-=1;
-		oled_p6x8str(0,cursor + 3,"->");
+		oled_p6x8str(0,cursor + 2,"->");
 		while(!key_check(KEY_U));
 	}
 	
 	if(key_check(KEY_A) ==  KEY_DOWN)
 	{
-		switch(cursor + 3)
+		switch(cursor + 2)
 		{
 		case 6:
-			recordMode = 3;InmodeBegin();cursor = 0;oled_fill(0x00);break;
+			InmodeBegin();cursor = 0;oled_fill(0x00);break;
 		case 7:
 			page = 4;cursor = 0;oled_fill(0x00);break;
 		default:
@@ -411,8 +430,10 @@ void Record3()
 	
 	if(key_check(KEY_L) ==  KEY_DOWN)
 	{
-		switch(cursor+ 3)
+		switch(cursor+ 2)
 		{
+		case 2:
+			speedK-=0.01;speedK=speedK<0?0:speedK;oled_printf_int32(30,2,speedK * 100,4);break;
 		case 3:
 			SetLeftSpeed-=5;SetRightSpeed-=5;SetLeftSpeed=SetLeftSpeed<0?0:SetLeftSpeed;SetRightSpeed=SetRightSpeed<0?0:SetRightSpeed;oled_printf_int32(30,3,SetLeftSpeed,4);break;
 		case 4:
@@ -426,10 +447,12 @@ void Record3()
 	
 	else if(key_check(KEY_R) ==  KEY_DOWN)
 	{
-		switch(cursor+ 3)
+		switch(cursor+ 2)
 		{
+		case 2:
+			speedK+=0.01;speedK=speedK>1?1:speedK;oled_printf_int32(30,2,speedK * 100,4);break;
 		case 3:
-			SetLeftSpeed+=5;SetRightSpeed+=5;oled_printf_int32(30,3,SetLeftSpeed,4);break;
+			SetLeftSpeed+=5;SetRightSpeed+=5;oled_printf_int32(30,2,SetLeftSpeed,4);break;
 		case 4:
 			static_p+=0.01;oled_printf_int32(30,4,(int)(static_p*100),4);  break;
 		case 5:
@@ -472,6 +495,7 @@ void Camera()
 	if(key_check(KEY_D) ==  KEY_DOWN)
     {
       camaraScanMode = (camaraScanMode + 1) % 2;
+	  while(!key_check(KEY_D));
     }
 }
 
