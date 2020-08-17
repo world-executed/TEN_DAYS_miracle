@@ -80,8 +80,8 @@ void AllInit()
   gpio_init (D16, GPO,0,GPIO_PIN_CONFIG); //蜂鸣器初始化
   oled_p6x8str(0,0,"Camera Initializing");
   
-  mt9v03x_csi_init();//初始化摄像头 使用CSI接口
   
+  mt9v03x_csi_init();//初始化摄像头 使用CSI接口
   oled_p6x8str(0,2,"IIC Initializing");
   simiic_init();		//模拟IIC初始化
   oled_p6x8str(0,4,"MPU6050 Initializing");
@@ -101,12 +101,15 @@ void AllInit()
 	//elementFind();
 	//eachLenth();
 	//aveServo();
+	SpeedStatus();
 	
+	/*
 	for(int i = 0; i < calNum; i++)
 	{
 		status[calNum] 		= 1;	
 		posL[calNum] 		= -10000;
 	}
+*/
 	
   EnableGlobalIRQ(0);
 }

@@ -39,22 +39,57 @@ void PIT_5MS()
 	lp = static_p * speedK;
 	
 	roadMode = 1;
-	
+	recordMode = 2;
+	/*
 	if(recordMode == 3)
 	{
+	PosCalculate();
+	eleMatch();
+	
+	if(status_tem[nowPos] != 1) //���
+	{
+	dirpid.p = sp;
+	gpio_set(D16,1);
+}
+		else
+	{
+	gpio_set(D16,0);    //ֱ��
+	dirpid.p = lp;
+}
+}
+	*/
+	if(recordMode == 2)
+	{
 		PosCalculate();
-		eleMatch();
-		
-		if(status_tem[nowPos] != 1) //���
+		/*
+		if(status[nowPos] != 1) //���
 		{
 			dirpid.p = sp;
-			gpio_set(D16,1);
+			if(dip[1]) gpio_set(D16,1);
 		}
 		else
 		{
-			gpio_set(D16,0);    //ֱ��
-			dirpid.p = lp;
+			if(dip[0]) dirpid.p = lp; else dirpid.p = sp;
+			if(dip[1]) gpio_set(D16,0);    //ֱ��
+			
+		}*/
+		
+		if(speedStatus[nowPos] == 0) //进弯出弯状态
+		{
+			if(dip[1]) gpio_set(D16,1);
+			if(dip[0]) dirpid.p = 1.5 * sp;
 		}
+		else if(speedStatus[nowPos] == 1)	//直道
+		{
+			if(dip[0]) dirpid.p = lp; else  dirpid.p = sp;
+			if(dip[1]) gpio_set(D16,0);    //ֱ��
+		}
+		else if(speedStatus[nowPos] == 8)	//弯道
+		{
+			dirpid.p = sp;
+			if(dip[1]) gpio_set(D16,0);
+		}
+		
 	}
 	
 	dip[0]=gpio_get(C25); //1you
@@ -71,14 +106,16 @@ void PIT_5MS()
 	ADCTest();
 	//modeSelect();
 	
-	if (LockFlag == 0 && StopFlag == 0 && chukuFlag == 2 && rukuFlag==0) {        //û������������ʻ
-		if(recordMode != 3)
+	if (LockFlag == 0 && StopFlag == 0 && SCflag == 0 && chukuFlag == 2 && rukuFlag==0) {        //û������������ʻ
+		if(recordMode != 2)
 		{
+			//dirpid.p = sp;
 			Dir_control(DirError);
-			dirpid.p = static_p;
+			//dirpid.p = static_p;
 		}
-		else if(recordMode == 3)
+		else if(recordMode == 2)
 		{
+			//dirpid.p = sp;
 			//relatedCal();
 			//relation = 0.5;
 			RDir_control(DirError, relation);
@@ -89,11 +126,11 @@ void PIT_5MS()
 	{
 		if(turnFlag == 1)
 		{
-			pwm_duty(PWM4_MODULE2_CHA_C30, 90+700);      //��ת
+			pwm_duty(PWM4_MODULE2_CHA_C30, 85+SERVO_MID);      //��ת
 		}
 		if(turnFlag == -1)
 		{
-			pwm_duty(PWM4_MODULE2_CHA_C30, -90+700);      //��ת
+			pwm_duty(PWM4_MODULE2_CHA_C30, -85+SERVO_MID);      //��ת
 		}
 		
 		CountNum++;
@@ -127,9 +164,9 @@ void PIT_5MS()
 		/*
 		if(chukuFlag == 2)
 		{
-			AllZero();
-			chukuFlag = -1;
-		}
+		AllZero();
+		chukuFlag = -1;
+	}
 		*/
 		
 		if(rukuFlag == 3)
@@ -145,8 +182,8 @@ void PIT_5MS()
 	OSC[1]=ADCR;
 	OSC[2]=gyro_x_i / 100;
 	OSC[3]=MPWM * 10;
-	OSC[4]=dirpid.p * 10;
-	OSC[5]=0;
+	OSC[4]=DirError * 10;
+	OSC[5]=ADCLL;
 	OSC[6]=leftSpeedInt/10;
 	OSC[7]=rightSpeedInt/10;
 	vcan_sendware(OSC,sizeof(OSC));

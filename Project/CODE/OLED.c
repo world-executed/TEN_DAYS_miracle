@@ -7,7 +7,7 @@
 			   + 			  \		->  Record1();	------------------->	Record2();	*>	ScanCalculate();		*>	Temshow_show()	->  waveScan_status()						\	
 			   ----------------													+												+			statusAdjust()		->	Record3();	-----	
 									->	Camera();								\											   	\					\								\
-																				\												\			  		V								\
+									->	ServoControl();											\												\			  		V								\
 																				\											     ------------ScanCalculate()						\
 																				\																									\
 																				-----------------------------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ uint8 cursor=0;
 
 
 int page = 0;
-//0:主菜单 1:菜单选择 2:全部参数 3:记录模式1 4:记录模式2 5:记录模式3 6:摄像头/灰度检测 7:查看记录值 8:赛道元素识别波形 
+//0:主菜单 1:菜单选择 2:全部参数 3:记录模式1 4:记录模式2 5:记录模式3 6:摄像头/灰度检测 7:查看记录值 8:赛道元素识别波形  9:控制舵机
 
 int maxposL = 0;
 int minposL = 10000;
@@ -38,16 +38,17 @@ int allNum = 0;
 
 int camaraScanMode = 1;
 int statusAdjustMode = 0;
+int SCflag = 0;
 
 void MainPage_Show()
 {
 	oled_p6x8str(0,cursor,"->");
 	oled_p6x8str(18,0,">>GO!<<");
 	oled_p6x8str(18,1,"v");            oled_printf_int32(30,1,SetLeftSpeed,4);
-	oled_p6x8str(18,2,"p");            oled_printf_int32(30,2,(int)(static_p * 100),4);
-	oled_p6x8str(18,3,"J");            oled_printf_int32(30,3,jumpnum,4);	
+	oled_p6x8str(18,2,"p");            oled_printf_int32(30,2,(int)(dirpid.p* 100),4);
+	oled_p6x8str(18,3,"d");            oled_printf_int32(30,3,dirpid.d * 100,4);	
 	oled_p6x8str(18,4,"gi");           oled_printf_int32(30,4,gyro_y_i/100,4);             
-	oled_p6x8str(18,5,"gy");           oled_printf_int32(30,5,gyro[1],4);
+	oled_p6x8str(18,5,"pK");           oled_printf_int32(30,5,speedK * 100,4);
 	oled_p6x8str(18,6,"re");           oled_printf_int32(30,6,relation * 100,4);
 	oled_p6x8str(18,7,"*BACK*");
 	
@@ -97,17 +98,17 @@ void MainPage()
 		switch(cursor)
 		{
 		case 1:
-			SetLeftSpeed-=5;SetRightSpeed-=5;SetLeftSpeed=SetLeftSpeed<0?0:SetLeftSpeed;SetRightSpeed=SetRightSpeed<0?0:SetRightSpeed;oled_printf_int32(30,1,SetLeftSpeed,4);break;
+			SetLeftSpeed-=1;SetRightSpeed-=1;SetLeftSpeed=SetLeftSpeed<0?0:SetLeftSpeed;SetRightSpeed=SetRightSpeed<0?0:SetRightSpeed;oled_printf_int32(30,1,SetLeftSpeed,4);break;
 		case 2:
-			static_p-=0.01;static_p=static_p<0?0:static_p;oled_printf_int32(30,2,(int)(dirpid.p*100),4);  break;
+			static_p-=0.01;static_p=static_p<0?0:static_p;oled_printf_int32(30,2,(int)(static_p * 100),4);  break;
 		case 3:
-			dirpid.d-=0.01;dirpid.d=dirpid.d<0?0:dirpid.d;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
+			dirpid.d-=0.001;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
 		case 6:
 			relation-=0.01;relation=relation<0?0:relation;oled_printf_int32(30,3,(int)(relation*100),4);  break;
 		case 4:
 			sp-=0.01;sp=sp<0?0:sp;oled_printf_int32(30,4,(int)(sp*100),4);break;
 		case 5:
-			lp-=0.01;lp=lp<0?0:lp;oled_printf_int32(30,5,(int)(lp*100),4);break;
+			speedK-=0.01;speedK=speedK<0?0:speedK;oled_printf_int32(30,5,(int)(speedK*100),4);break;
 		default:
 			break;
 		}
@@ -118,15 +119,15 @@ void MainPage()
 		switch(cursor)
 		{
 		case 1:
-			SetLeftSpeed+=5;SetRightSpeed+=5;oled_printf_int32(30,1,SetLeftSpeed,4);break;
+			SetLeftSpeed+=1;SetRightSpeed+=1;oled_printf_int32(30,1,SetLeftSpeed,4);break;
 		case 2:
 			static_p+=0.01;oled_printf_int32(30,2,(int)(static_p*100),4);  break;
 		case 3:
-			dirpid.d+=0.01;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
+			dirpid.d+=0.001;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
 		case 4:
 			sp+=0.01;oled_printf_int32(30,4,(int)(sp*100),4);break;
 		case 5:
-			lp+=0.01;oled_printf_int32(30,5,(int)(lp*100),4);break;
+			speedK+=0.01;oled_printf_int32(30,5,(int)(speedK*100),4);break;
 		case 6:
 			relation+=0.01;relation=relation>1?1:relation;oled_printf_int32(30,3,(int)(relation*100),4);  break;
 		default:
@@ -158,6 +159,7 @@ void Menu_Show()
 	oled_p6x8str(18,4,"2.RECORD MODE");         
 	oled_p6x8str(18,5,"3.MAIN INTERFACE");
     oled_p6x8str(18,6,"4.CAMERA");
+	oled_p6x8str(18,7,"5.SERVO CONTROL");
 }
 
 void Menu()
@@ -167,7 +169,7 @@ void Menu()
 	{
 		oled_p6x8str(0,cursor + 2,"  ");
 		cursor+=1;
-		cursor%=5;
+		cursor%=6;
 		oled_p6x8str(0,cursor + 2,"->");
 		while(!key_check(KEY_D));
 	}
@@ -176,7 +178,7 @@ void Menu()
 	{
 		oled_p6x8str(0,cursor + 2,"  ");
 		if(cursor==0)
-			cursor=5;
+			cursor=6;
 		cursor-=1;
 		oled_p6x8str(0,cursor + 2,"->");
 		while(!key_check(KEY_U));
@@ -196,6 +198,8 @@ void Menu()
 			page = 0;cursor = 0;oled_fill(0x00);break;
         case 6:
 			page = 6;cursor = 0;oled_fill(0x00);break;    
+		case 7:
+			page = 9;cursor = 0;MPWM =0;oled_fill(0x00);break;    	
 		default:
 			break;
 		}
@@ -494,8 +498,9 @@ void Camera()
     }
 	if(key_check(KEY_D) ==  KEY_DOWN)
     {
+		while(!key_check(KEY_D));
       camaraScanMode = (camaraScanMode + 1) % 2;
-	  while(!key_check(KEY_D));
+	  
     }
 }
 
@@ -654,6 +659,37 @@ void statusShow()
 	}
 }
 
+void ServoControl_show()
+{
+	oled_p6x8str(0,0,"--SERVO CONTROL--");
+	oled_p6x8str(18,3,"SERVO");            oled_printf_int32(80,3,MPWM,4);
+	oled_p6x8str(18,7,"  >>>BACK<<<");   
+}
+
+void ServoControl()
+{
+	SCflag = 1;
+	ServoControl_show();
+	
+	MPWM = (int)range(MPWM,-90,90);
+	pwm_duty(PWM4_MODULE2_CHA_C30, MPWM+SERVO_MID);
+	
+	if(key_check(KEY_A) ==  KEY_DOWN)
+	{
+		SCflag = 0;oled_fill(0x00);page = 1;
+	}
+	
+	if(key_check(KEY_L) ==  KEY_DOWN)
+	{
+		MPWM -= 1;
+	}
+	
+	else if(key_check(KEY_R) ==  KEY_DOWN)
+	{
+		MPWM += 1;
+	}
+}
+
 void OLED_switch()
 {
 	switch(page)
@@ -667,6 +703,7 @@ void OLED_switch()
     case 6: Camera();break;
 	case 7: Temshow();break;
 	case 8: statusShow();break;
+	case 9: ServoControl();break;
 	default:
 		break;
 	}

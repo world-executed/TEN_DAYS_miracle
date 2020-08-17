@@ -16,15 +16,11 @@ TODO:	1.开环？
 
 #include "headfile.h"
 
-
-
 void signal();
 int normal = 1800;
 int mode9num = 0;
 
-
 uint8 value=130;
-
 
 int16 acc[3];
 int16 gyro[3];
@@ -48,7 +44,6 @@ int main(void)
 
 void modeSelect()
 {
-	
 	if(roadMode == 1)
 	{
 		setLeftSpeed_L = SetLeftSpeed;
@@ -120,8 +115,8 @@ void AllZero()
 void CarBegin()
 {
 	AllZero();
-	chukuFlag = 1;
-	recordMode = 0;
+	chukuFlag = 2;
+	recordMode = 2;
 }
 
 void RecordBegin()

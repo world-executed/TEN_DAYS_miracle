@@ -73,11 +73,12 @@ void ruku()
 
 void chuku()
 {
+/*
   if(dip[0])//1�Ų��뿪�ؿ��ţ�Ϊ˳ʱ��
     FANGXIANG=1;
   else
     FANGXIANG=-1;
-  
+  */
   if(chukuFlag==1)
   {
     int8 servo_bias=100-(int)(FANGXIANG*angle*0.9);

@@ -3,7 +3,7 @@
 
 #define ADCLOWBAND 20   //ADC下限，低于此值认为冲出赛道且error为0
 #define ERRORBAND 0  //偏差下限，低于此值认为方向无偏差
-#define SERVO_MID 698
+#define SERVO_MID 760
 
 extern int16 ADCLL;
 extern int16 ADCRR;

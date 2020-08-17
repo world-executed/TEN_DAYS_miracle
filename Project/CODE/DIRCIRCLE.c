@@ -43,7 +43,7 @@ void Dir_control(float error)
   
   dirpid.lasterr=dirpid.err;
   
-  MPWM=(int)range(tMPWM,-85,85);
+  MPWM=(int)range(tMPWM,-90,90);
   ringProcess();
   pwm_duty(PWM4_MODULE2_CHA_C30, MPWM+SERVO_MID);
 }
@@ -58,8 +58,8 @@ void RDir_control(float error, float relation)
 	
 	dirpid.lasterr=dirpid.err;
 	
-	MPWM = (1.0 - relation) * (servotem[nowPos]) + relation * tMPWM;
-	MPWM = (int)range(MPWM,-85,85);
+	MPWM = (1.0 - relation) * (servo[nowPos] / 10) + relation * tMPWM;
+	MPWM = (int)range(MPWM,-90,90);
 	pwm_duty(PWM4_MODULE2_CHA_C30, MPWM+SERVO_MID);
 }
 

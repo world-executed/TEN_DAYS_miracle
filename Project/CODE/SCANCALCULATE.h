@@ -14,6 +14,7 @@ extern int servoShould[calNum];
 extern float servotem[calNum];
 extern int servo[calNum];
 extern int status_tem[calNum];
+extern int speedStatus[calNum];
 
 extern int nowPos;
 extern int recordMode;
