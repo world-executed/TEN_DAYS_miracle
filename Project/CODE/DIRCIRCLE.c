@@ -58,7 +58,7 @@ void RDir_control(float error, float relation)
 	
 	dirpid.lasterr=dirpid.err;
 	
-	MPWM = (1.0 - relation) * (servo[nowPos] / 10) + relation * tMPWM;
+	MPWM = (1.0 - relation) * (servo_tem[nowPos] / 10) + relation * tMPWM;
 	MPWM = (int)range(MPWM,-90,90);
 	pwm_duty(PWM4_MODULE2_CHA_C30, MPWM+SERVO_MID);
 }
@@ -67,7 +67,7 @@ void RDir_control(float error, float relation)
 //相关度计算----完全一致为0
 //1）弯道：abs(应DirError - DirError)与应DirError之比
 //2）直道：abs（DirError）与设定最大Error之比
-
+/*
 void relatedCal()
 {
 	if(status[nowPos] != 1)	//弯道
@@ -81,7 +81,7 @@ void relatedCal()
 		relation = range(rela, 0.0, 1.0);
 	}
 }
-
+*/
 void DynamicPID()
 {
 	dirpid.p = DirError * dynamic_p + static_p;

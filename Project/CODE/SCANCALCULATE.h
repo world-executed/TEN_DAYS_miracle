@@ -11,7 +11,7 @@ extern int angle_int[calNum];
 extern int posL[calNum] ;
 extern int posR[calNum] ;
 extern int servoShould[calNum];
-extern float servotem[calNum];
+extern int servo_tem[calNum];
 extern int servo[calNum];
 extern int status_tem[calNum];
 extern int speedStatus[calNum];

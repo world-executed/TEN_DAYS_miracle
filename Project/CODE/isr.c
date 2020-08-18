@@ -58,6 +58,10 @@ void PIT_5MS()
 }
 }
 	*/
+	
+
+		
+		
 	if(recordMode == 2)
 	{
 		PosCalculate();
@@ -77,17 +81,22 @@ void PIT_5MS()
 		if(speedStatus[nowPos] == 0) //进弯出弯状态
 		{
 			if(dip[1]) gpio_set(D16,1);
-			if(dip[0]) dirpid.p = 1.5 * sp;
+			dirpid.p = 1.2 * sp;
+			relation = 0.5;
 		}
 		else if(speedStatus[nowPos] == 1)	//直道
 		{
 			if(dip[0]) dirpid.p = lp; else  dirpid.p = sp;
 			if(dip[1]) gpio_set(D16,0);    //ֱ��
+			relation = 0.8;
+			dirpid.p = 0.8 * sp;
 		}
 		else if(speedStatus[nowPos] == 8)	//弯道
 		{
 			dirpid.p = sp;
 			if(dip[1]) gpio_set(D16,0);
+			relation = 0.5;
+			dirpid.p = 1.5 * sp;
 		}
 		
 	}

@@ -19,7 +19,7 @@ void PID_init()
     pid_l.err=0;
     pid_l.lasterr=0;
     pid_l.preverr=0;
-    pid_l.p=5;
+    pid_l.p=8;
     pid_l.i=1.2;
     pid_l.d=0;
     
@@ -27,7 +27,7 @@ void PID_init()
     pid_r.err=0;
     pid_r.lasterr=0;
     pid_r.preverr=0;
-    pid_r.p=5;
+    pid_r.p=8;
     pid_r.i=1.2;
     pid_r.d=0;
     
@@ -101,8 +101,34 @@ void AllInit()
 	//elementFind();
 	//eachLenth();
 	//aveServo();
-	SpeedStatus();
 	
+	
+	for(int i = 0; i < calNum; i++)
+	{
+		switch(status[i])
+		{
+		case 2: case 6:
+			status[i] = 6; break;				//事实上，2为准备左转，7正在左转，6已经左转；
+		case 0: case 9:
+			status[i] = 9; break;
+		default:
+			break;
+		}
+	}
+		
+	statusShrink();
+			
+	for(int i = 0; i < calNum; i++)
+	{
+		if(status[i] == 6)
+			servo_tem[i] = 600;
+		else if(status[i] == 9)
+			servo_tem[i] = -600;
+		else if(status[i] == 1)
+			servo_tem[i] = 0;
+	}	
+	
+	SpeedStatus();
 	/*
 	for(int i = 0; i < calNum; i++)
 	{
