@@ -41,18 +41,16 @@ void SpeedControl()
 		setRightSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM));
 		setLeftSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM)) * (0.97530982 - 0.00425803 * abs(MPWM));
 	}
-
-
     else
     {
       setRightSpeed_L=SetRightSpeed;
       setLeftSpeed_L=SetLeftSpeed;
     }
 
-    if(abs(angle_ring)>270&&abs(angle_ring)<355)
+    if(abs(angle_ring)>300&&abs(angle_ring)<430)
     {
-      setRightSpeed_L=setRightSpeed_L*0.7;
-      setLeftSpeed_L=setLeftSpeed_L*0.7;
+      setRightSpeed_L=setRightSpeed_L*0.8;
+      setLeftSpeed_L=setLeftSpeed_L*0.8;
     }
       
 	PWML+=PID_control(&pid_l,setLeftSpeed_L,LeftSpeed);

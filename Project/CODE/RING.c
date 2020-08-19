@@ -16,12 +16,10 @@ void RingProcess()
 {
 
   static float gyro_x_i_ring;
-  if(ringstate==0&&ADC[0]>1500&&ADC[1]>2700&&ADC[4]+ADC[5]>7000&&(hillFlag==0||hillFlag==4)/*ringstate==0&&ADC[0]>2000&&ADC[1]>2600&&(hillFlag==0||hillFlag==4)*/)//youhuan  //1000,2400
+  if(ringstate==0&&ADC[0]>1500&&ADC[1]>2700&&ADC[4]+ADC[5]>6000/*ringstate==0&&ADC[0]>2000&&ADC[1]>2600&&(hillFlag==0||hillFlag==4)*/)//youhuan  //1000,2400
     ringflag_st=1;
   else
     ringflag_st=0;
-  
-  
   
   if(ringflag_st&&readyinring_st==0)
   {
@@ -43,39 +41,12 @@ void RingProcess()
     //static_p=2.4;
 //dirpid.p=sp;
   }  
-  
-  if(abs(angle_ring)>180&&abs(angle_ring)<270)
-  {
-    RMPWM+=MPWM;
-    count++;
-  }
-  if(abs(angle_ring)>270&&abs(angle_ring)<330)
-  {
-    //MPWM=RMPWM/count;
-    //MPWM=(int)range(MPWM,-85,85);
-  }
-  
-
-
-
-
-
-
-
-
-
-  
-  
-  if(abs(angle_ring)>355)
+  if(abs(angle_ring)>430)
   {
     inring_st=0;  
     gyro_x_i_ring=angle_ring=RMPWM=count=0;
     //dirpid.p=lp;
   }
-  
-  
-
-
 }
 /*
 void ringProcess()

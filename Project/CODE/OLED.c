@@ -7,7 +7,7 @@
 			   + 			  \		->  Record1();	------------------->	Record2();	*>	ScanCalculate();		*>	Temshow_show()	->  waveScan_status()						\	
 			   ----------------													+												+			statusAdjust()		->	Record3();	-----	
 									->	Camera();								\											   	\					\								\
-									->	ServoControl();											\												\			  		V								\
+									->	ServoControl();							\												\			  		V								\
 																				\											     ------------ScanCalculate()						\
 																				\																									\
 																				-----------------------------------------------------------------------------------------------------
@@ -39,8 +39,11 @@ int allNum = 0;
 int camaraScanMode = 1;
 int statusAdjustMode = 0;
 int SCflag = 0;
+int numberPage = 0;
 
 float speedK = 0.5;
+
+void statusShowNumber();
 
 void MainPage_Show()
 {
@@ -49,7 +52,7 @@ void MainPage_Show()
 	oled_p6x8str(18,1,"v");            oled_printf_int32(30,1,SetLeftSpeed,4);
 	oled_p6x8str(18,2,"p");            oled_printf_int32(30,2,(int)(dirpid.p* 100),4);
 	oled_p6x8str(18,3,"d");            oled_printf_int32(30,3,dirpid.d * 100,4);	
-	oled_p6x8str(18,4,"gi");           oled_printf_int32(30,4,gyro_y_i/100,4);             
+	oled_p6x8str(18,4,"gi");           oled_printf_int32(30,4,asin(acc[0]) * 57.3,4);             
 	oled_p6x8str(18,5,"pK");           oled_printf_int32(30,5,speedK * 100,4);
 	oled_p6x8str(18,6,"re");           oled_printf_int32(30,6,relation * 100,4);
 	oled_p6x8str(18,7,"*BACK*");
@@ -482,7 +485,6 @@ void Record3()
 			break;
 		}
 	}
-	
 }
 
 void Camera_Show()
@@ -517,7 +519,6 @@ void Camera()
     {
 		while(!key_check(KEY_D));
       camaraScanMode = (camaraScanMode + 1) % 2;
-	  
     }
 }
 
@@ -665,7 +666,8 @@ void statusAdjust()
 void statusShow()
 {
 	if(!statusAdjustMode)
-		waveScan_status();
+		//waveScan_status();
+		statusShowNumber();
 	else
 		statusAdjust();
 	
@@ -673,6 +675,40 @@ void statusShow()
 	{
 		oled_fill(0x00);
 		statusAdjustMode = 1;
+	}
+}
+
+void statusShowNumber_show()
+{
+	for(int i = 0 + 70 * numberPage; i < 70 + 70 * numberPage; i++)
+		{
+			oled_printf_int32(12 * ((i % 70) % 10),(i % 70) / 10,status[i * 5],2);
+		}
+}
+
+void statusShowNumber()
+{
+	statusShowNumber_show();
+	
+	if(key_check(KEY_L) ==  KEY_DOWN)
+	{
+		if(numberPage > 0)
+		{
+			oled_fill(0x00);
+			numberPage--;
+			while(!key_check(KEY_L));
+		}
+	}
+	else if(key_check(KEY_R) ==  KEY_DOWN)
+	{
+		oled_fill(0x00);
+		numberPage++;
+		while(!key_check(KEY_R));
+	}
+	
+	if(key_check(KEY_A) ==  KEY_DOWN)
+	{
+		page = 5;
 	}
 }
 

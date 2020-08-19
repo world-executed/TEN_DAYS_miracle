@@ -28,7 +28,7 @@ int16 gyro[3];
 
 
 	
-int main(void)
+	int main(void)
 {
   DisableGlobalIRQ();
   board_init();//・ｽ・ｽﾘｱ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾚｳ・ｽﾊｼ・ｽ・ｽMPU ﾊｱ・ｽ・ｽ ・ｽ・ｽ・ｽﾔｴ・ｽ・ｽ・ｽ
@@ -116,14 +116,14 @@ void CarBegin()
 {
 	AllZero();
 	chukuFlag = 2;
-	recordMode = 2;
+	recordMode = 1;
 }
 
 void RecordBegin()
 {
 	AllZero();
 	SetLeftSpeed = 30;
-	SetLeftSpeed = 30;
+	SetRightSpeed = 30;
 	chukuFlag = 1;
 	oled_fill(0x00);
 	recording = 1;

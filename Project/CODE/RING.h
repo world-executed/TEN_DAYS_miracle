@@ -12,5 +12,5 @@ extern int angle_ring;
 void ringjudge_st();
 void ringjudge_nd();
 void ring_int();
-void ringProcess();
+void RingProcess();
 #endif

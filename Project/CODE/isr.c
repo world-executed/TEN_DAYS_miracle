@@ -11,20 +11,20 @@ int gyro_y_i = 0;
 int gyro_z_i = 0;
 
 int recordNum = 0;
-
+int ringContinue = 0;
 float OSC[8]={0.0};
 
 float Yaw,Pitch,Roll;
 
 void CSI_IRQHandler(void)
 {
-  CSI_DriverIRQHandler();     //����SDK�Դ����жϺ��� ���������������������õĻص�����
-  __DSB();                    //����ͬ������
+	CSI_DriverIRQHandler();     //����SDK�Դ����жϺ��� ���������������������õĻص�����
+	__DSB();                    //����ͬ������
 }
 
 void PIT_1MS()
 {
-  ADCSample(pit);
+	ADCSample(pit);
 }
 
 void PIT_5MS()
@@ -34,75 +34,65 @@ void PIT_5MS()
 	sp = static_p;
 	lp = static_p * speedK;
 	
+	if(inring_st)
+		gpio_set(D16,1);
+	else
+		gpio_set(D16,0);
+	
 	roadMode = 1;
-	recordMode = 2;
-	/*
+	//recordMode = 2;
+	
 	if(recordMode == 3)
-	{
-	PosCalculate();
-	eleMatch();
-	
-	if(status_tem[nowPos] != 1) //���
-	{
-	dirpid.p = sp;
-	gpio_set(D16,1);
-}
-		else
-	{
-	gpio_set(D16,0);    //ֱ��
-	dirpid.p = lp;
-}
-}
-	*/
-	
-
-		
-		
-	if(recordMode == 2)
 	{
 		PosCalculate();
 		/*
 		if(status[nowPos] != 1) //���
 		{
-			dirpid.p = sp;
-			if(dip[1]) gpio_set(D16,1);
-		}
+		dirpid.p = sp;
+		if(dip[1]) gpio_set(D16,1);
+	}
 		else
 		{
-			if(dip[0]) dirpid.p = lp; else dirpid.p = sp;
-			if(dip[1]) gpio_set(D16,0);    //ֱ��
-			
-		}*/
+		if(dip[0]) dirpid.p = lp; else dirpid.p = sp;
+		if(dip[1]) gpio_set(D16,0);    //ֱ��
+		
+	}*/
 		
 		if(speedStatus[nowPos] == 0) //进弯出弯状态
 		{
-			if(dip[2]) gpio_set(D16,1);
+			gpio_set(D16,1);
 			dirpid.p = 1.2 * sp;
-			relation = 1.0;
+			//relation = 1.0;
 		}
+		
 		else if(speedStatus[nowPos] == 1)	//直道
 		{
 			if(dip[1]) dirpid.p = lp; else  dirpid.p = sp;
-			if(dip[2]) gpio_set(D16,0);    //ֱ��
-			relation = 1.0;
+			gpio_set(D16,0);    //ֱ��
+			//relation = 1.0;
 			dirpid.p = 0.8 * sp;
 		}
+		
 		else if(speedStatus[nowPos] == 8)	//弯道
 		{
 			dirpid.p = sp;
-			if(dip[2]) gpio_set(D16,0);
-			relation = 1.0;
+			gpio_set(D16,0);
+			//relation = 1.0;
 			dirpid.p = 1.5 * sp;
 		}
 		
+		if(speedStatus[nowPos] == 0) //进弯出弯状态
+		{
+			gpio_set(D16,1);
+		}
 	}
 	
-	      if(inring_st)
-        dirpid.p=sp;
-  dip[0]=gpio_get(C28); //1you
-  dip[1]=gpio_get(C27); //0zuo
-  dip[2]=gpio_get(C26);
-  dip[3]=gpio_get(C25);
+	if(inring_st)
+		dirpid.p=sp;
+	dip[0]=gpio_get(C28); //1you
+	dip[1]=gpio_get(C27); //0zuo
+	dip[2]=gpio_get(C26);
+	dip[3]=gpio_get(C25);
 	
 	//Imu_Update();
 	//ImuCalculate_Complementary();
@@ -115,17 +105,17 @@ void PIT_5MS()
 	//modeSelect();
 	
 	if (LockFlag == 0 && StopFlag == 0 && SCflag == 0 && chukuFlag == 2 && rukuFlag==0) {        //û������������ʻ
-		if(recordMode != 2)
+		if(recordMode == 1)
 		{
-			//dirpid.p = sp;
+			dirpid.p = sp;
 			RDir_control(DirError, 1.0);
 			//dirpid.p = static_p;
 		}
-		else if(recordMode == 2)
+		else if(recordMode == 3)
 		{
-			//dirpid.p = sp;
+			dirpid.p = sp;
 			//relatedCal();
-			//relation = 0.5;
+			relation = 0.5;
 			RDir_control(DirError, relation);
 		}
 		CountNum = 0;
@@ -146,16 +136,9 @@ void PIT_5MS()
 			CountNum = 1;
 	}
 	
-	if(roadMode == 9)
-	{
-		//MPWM = 0;
-		//pwm_duty(PWM4_MODULE2_CHA_C30, MPWM+700);
-		//DirError = 0;
-	}
-	
 	if (CountNum > 200)
 		StopFlag = 1;
-
+	
 	
 	if(recording)
 	{
@@ -163,15 +146,20 @@ void PIT_5MS()
 		posR[recordNum]		 = rightSpeedInt / 10;
 		servo[recordNum]	 = MPWM;
 		angle_int[recordNum] = gyro_x_i / 100;
-		recordNum += 1;
 		
-		/*
-		if(chukuFlag == 2)
+		if(ringflag_st == 1)
 		{
-		AllZero();
-		chukuFlag = -1;
-	}
-		*/
+			ringContinue = 1;
+		}
+		
+		if(ringContinue)
+			status[recordNum] = 100;
+		
+		if(inring_st == 0 && ringContinue == 1)
+		{
+			ringContinue = 0;
+		}
+		recordNum += 1;
 		
 		if(rukuFlag == 3)
 		{
@@ -199,6 +187,7 @@ void PIT_5MS()
 	setSpeed();
 	
 	OLED_switch();
+	//statusShowNumber();
 }
 
 
@@ -229,8 +218,6 @@ void GPIO2_Combined_16_31_IRQHandler(void)
 	{
 		CLEAR_GPIO_FLAG(C16);//����жϱ�־λ
 	}
-	
-	
 }
 
 

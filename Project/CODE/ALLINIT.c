@@ -1,6 +1,6 @@
 #include "headfile.h"
 
-float static_p = 1.30;
+float static_p = 1.70;
 float static_d = 0.02;
 
 uint8 dip[4]={0};				//���뿪��
@@ -103,33 +103,12 @@ void AllInit()
 	//eachLenth();
 	//aveServo();
 	
-	
-	for(int i = 0; i < calNum; i++)
+	for(int i = 0; i<calNum; i++)
 	{
-		switch(status[i])
-		{
-		case 2: case 6:
-			status[i] = 6; break;				//��ʵ�ϣ�2Ϊ׼����ת��7������ת��6�Ѿ���ת��
-		case 0: case 9:
-			status[i] = 9; break;
-		default:
-			break;
-		}
+		status[i] = 1;
+		status_tem[i] = 1;
 	}
-		
-	statusShrink();
-			
-	for(int i = 0; i < calNum; i++)
-	{
-		if(status[i] == 6)
-			servo_tem[i] = 600;
-		else if(status[i] == 9)
-			servo_tem[i] = -600;
-		else if(status[i] == 1)
-			servo_tem[i] = 0;
-	}	
-	
-	SpeedStatus();
+
 	/*
 	for(int i = 0; i < calNum; i++)
 	{

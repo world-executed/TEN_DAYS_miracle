@@ -141,6 +141,7 @@ void MPU6050()
   
   gyro_x_i+=gyro[0];
   angle_x_gyro=gyro_x_i*360.0/GYRO360;
+  
   angle_x=angle_x_gyro;//²»ÓÃ»¥²¹ÂË²¨
   
   
