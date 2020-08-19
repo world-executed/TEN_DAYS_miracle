@@ -58,6 +58,7 @@ void ADCSample(uint8 i)
       }
       ADC[k]/=5;
     }
+    //ADC[4]=ADC[5]=1000;
   }
 }
 

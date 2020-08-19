@@ -17,14 +17,14 @@
 **************************************************************************************************************************************************************************************************************/
 
 #include "headfile.h"
-//ÆðÅÜ³ÌÐòÇëÊ¹ÓÃCarBegin()º¯Êý
-//¼ÇÂ¼³ÌÐòÇëÊ¹ÓÃRecordBegin()º¯Êý
+//ï¿½ï¿½ï¿½Ü³ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½CarBegin()ï¿½ï¿½ï¿½ï¿½
+//ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½RecordBegin()ï¿½ï¿½ï¿½ï¿½
 
 uint8 cursor=0;
-
+int micro_adj=1;
 
 int page = 0;
-//0:Ö÷²Ëµ¥ 1:²Ëµ¥Ñ¡Ôñ 2:È«²¿²ÎÊý 3:¼ÇÂ¼Ä£Ê½1 4:¼ÇÂ¼Ä£Ê½2 5:¼ÇÂ¼Ä£Ê½3 6:ÉãÏñÍ·/»Ò¶È¼ì²â 7:²é¿´¼ÇÂ¼Öµ 8:ÈüµÀÔªËØÊ¶±ð²¨ÐÎ  9:¿ØÖÆ¶æ»ú
+//0:ï¿½ï¿½ï¿½Ëµï¿½ 1:ï¿½Ëµï¿½Ñ¡ï¿½ï¿½ 2:È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 3:ï¿½ï¿½Â¼Ä£Ê½1 4:ï¿½ï¿½Â¼Ä£Ê½2 5:ï¿½ï¿½Â¼Ä£Ê½3 6:ï¿½ï¿½ï¿½ï¿½Í·/ï¿½Ò¶È¼ï¿½ï¿½ 7:ï¿½é¿´ï¿½ï¿½Â¼Öµ 8:ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½  9:ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½
 
 int maxposL = 0;
 int minposL = 10000;
@@ -39,6 +39,8 @@ int allNum = 0;
 int camaraScanMode = 1;
 int statusAdjustMode = 0;
 int SCflag = 0;
+
+float speedK = 0.5;
 
 void MainPage_Show()
 {
@@ -57,7 +59,7 @@ void MainPage_Show()
 	
 	oled_p6x8str(72,0,"MODE");            oled_printf_int32(102,0,eleArray[nowEleNum],4);
 	oled_p6x8str(72,1,"Servo");           oled_printf_int32(102,1,abs(MPWM),4);     
-	oled_p6x8str(72,2,"Error");           oled_printf_int32(102,2,(int)abs(DirError),4);             
+	oled_p6x8str(72,2,"ring");           oled_printf_int32(102,2,ringstate,4);             
 	oled_p6x8str(72,3,"hill");           oled_printf_int32(102,3,hillFlag,4);
 	
 	oled_p6x8str(72,4,"---------");
@@ -66,8 +68,8 @@ void MainPage_Show()
 	oled_printf_int32(102,5,ADCRR,4);
 	oled_printf_int32(72,6,ADC[4],4);
 	oled_printf_int32(102,6,ADC[5],4);
-	oled_printf_int32(72,7,setLeftSpeed_L,4);
-	oled_printf_int32(102,7,setRightSpeed_L,4);
+	oled_printf_int32(72,7,ADC[1],4);
+	oled_printf_int32(102,7,ADC[2],4);
 }
 
 void MainPage()
@@ -97,43 +99,57 @@ void MainPage()
 	{
 		switch(cursor)
 		{
+        case 0:
+          micro_adj=1;break;
 		case 1:
-			SetLeftSpeed-=1;SetRightSpeed-=1;SetLeftSpeed=SetLeftSpeed<0?0:SetLeftSpeed;SetRightSpeed=SetRightSpeed<0?0:SetRightSpeed;oled_printf_int32(30,1,SetLeftSpeed,4);break;
+			SetLeftSpeed-=5;SetRightSpeed-=5;SetLeftSpeed=SetLeftSpeed<0?0:SetLeftSpeed;SetRightSpeed=SetRightSpeed<0?0:SetRightSpeed;oled_printf_int32(30,1,SetLeftSpeed,4);break;
 		case 2:
-			static_p-=0.01;static_p=static_p<0?0:static_p;oled_printf_int32(30,2,(int)(static_p * 100),4);  break;
+			static_p-=0.01;static_p=static_p<0?0:static_p;oled_printf_int32(30,2,(int)(dirpid.p*100),4);  break;
 		case 3:
-			dirpid.d-=0.001;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
-		case 6:
-			relation-=0.01;relation=relation<0?0:relation;oled_printf_int32(30,3,(int)(relation*100),4);  break;
+          ring_servo-=1;oled_printf_int32(30,3,ring_servo,4);  break;
+			//dirpid.d-=0.01;dirpid.d=dirpid.d<0?0:dirpid.d;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
+		//case 6:
+			//relation-=0.01;relation=relation<0?0:relation;oled_printf_int32(30,3,(int)(relation*100),4);  break;
 		case 4:
 			sp-=0.01;sp=sp<0?0:sp;oled_printf_int32(30,4,(int)(sp*100),4);break;
 		case 5:
-			speedK-=0.01;speedK=speedK<0?0:speedK;oled_printf_int32(30,5,(int)(speedK*100),4);break;
+			lp-=0.01;lp=lp<0?0:lp;oled_printf_int32(30,5,(int)(lp*100),4);break;
+        case 6:
+            startline-=1;oled_printf_int32(30,5,startline,4);break;
+          //ring_ratio-=0.1;oled_printf_int32(30,6,ring_ratio*10,4);break;
+          //dirpid.d-=0.01;oled_printf_int32(30,6,dirpid.d*100,4);break;
 		default:
 			break;
 		}
-	}
+	}while(!key_check(KEY_L)&&micro_adj);
 	
-	else if(key_check(KEY_R) ==  KEY_DOWN)
+	if(key_check(KEY_R) ==  KEY_DOWN)
 	{
+
 		switch(cursor)
 		{
+        case 0:
+          micro_adj=0;break;
 		case 1:
-			SetLeftSpeed+=1;SetRightSpeed+=1;oled_printf_int32(30,1,SetLeftSpeed,4);break;
+			SetLeftSpeed+=5;SetRightSpeed+=5;oled_printf_int32(30,1,SetLeftSpeed,4);break;
 		case 2:
 			static_p+=0.01;oled_printf_int32(30,2,(int)(static_p*100),4);  break;
 		case 3:
-			dirpid.d+=0.001;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
+			//dirpid.d+=0.01;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
+          ring_servo+=1;oled_printf_int32(30,3,ring_servo,4);  break;
 		case 4:
 			sp+=0.01;oled_printf_int32(30,4,(int)(sp*100),4);break;
 		case 5:
-			speedK+=0.01;oled_printf_int32(30,5,(int)(speedK*100),4);break;
+			lp+=0.01;oled_printf_int32(30,5,(int)(lp*100),4);break;
 		case 6:
-			relation+=0.01;relation=relation>1?1:relation;oled_printf_int32(30,3,(int)(relation*100),4);  break;
+          //ring_ratio+=0.1;oled_printf_int32(30,6,ring_ratio*10,4);break;
+          startline+=1;oled_printf_int32(30,5,startline,4);break;
+           //dirpid.d+=0.01;oled_printf_int32(30,6,dirpid.d*100,4);break;
+          //lation+=0.01;relation=relation>1?1:relation;oled_printf_int32(30,3,(int)(relation*100),4);  break;
 		default:
 			break;
 		}
-	}
+	}while(!key_check(KEY_R)&&micro_adj);
 	
 	if(key_check(KEY_A) ==  KEY_DOWN)
 	{
@@ -141,6 +157,7 @@ void MainPage()
 		{
 		case 0:
 			CarBegin();cursor = 0;break;
+        case 1:case 2:case 3:case 4:case 5:case 6:micro_adj=micro_adj==1?0:1;break;
 		case 7:
 			page = 1;cursor = 0;oled_fill(0x00);break;
 		default:
@@ -221,8 +238,8 @@ void All_Show()
 	oled_p6x8str(42,1,"Mo");           oled_printf_int32(54,1,MPWM,4);
 	oled_p6x8str(42,2,"Er");           oled_printf_int32(54,2,(int)DirError,4);
 	//oled_p6x8str(42,3,"RM");           oled_printf_int32(54,3,roadMode,4);	
-	oled_p6x8str(42,4,"ta");           oled_printf_int32(54,4,mpu_gyro_x + 20,4);             
-	oled_p6x8str(42,5,"ti");           oled_printf_int32(54,5,gyro_x_i / 100,4);
+	oled_p6x8str(42,4,"Ay");           oled_printf_int32(54,4,angle_y,4);             
+	oled_p6x8str(42,5,"ti");           oled_printf_int32(54,5,gyro_x_i / 10000,4);
 	oled_p6x8str(42,6,"IL");           oled_printf_int32(54,6,(int)(leftSpeedInt / 10),4);
 	oled_p6x8str(42,7,"lR");           oled_printf_int32(54,7,(int)(rightSpeedInt / 10),4);
 	

@@ -183,20 +183,6 @@ float angle_calc(float angle_m, float gyro_m)
 }
 */
 
-void MPU6050()
-{
-    get_accdata();	//・ｽ・ｽﾈ｡・ｽ・ｽ・ｽﾙｶﾈｼ・ｽ・ｽ・ｽ・ｽ・ｽ
-    get_gyro();		//・ｽ・ｽﾈ｡・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
-    acc[0]=mpu_acc_x-acc_offset[0];
-    acc[1]=mpu_acc_y-acc_offset[1];
-    acc[2]=mpu_acc_z-acc_offset[2];
-    gyro[0]=mpu_gyro_x-gyro_offset[0];
-    gyro[1]=mpu_gyro_y-gyro_offset[1];
-    gyro[2]=mpu_gyro_z-gyro_offset[2];
-    gyro_x_i+=gyro[0];
-    angle=(int)(gyro_x_i*360.0/700000.0);
-    gyro_y_i+=gyro[1];
-}
 
 /*
 const float fRad2Deg = 57.295779513f; //・ｽ・ｽ・ｽﾈｻ・ｽ・ｽ・ｽﾇｶﾈｳﾋｵ・ｽﾏｵ・ｽ・ｽ
@@ -405,83 +391,85 @@ static float invSqrt(float x) 		//・ｽ・ｽ・ｽﾙｼ・ｽ・ｽ・ｽ 1/S
 
 #define Kp 1.50f
 #define Ki 0.005f
-#define halfT 0.0025f						//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾚｵ・ｽﾒｻ・ｽ・ｬ・ｽ・ｽﾎｻs
+#define halfT 0.0025f						//�������ڵ�һ�룬��λs
 
-float Yaw,Pitch,Roll;				//・ｽ・ｽﾒｪ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾄｼ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾔｶ・ｽ・ｽ・ｽ・ｽ・ｽextern・ｽ・ｽ・ｽ・ｽ・ｽﾃｹ・ｽ
-float q0 = 1, q1 = 0, q2 = 0, q3 = 0;		//・ｽ・ｽﾔｪ・ｽ・ｽ
-float exInt = 0, eyInt = 0, ezInt = 0;		//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾛｼﾆｻ・ｽ・ｽ・ｽ
+float Yaw,Pitch,Roll;				//��Ҫ�������ļ������Զ�����extern�����ù�
+float q0 = 1, q1 = 0, q2 = 0, q3 = 0;		//��Ԫ��
+float exInt = 0, eyInt = 0, ezInt = 0;		//������������ۼƻ���
 
 
 void Imu_Update()
 {
-      MPU6050();
-    ax=(float)acc[0]* Acc_Gain * G;
-    ay=(float)acc[1]* Acc_Gain * G;
-    az=(float)acc[2]* Acc_Gain * G;
-    gx=(float)gyro[0]* Gyro_Gr;
-    gy=(float)gyro[1]* Gyro_Gr;
-    gz=(float)gyro[2]* Gyro_Gr;
-	uint8 i;
-	float vx,vy,vz;							//ﾊｵ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾙｶ・ｽ
-	float ex,ey,ez;							//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
-	float norm;
-	
- 	float q0q0 = q0*q0;
- 	float q0q1 = q0*q1;
-	float q0q2 = q0*q2;
-	float q0q3 = q0*q3;
-	float q1q1 = q1*q1;
- 	float q1q2 = q1*q2;
- 	float q1q3 = q1*q3;
-	float q2q2 = q2*q2;
-	float q2q3 = q2*q3;
-	float q3q3 = q3*q3;
-	
-	if(ax*ay*az == 0)
-		return;
-	
-	//・ｽ・ｽ・ｽﾙｶﾈｼﾆｲ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ(・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾏｵ)
-	norm = invSqrt(ax*ax + ay+ay + az*az);
-	ax = ax * norm;
-	ay = ay * norm;
-	az = az * norm;
-	
-	//・ｽ・ｽﾔｪ・ｽ・ｽ・ｽﾆｳ・ｽ・ｽ・ｽﾊｵ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ(・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾏｵ)
-	vx = 2*(q1q3 - q0q2);												
-  	vy = 2*(q0q1 + q2q3);
-  	vz = q0q0 - q1q1 - q2q2 + q3q3;
-	
-	//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
-	ex = (ay*vz - az*vy);
-	ey = (az*vx - ax*vz);
-	ez = (ax*vy - ay*vx);
-	
-	//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾎｪ・ｽ・ｽ・ｽﾙｶ・ｽ
-	exInt = exInt + ex * Ki;
-	eyInt = eyInt + ey * Ki;
-	ezInt = ezInt + ez * Ki;
-	
-	//・ｽ・ｽ・ｽﾙｶﾈｲ・ｽ・ｽ・ｽ
-	gx = gx + Kp*ex + exInt;
-	gy = gy + Kp*ey + eyInt;
-	gz = gz + Kp*ez + ezInt;
-	
-	//・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾔｪ・ｽ・ｽ
-  	q0 = q0 + (-q1*gx - q2*gy - q3*gz)*halfT;
-  	q1 = q1 + (q0*gx + q2*gz - q3*gy)*halfT;
-  	q2 = q2 + (q0*gy - q1*gz + q3*gx)*halfT;
-  	q3 = q3 + (q0*gz + q1*gy - q2*gx)*halfT;	
-	
-	//・ｽ・ｽﾎｻ・ｽ・ｽ・ｽ・ｽﾔｪ・ｽ・ｽ
-  	norm = invSqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
-  	q0 = q0 * norm;
-  	q1 = q1 * norm;
-  	q2 = q2 * norm;  
-  	q3 = q3 * norm;
-	
-	//・ｽ・ｽﾔｪ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾅｷ・ｽ・ｽ・ｽ・ｽ
-	Yaw = atan2(2.f * (q1q2 + q0q3), q0q0 + q1q1 - q2q2 - q3q3)* 57.3f;
-	Pitch = -asin(2.f * (q1q3 - q0q2))* 57.3f;
-	Roll = atan2(2.f * q2q3 + 2.f * q0q1, q0q0 - q1q1 - q2q2 + q3q3)* 57.3f;
+MPU6050();
+ax=(float)acc[0]* Acc_Gain * G;
+ay=(float)acc[1]* Acc_Gain * G;
+az=(float)acc[2]* Acc_Gain * G;
+gx=(float)gyro[0]* Gyro_Gr;
+gy=(float)gyro[1]* Gyro_Gr;
+gz=(float)gyro[2]* Gyro_Gr;
+uint8 i;
+float vx,vy,vz;							//ʵ���������ٶ�
+float ex,ey,ez;							//�����������
+float norm;
+
+float q0q0 = q0*q0;
+float q0q1 = q0*q1;
+float q0q2 = q0*q2;
+float q0q3 = q0*q3;
+float q1q1 = q1*q1;
+float q1q2 = q1*q2;
+float q1q3 = q1*q3;
+float q2q2 = q2*q2;
+float q2q3 = q2*q3;
+float q3q3 = q3*q3;
+
+if(ax*ay*az == 0)
+return;
+
+//���ٶȼƲ�������������(��������ϵ)
+norm = invSqrt(ax*ax + ay+ay + az*az);
+ax = ax * norm;
+ay = ay * norm;
+az = az * norm;
+
+//��Ԫ���Ƴ���ʵ����������(��������ϵ)
+vx = 2*(q1q3 - q0q2);												
+vy = 2*(q0q1 + q2q3);
+vz = q0q0 - q1q1 - q2q2 + q3q3;
+
+//������
+ex = (ay*vz - az*vy);
+ey = (az*vx - ax*vz);
+ez = (ax*vy - ay*vx);
+
+//���������Ϊ���ٶ�
+exInt = exInt + ex * Ki;
+eyInt = eyInt + ey * Ki;
+ezInt = ezInt + ez * Ki;
+
+//���ٶȲ���
+gx = gx + Kp*ex + exInt;
+gy = gy + Kp*ey + eyInt;
+gz = gz + Kp*ez + ezInt;
+
+//������Ԫ��
+q0 = q0 + (-q1*gx - q2*gy - q3*gz)*halfT;
+q1 = q1 + (q0*gx + q2*gz - q3*gy)*halfT;
+q2 = q2 + (q0*gy - q1*gz + q3*gx)*halfT;
+q3 = q3 + (q0*gz + q1*gy - q2*gx)*halfT;	
+
+//��λ����Ԫ��
+norm = invSqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
+q0 = q0 * norm;
+q1 = q1 * norm;
+q2 = q2 * norm;  
+q3 = q3 * norm;
+
+//��Ԫ������ŷ����
+Yaw = atan2(2.f * (q1q2 + q0q3), q0q0 + q1q1 - q2q2 - q3q3)* 57.3f;
+Pitch = -asin(2.f * (q1q3 - q0q2))* 57.3f;
+Roll = atan2(2.f * q2q3 + 2.f * q0q1, q0q0 - q1q1 - q2q2 + q3q3)* 57.3f;
 }
 */
+
+

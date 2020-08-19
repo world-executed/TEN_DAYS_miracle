@@ -93,6 +93,7 @@
 #include "ADCSAMPLE.h"
 #include "SCANCALCULATE.h"
 #include "GARAGE.h"
+#include "RING.h"
 	 
 #endif
 

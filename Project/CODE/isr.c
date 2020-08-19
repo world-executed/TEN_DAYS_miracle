@@ -1,20 +1,16 @@
 #include "headfile.h"
 
-//用recordNum代替allNum
-float speedK = 0.5;
-
 uint8 pit=0;
 int CountNum = 0;
 uint8 StopFlag = 1;
 
 int roadMode;
 
-int recordNum = 0;
-
 int gyro_x_i = 0;
 int gyro_y_i = 0;
 int gyro_z_i = 0;
-int16 angle = 0;
+
+int recordNum = 0;
 
 float OSC[8]={0.0};
 
@@ -22,13 +18,13 @@ float Yaw,Pitch,Roll;
 
 void CSI_IRQHandler(void)
 {
-	CSI_DriverIRQHandler();     //����SDK�Դ����жϺ��� ���������������������õĻص�����
-	__DSB();                    //����ͬ������
+  CSI_DriverIRQHandler();     //����SDK�Դ����жϺ��� ���������������������õĻص�����
+  __DSB();                    //����ͬ������
 }
 
 void PIT_1MS()
 {
-	ADCSample(pit);
+  ADCSample(pit);
 }
 
 void PIT_5MS()
@@ -80,36 +76,39 @@ void PIT_5MS()
 		
 		if(speedStatus[nowPos] == 0) //进弯出弯状态
 		{
-			if(dip[1]) gpio_set(D16,1);
+			if(dip[2]) gpio_set(D16,1);
 			dirpid.p = 1.2 * sp;
-			relation = 0.5;
+			relation = 1.0;
 		}
 		else if(speedStatus[nowPos] == 1)	//直道
 		{
-			if(dip[0]) dirpid.p = lp; else  dirpid.p = sp;
-			if(dip[1]) gpio_set(D16,0);    //ֱ��
-			relation = 0.8;
+			if(dip[1]) dirpid.p = lp; else  dirpid.p = sp;
+			if(dip[2]) gpio_set(D16,0);    //ֱ��
+			relation = 1.0;
 			dirpid.p = 0.8 * sp;
 		}
 		else if(speedStatus[nowPos] == 8)	//弯道
 		{
 			dirpid.p = sp;
-			if(dip[1]) gpio_set(D16,0);
-			relation = 0.5;
+			if(dip[2]) gpio_set(D16,0);
+			relation = 1.0;
 			dirpid.p = 1.5 * sp;
 		}
 		
 	}
 	
-	dip[0]=gpio_get(C25); //1you
-	dip[1]=gpio_get(C26); //0zuo
-	dip[2]=gpio_get(C27);
-	dip[3]=gpio_get(C28);
+	      if(inring_st)
+        dirpid.p=sp;
+  dip[0]=gpio_get(C28); //1you
+  dip[1]=gpio_get(C27); //0zuo
+  dip[2]=gpio_get(C26);
+  dip[3]=gpio_get(C25);
 	
 	//Imu_Update();
 	//ImuCalculate_Complementary();
 	//Prepare_Data();
 	MPU6050();
+	RingProcess();
 	GetError();
 	//DynamicPID();
 	ADCTest();
@@ -119,7 +118,7 @@ void PIT_5MS()
 		if(recordMode != 2)
 		{
 			//dirpid.p = sp;
-			Dir_control(DirError);
+			RDir_control(DirError, 1.0);
 			//dirpid.p = static_p;
 		}
 		else if(recordMode == 2)
@@ -156,11 +155,7 @@ void PIT_5MS()
 	
 	if (CountNum > 200)
 		StopFlag = 1;
-	
-	if(ringstate==0)
-		ringjudge_st();
-	if(ringstate==1);
-	//ringjudge_nd();
+
 	
 	if(recording)
 	{
@@ -197,7 +192,6 @@ void PIT_5MS()
 	OSC[7]=rightSpeedInt/10;
 	vcan_sendware(OSC,sizeof(OSC));
 	*/
-	ring_int();
 	
 	hillProcess();
 	chuku();

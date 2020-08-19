@@ -30,10 +30,10 @@ int turnFlag = 0;
 int isTurnEnable = 0;
 
 double pureError = 0.0;
-int LockFlag = 0;        //1ÎªËøËÀ
+int LockFlag = 0;        //1Îªï¿½ï¿½ï¿½ï¿½
 
 DIRPID dirpid;
-
+/*
 void Dir_control(float error)
 {
 	dirpid.err=-error;
@@ -43,10 +43,18 @@ void Dir_control(float error)
   
   dirpid.lasterr=dirpid.err;
   
-  MPWM=(int)range(tMPWM,-90,90);
-  ringProcess();
+  
+  MPWM=(int)range(tMPWM,-85,85);
+    //ï¿½ï¿½ï¿½
+  if(readyinring_st)
+  {
+        ring_servo=SetLeftSpeed+20;
+      MPWM=ring_servo+range((ADC[4]-ADC[5])/200,-15,15);
+      MPWM=(int)range(MPWM,-85,85);
+      
+  }
   pwm_duty(PWM4_MODULE2_CHA_C30, MPWM+SERVO_MID);
-}
+}*/
 
 
 void RDir_control(float error, float relation)
@@ -58,21 +66,27 @@ void RDir_control(float error, float relation)
 	
 	dirpid.lasterr=dirpid.err;
 	
-	MPWM = (1.0 - relation) * (servo_tem[nowPos] / 10) + relation * tMPWM;
-	MPWM = (int)range(MPWM,-90,90);
+	MPWM = (1.0 - relation) * (servo_tem[nowPos] / 10) + relation * tMPWM;	
+	
+	if(readyinring_st)
+	{
+		ring_servo=SetLeftSpeed+10;
+		MPWM=ring_servo+range((ADC[4]-ADC[5])/200,-15,15);
+	}
+	MPWM=(int)range(MPWM,-85,85);
 	pwm_duty(PWM4_MODULE2_CHA_C30, MPWM+SERVO_MID);
 }
 
 
-//Ïà¹Ø¶È¼ÆËã----ÍêÈ«Ò»ÖÂÎª0
-//1£©ÍäµÀ£ºabs(Ó¦DirError - DirError)ÓëÓ¦DirErrorÖ®±È
-//2£©Ö±µÀ£ºabs£¨DirError£©ÓëÉè¶¨×î´óErrorÖ®±È
+//ï¿½ï¿½Ø¶È¼ï¿½ï¿½ï¿½----ï¿½ï¿½È«Ò»ï¿½ï¿½Îª0
+//1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½abs(Ó¦DirError - DirError)ï¿½ï¿½Ó¦DirErrorÖ®ï¿½ï¿½
+//2ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½absï¿½ï¿½DirErrorï¿½ï¿½ï¿½ï¿½ï¿½è¶¨ï¿½ï¿½ï¿½ErrorÖ®ï¿½ï¿½
 /*
 void relatedCal()
 {
-	if(status[nowPos] != 1)	//ÍäµÀ
+	if(status[nowPos] != 1)	//ï¿½ï¿½ï¿½
 	{
-		rela = fabs((servotem[nowPos] + dirpid.p * DirError) / servotem[nowPos]);		//ÍêÈ«Ò»ÖÂÎª0	
+		rela = fabs((servotem[nowPos] + dirpid.p * DirError) / servotem[nowPos]);		//ï¿½ï¿½È«Ò»ï¿½ï¿½Îª0	
 		relation = range(rela, 0.0, 1.0);
 	}
 	else if (status[nowPos] == 1)
@@ -112,8 +126,10 @@ void GetError()
 		ADCL = 0;
 	if(StopFlag == 0)
 		pureError = -(double)(sqrt(ADCL)-sqrt(ADCR))/(ADCL+ADCR);
+      //pureError=-(sqrt(ADC[4])-sqrt(ADC[5]))/(ADC[4]+ADC[5]+ADC[0]);
 	else
 		pureError = 0;
 
 	DirError=errorK * pureError;
+    //DirError=5000*pureError;
 }

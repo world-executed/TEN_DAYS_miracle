@@ -1,21 +1,212 @@
 #include "headfile.h"
 
 uint8 hillFlag=0;
-int8 FANGXIANG=1;//1ÎªË³Ê±ï¿½ë£¬-1Îªï¿½ï¿½Ê±ï¿½ï¿½
+int FANGXIANG=1;//1ÎªË³Ê±Õë£¬-1ÎªÄæÊ±Õë
 uint8 chukuFlag=0;
 uint8 rukuFlag=0;
 uint8 th=128;
 uint8 jumpnum=0;
 uint8 jumpnum_b=0;
 int32 gyro_x_i_ruku=0;
+uint8 Zebra_line = 0;
+uint8 startline=40;
+
+float angle_x=0;
+float angle_y=0;
+
+/*
+float acc_ratio = 1.6;      //¼ÓËÙ¶È¼Æ±ÈÀý    
+float gyro_ratio = 4.08;    //ÍÓÂÝÒÇ±ÈÀý   
+float Complementary_filter(float angle_m, float gyro_m, uint8 i)    
+{    
+float temp_angle;               
+float gyro_now;    
+float error_angle;    
+
+static float last_angle[2];    
+static uint8 first_angle[2];    
+
+if(!first_angle[i])//ÅÐ¶ÏÊÇ·ñÎªµÚÒ»´ÎÔËÐÐ±¾º¯Êý    
+{    
+//Èç¹ûÊÇµÚÒ»´ÎÔËÐÐ£¬Ôò½«ÉÏ´Î½Ç¶ÈÖµÉèÖÃÎªÓë¼ÓËÙ¶ÈÖµÒ»ÖÂ    
+first_angle[i] = 1;    
+last_angle[i] = angle_m;    
+  }    
+
+gyro_now = gyro_m * gyro_ratio;    
+
+//¸ù¾Ý²âÁ¿µ½µÄ¼ÓËÙ¶ÈÖµ×ª»»Îª½Ç¶ÈÖ®ºóÓëÉÏ´ÎµÄ½Ç¶ÈÖµÇóÆ«²î    
+error_angle = (angle_m - last_angle[i])*acc_ratio;  
+
+//¸ù¾ÝÆ«²îÓëÍÓÂÝÒÇ²âÁ¿µÃµ½µÄ½Ç¶ÈÖµ¼ÆËãµ±Ç°½Ç¶ÈÖµ    
+temp_angle = last_angle[i] + (error_angle + gyro_now)*0.005;   
+
+//±£´æµ±Ç°½Ç¶ÈÖµ    
+last_angle[i] = temp_angle;  
+
+return temp_angle;    
+}
+
+
+
+void MPU6050()
+{
+static float angle_x_gyro;
+static float angle_x_acc;
+static float angle_y_gyro;
+static float angle_y_acc;
+get_accdata();	//»ñÈ¡¼ÓËÙ¶È¼ÆÊý¾Ý
+get_gyro();		//»ñÈ¡ÍÓÂÝÒÇÊý¾Ý
+acc[0]=mpu_acc_x;
+acc[1]=mpu_acc_y;
+acc[2]=mpu_acc_z;
+gyro[0]=mpu_gyro_x-gyro_offset[0];
+gyro[1]=mpu_gyro_y-gyro_offset[1];
+gyro[2]=mpu_gyro_z-gyro_offset[2];
+
+gyro_x_i+=gyro[0];
+angle_x_gyro=gyro_x_i*360.0/700000.0;
+angle_x_acc=1023-atan2(acc[2],acc[1])*57.3;
+
+angle_x=Complementary_filter(angle_x_acc,angle_x_gyro,0);
+
+gyro_y_i+=gyro[1];
+angle_y_gyro=gyro_y_i*360.0/700000.0;
+angle_y_acc=76-atan2(acc[0],acc[2])*57.3;
+
+angle_y=Complementary_filter(angle_y_acc,angle_y_gyro,1);
+}
+*/
+
+float Complementary_filter_1_order(float angle_m, float gyro_m)
+{
+  static float angle_R;
+  float K1 =0.1;
+  angle_R = K1 * angle_m + (1-K1) * (angle_R + gyro_m * 0.005);
+  return angle_R;
+}
+
+
+float acc_ratio = 1.0;      //¼ÓËÙ¶È¼Æ±ÈÀý    
+float gyro_ratio = 4.08;    //ÍÓÂÝÒÇ±ÈÀý  
+float Complementary_filter(float angle_m, float gyro_m)    
+{    
+  float temp_angle;               
+  float gyro_now;    
+  float error_angle;    
+  
+  static float last_angle;    
+  static uint8 first_angle;    
+  
+  if(!first_angle)//ÅÐ¶ÏÊÇ·ñÎªµÚÒ»´ÎÔËÐÐ±¾º¯Êý    
+  {    
+    //Èç¹ûÊÇµÚÒ»´ÎÔËÐÐ£¬Ôò½«ÉÏ´Î½Ç¶ÈÖµÉèÖÃÎªÓë¼ÓËÙ¶ÈÖµÒ»ÖÂ    
+    first_angle = 1;    
+    //last_angle = angle_m; 
+    last_angle=gyro_m;
+  }    
+  
+  gyro_now = gyro_m * gyro_ratio;    
+  
+  //¸ù¾Ý²âÁ¿µ½µÄ¼ÓËÙ¶ÈÖµ×ª»»Îª½Ç¶ÈÖ®ºóÓëÉÏ´ÎµÄ½Ç¶ÈÖµÇóÆ«²î    
+  error_angle = (angle_m - last_angle)*acc_ratio;  
+  
+  //¸ù¾ÝÆ«²îÓëÍÓÂÝÒÇ²âÁ¿µÃµ½µÄ½Ç¶ÈÖµ¼ÆËãµ±Ç°½Ç¶ÈÖµ    
+  temp_angle = last_angle + (error_angle + gyro_now)*0.005;   
+  
+  //±£´æµ±Ç°½Ç¶ÈÖµ    
+  last_angle = temp_angle;  
+  
+  return temp_angle;    
+}
+
+
+
+void MPU6050()
+{
+  static float angle_x_gyro;
+  static float angle_x_acc;
+  static float angle_y_gyro;
+  static float angle_y_acc;
+  
+  static float angle_y_bias=81;
+  get_accdata();	//»ñÈ¡¼ÓËÙ¶È¼ÆÊý¾Ý
+  get_gyro();		//»ñÈ¡ÍÓÂÝÒÇÊý¾Ý
+  acc[0]=mpu_acc_x;
+  acc[1]=mpu_acc_y;
+  acc[2]=mpu_acc_z;
+  gyro[0]=mpu_gyro_x-gyro_offset[0];
+  gyro[1]=mpu_gyro_y-gyro_offset[1];
+  gyro[2]=mpu_gyro_z-gyro_offset[2];
+  
+  gyro_x_i+=gyro[0];
+  angle_x_gyro=gyro_x_i*360.0/GYRO360;
+  angle_x=angle_x_gyro;//²»ÓÃ»¥²¹ÂË²¨
+  
+  
+  gyro_y_i+=gyro[1];
+  angle_y_gyro=gyro_y_i*360.0/GYRO360;
+  angle_y_acc=angle_y_bias-atan2(acc[0],acc[2])*57.3;
+  
+  angle_y=Complementary_filter_1_order(angle_y_acc,angle_y_gyro);//Ê¹ÓÃ»¥²¹ÂË²¨
+}
+
+
 void hillProcess()
 {
-  if(gyro[1]>1000&&hillFlag==0&&chukuFlag==2)
-    hillFlag=1;//ï¿½ï¿½ï¿½ï¿½
-  if(gyro[1]<-1000&&hillFlag==1)
-    hillFlag=2;//ï¿½Â¶ï¿½
-  if(gyro[1]>1000&&hillFlag==2)
-    hillFlag=3;//ï¿½ï¿½ï¿½ï¿½Âµï¿½
+  uint16 vision_loss=0;
+  for(uint8 i = 0;i<64;i++)
+    for(uint8 j=0;j<128;j++)
+      if(mt9v03x_csi_image[i][j]>100)
+        vision_loss++;//°×µã¼ÆÊý
+  
+  if(vision_loss>64*128-5&&hillFlag==0&&chukuFlag==2)
+    hillFlag=1;
+  
+  /*TODO:ÆÂµÀÑÓÊ±¼ì²â*/
+  static uint16 hill_prev_int;
+
+  if(hillFlag==1&&angle_y<20)
+  {
+    hill_prev_int++;
+  }
+  if(hill_prev_int>500)//500¸öÖÜÆÚºó»¹ÊÇÃ»ÓÐÉÏÆÂ
+  {
+    hillFlag=0;
+    hill_prev_int=0;
+  }
+
+    
+
+  static uint16 hill_int;
+  if(angle_y>20&&hillFlag==1)
+    hillFlag=2;//ÉÏÆÂ
+  if(hillFlag==2&&hill_int==0)
+    hill_int++;
+  if(hill_int)
+  {
+    
+    hill_int++;
+    if(hill_int==170)
+      hillFlag=3;
+    if(hill_int==200)
+    {
+      hillFlag=4;
+      hill_int=0;
+      
+    }
+    
+  }/*
+  if(angle_y>20&&hillFlag==1)
+  {
+    hillFlag=2;//ÉÏÆÂ
+    hill_prev_int=0;
+  }
+  if(angle_y<-3&&hillFlag==2)
+    hillFlag=3;
+  if(angle_y>-1&&hillFlag==3)
+    hillFlag=4;
+  */
   
 }
 
@@ -23,36 +214,41 @@ void hillProcess()
 void ruku()
 {
   
-  static uint8 banmaxian[128*3]={0};
-  static uint8 banmaxian_b[128*3]={0};
+  //static uint8 banmaxian[128*3]={0};
+  //static uint8 banmaxian_b[128*3]={0};
   
   
   if(mt9v03x_csi_finish_flag)
   {
     mt9v03x_csi_finish_flag=0;
-
-    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½10ï¿½ï¿½ 50ï¿½ÐµÄµã£¬mt9v03x_csi_image[10][50]ï¿½Í¿ï¿½ï¿½ï¿½ï¿½ï¿½
+    /*
+    //ÀýÈç·ÃÎÊµÚ10ÐÐ 50ÁÐµÄµã£¬mt9v03x_csi_image[10][50]¾Í¿ÉÒÔÁË
     for(int i=0;i<128*3;i++)
     {
-      banmaxian[i]=mt9v03x_csi_image[i/128+20][i%128];
-      banmaxian_b[i]=mt9v03x_csi_image[i/128+50][i%128];
-    }
+    banmaxian[i]=mt9v03x_csi_image[i/128+20][i%128];
+    banmaxian_b[i]=mt9v03x_csi_image[i/128+50][i%128];
+  }
     jumpnum=0;jumpnum_b=0;
     for(int i=1;i<128*3;i++)
     {
-      
-      if((banmaxian[i-1]<110&&banmaxian[i]>110)||(banmaxian[i-1]>110&&banmaxian[i]<110))
-        jumpnum++;
-            if((banmaxian_b[i-1]<110&&banmaxian_b[i]>110)||(banmaxian_b[i-1]>110&&banmaxian_b[i]<110))
-        jumpnum_b++;
-    }
+    
+    if((banmaxian[i-1]<110&&banmaxian[i]>110)||(banmaxian[i-1]>110&&banmaxian[i]<110))
+    jumpnum++;
+    if((banmaxian_b[i-1]<110&&banmaxian_b[i]>110)||(banmaxian_b[i-1]>110&&banmaxian_b[i]<110))
+    jumpnum_b++;
+  }
     
     
-
-    if(jumpnum>20&&hillFlag==3&&rukuFlag==0)//ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
-      rukuFlag=1;//Ô¤Ê¶ï¿½ï¿½
+    
+    if(jumpnum>20&&hillFlag==3&&rukuFlag==0)//ÒÑ¾­¾­¹ýÆÂµÀ
+    rukuFlag=1;//Ô¤Ê¶±ð
     if(jumpnum_b>16&&hillFlag==3&&rukuFlag<=1)
+    rukuFlag=2;
+    */
+    check_zebra_line();
+    if(Zebra_line&&hillFlag==4&&rukuFlag<=1)
       rukuFlag=2;
+    
   }
   
   
@@ -60,59 +256,95 @@ void ruku()
   {
     
     gyro_x_i_ruku+=gyro[0];
-    int angle_ruku=(int)(gyro_x_i_ruku*360.0/700000.0);
+    int angle_ruku=gyro_x_i_ruku*360.0/GYRO360;
     pwm_duty(PWM4_MODULE2_CHA_C30,80*FANGXIANG+SERVO_MID);
-    if(abs(angle_ruku)>80)
+    if(abs(angle_ruku)>70)
     { 
       rukuFlag=3;
       gyro_x_i_ruku=0;
       StopCar();
     }
   }
+  
+  
 }
-
 void chuku()
 {
-/*
-  if(dip[0])//1ï¿½Å²ï¿½ï¿½ë¿ªï¿½Ø¿ï¿½ï¿½Å£ï¿½ÎªË³Ê±ï¿½ï¿½
-    FANGXIANG=1;
+  
+  if(dip[3])//4ºÅ²¦Âë¿ª¹Ø¿ª×Å£¬ÎªË³Ê±Õë
+  FANGXIANG=1;
   else
-    FANGXIANG=-1;
-  */
+  FANGXIANG=-1;
+  
+  
+  
+  
   if(chukuFlag==1)
   {
-    int8 servo_bias=100-(int)(FANGXIANG*angle*0.9);
+    int8 servo_bias=100-(int)(FANGXIANG*angle_x*0.9);
     servo_bias=range(servo_bias,-70,70);
     
-    if(angle<80)
+    if(angle_x<70)
     {
       pwm_duty(PWM4_MODULE2_CHA_C30,servo_bias*FANGXIANG+SERVO_MID);
     }
     else
     {
-		AllZero();
       chukuFlag=2;
     }
     
+    
   }
+  
 }
 
 void StopCar()
 {
   pwm_duty(PWM4_MODULE2_CHA_C30,SERVO_MID);
   
-  pwm_duty(PWM1_MODULE0_CHB_D13,0);//ï¿½ï¿½
-  pwm_duty(PWM1_MODULE0_CHA_D12,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHA_D14,0);//ï¿½Ò·ï¿½
+  pwm_duty(PWM1_MODULE0_CHB_D13,0);//×ó·´
+  pwm_duty(PWM1_MODULE0_CHA_D12,0);//×óÕý
+  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ÓÒÕý
+  pwm_duty(PWM1_MODULE1_CHA_D14,0);//ÓÒ·´
   systick_delay_ms(5);
-  pwm_duty(PWM1_MODULE0_CHB_D13,4000);//ï¿½ï¿½
-  pwm_duty(PWM1_MODULE0_CHA_D12,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHA_D14,4000);//ï¿½Ò·ï¿½
+  pwm_duty(PWM1_MODULE0_CHB_D13,8000);//×ó·´
+  pwm_duty(PWM1_MODULE0_CHA_D12,0);//×óÕý
+  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ÓÒÕý
+  pwm_duty(PWM1_MODULE1_CHA_D14,8000);//ÓÒ·´
   systick_delay_ms(250);
-  pwm_duty(PWM1_MODULE0_CHB_D13,0);//ï¿½ï¿½
-  pwm_duty(PWM1_MODULE0_CHA_D12,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHA_D14,0);//ï¿½Ò·ï¿½
+  pwm_duty(PWM1_MODULE0_CHB_D13,0);//×ó·´
+  pwm_duty(PWM1_MODULE0_CHA_D12,0);//×óÕý
+  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ÓÒÕý
+  pwm_duty(PWM1_MODULE1_CHA_D14,0);//ÓÒ·´
+}
+
+uint8 black_blocks;
+void check_zebra_line()
+{
+  black_blocks = 0;
+  startline=-0.5*(SetLeftSpeed-40)+50;
+  for (uint8 y = startline; y < startline+3; y++)
+  {
+    
+    uint8 cursor = 0;    //Ö¸ÏòÕ»¶¥µÄÓÎ±ê
+    for (uint8 x = 0; x <= 128; x++)
+    {
+      if (mt9v03x_csi_image[y][x] <110)//ºÚÉ«
+      {
+        cursor++;
+        cursor%=40;
+      }
+      else //°×É«
+      {
+        if (cursor >= 3 && cursor <= 20)
+          black_blocks++;
+        cursor = 0;
+      }
+    }  
+  }
+  
+  if (black_blocks>10)
+    Zebra_line = 1;
+  else 
+    Zebra_line = 0;
 }

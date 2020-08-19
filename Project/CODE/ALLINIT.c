@@ -3,68 +3,69 @@
 float static_p = 1.30;
 float static_d = 0.02;
 
-uint8 dip[4]={0};				//²¦Âë¿ª¹Ø
-uint8 ring_r_st=80;				//µÚÒ»¸ö»·µÄÇúÂÊ
-uint8 ring_r_nd=50;				//µÚ¶þ¸ö»·µÄÇúÂÊ
-int32 gyro_offset[3]={0};		//½ÇËÙ¶È¼ÆÆ«ÒÆ
-int32 acc_offset[3]={0};		//¼ÓËÙ¶È¼ÆÆ«ÒÆ
+uint8 dip[4]={0};				//ï¿½ï¿½ï¿½ë¿ªï¿½ï¿½
+uint8 ring_r_st=80;				//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+uint8 ring_r_nd=50;				//ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+int32 gyro_offset[3]={0};		//ï¿½ï¿½ï¿½Ù¶È¼ï¿½Æ«ï¿½ï¿½
+int32 acc_offset[3]={0};		//ï¿½ï¿½ï¿½Ù¶È¼ï¿½Æ«ï¿½ï¿½
 
 float sp = 0.0;
 float lp = 0.0;
 
-//PID²ÎÊý³õÊ¼»¯
+//PIDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
 void PID_init()
 {
 
     pid_l.err=0;
     pid_l.lasterr=0;
     pid_l.preverr=0;
-    pid_l.p=8;
-    pid_l.i=1.2;
+    pid_l.p=55;
+    pid_l.i=10;
     pid_l.d=0;
     
 
     pid_r.err=0;
     pid_r.lasterr=0;
     pid_r.preverr=0;
-    pid_r.p=8;
-    pid_r.i=1.2;
+    pid_r.p=55;
+    pid_r.i=10;
     pid_r.d=0;
     
     
-    dirpid.p=static_p;
+    dirpid.p=lp;
     dirpid.i=0.00;
-    dirpid.d=static_d;
+    dirpid.d=0.02;
     dirpid.err=0;
     dirpid.lasterr=0;
     dirpid.preverr=0;
     
+
 }
 
 void AllInit()
 {
   DisableGlobalIRQ();
-  board_init();//Îñ±Ø±£Áô£¬±¾º¯ÊýÓÃÓÚ³õÊ¼»¯MPU Ê±ÖÓ µ÷ÊÔ´®¿Ú
-  systick_delay_ms(300);	//ÑÓÊ±300ms£¬µÈ´ýÖ÷°åÆäËûÍâÉèÉÏµç³É¹¦
+  board_init();//ï¿½ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½MPU Ê±ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½
+  systick_delay_ms(300);	//ï¿½ï¿½Ê±300msï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½É¹ï¿½
   
   pwm_init(PWM1_MODULE0_CHB_D13, 13*1000, 0);
   pwm_init(PWM1_MODULE0_CHA_D12, 13*1000, 0);
   pwm_init(PWM1_MODULE1_CHB_D15, 13*1000, 0);
   pwm_init(PWM1_MODULE1_CHA_D14, 13*1000, 0);
-  pwm_init(PWM4_MODULE2_CHA_C30, 50, SERVO_MID);//¶æ»ú
+  pwm_init(PWM4_MODULE2_CHA_C30, 50, SERVO_MID);//ï¿½ï¿½ï¿½
   
   
   qtimer_quad_init(QTIMER_1,QTIMER1_TIMER0_C0,QTIMER1_TIMER1_C1);
   qtimer_quad_init(QTIMER_1,QTIMER1_TIMER2_C2,QTIMER1_TIMER3_C24);
   
-  PID_init();         //PID³õÊ¼»¯
-  pit_init();                                 //³õÊ¼»¯PIT0£¬×îÐ¡²ÉÑù10ms
+  PID_init();         //PIDï¿½ï¿½Ê¼ï¿½ï¿½
+  pit_init();                                 //ï¿½ï¿½Ê¼ï¿½ï¿½PIT0ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½10ms
   pit_interrupt_ms(PIT_CH0,1);
   NVIC_SetPriority(PIT_IRQn,15);
   
   oled_init();
   key_init(KEY_MAX);
-  gpio_init (C25, GPI,0,GPIO_PIN_CONFIG);   //²¦Âë
+  gpio_init (C25, GPI,0,GPIO_PIN_CONFIG);   //ï¿½ï¿½ï¿½ï¿½
   gpio_init (C26, GPI,0,GPIO_PIN_CONFIG);   
   gpio_init (C27, GPI,0,GPIO_PIN_CONFIG);
   gpio_init (C28, GPI,0,GPIO_PIN_CONFIG);
@@ -77,15 +78,15 @@ void AllInit()
   adc_init(ADC_1,ADC1_CH8_B19,ADC_12BIT);
 
   
-  gpio_init (D16, GPO,0,GPIO_PIN_CONFIG); //·äÃùÆ÷³õÊ¼»¯
+  gpio_init (D16, GPO,0,GPIO_PIN_CONFIG); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
   oled_p6x8str(0,0,"Camera Initializing");
   
   
-  mt9v03x_csi_init();//³õÊ¼»¯ÉãÏñÍ· Ê¹ÓÃCSI½Ó¿Ú
+  mt9v03x_csi_init();//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í· Ê¹ï¿½ï¿½CSIï¿½Ó¿ï¿½
   oled_p6x8str(0,2,"IIC Initializing");
-  simiic_init();		//Ä£ÄâIIC³õÊ¼»¯
+  simiic_init();		//Ä£ï¿½ï¿½IICï¿½ï¿½Ê¼ï¿½ï¿½
   oled_p6x8str(0,4,"MPU6050 Initializing");
-	mpu6050_init();		//³õÊ¼»¯ÁùÖá¼ÓËÙ¶È¼ÆÍÓÂÝÒÇ
+	mpu6050_init();		//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   systick_delay_ms(200);
   oled_fill(0x00);
 
@@ -97,7 +98,7 @@ void AllInit()
     acc_offset[1]=-70;
     acc_offset[2]=1350;
 
-	//ÁÙÊ±
+	//ï¿½ï¿½Ê±
 	//elementFind();
 	//eachLenth();
 	//aveServo();
@@ -108,7 +109,7 @@ void AllInit()
 		switch(status[i])
 		{
 		case 2: case 6:
-			status[i] = 6; break;				//ÊÂÊµÉÏ£¬2Îª×¼±¸×ó×ª£¬7ÕýÔÚ×ó×ª£¬6ÒÑ¾­×ó×ª£»
+			status[i] = 6; break;				//ï¿½ï¿½Êµï¿½Ï£ï¿½2Îª×¼ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½7ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½6ï¿½Ñ¾ï¿½ï¿½ï¿½×ªï¿½ï¿½
 		case 0: case 9:
 			status[i] = 9; break;
 		default:

@@ -5,6 +5,10 @@
         <encoding>UTF-8</encoding>
     </override>
     <override>
+        <path>C:\Users\a1876\Documents\GitHub\RT1064_TEN_DAYS\Project\CODE\OLED.c</path>
+        <encoding>GB2312</encoding>
+    </override>
+    <override>
         <path>C:\Users\a1876\Documents\GitHub\RT1064_TEN_DAYS\Project\CODE\main.c</path>
         <encoding>GB2312</encoding>
     </override>

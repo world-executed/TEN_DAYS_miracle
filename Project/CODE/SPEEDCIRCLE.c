@@ -1,7 +1,7 @@
 #include "headfile.h"
 
-int16 SetLeftSpeed  = 80;
-int16 SetRightSpeed = 80;
+int16 SetLeftSpeed  = 0;
+int16 SetRightSpeed = 0;
 int setLeftSpeed_L = 0;
 int setRightSpeed_L = 0;
 int leftSpeedInt = 0;
@@ -28,91 +28,93 @@ int16 PID_control(PID *pid,int16 goalspeed,int16 actualspeed)
 
 void SpeedControl()
 {
-	RightSpeed = qtimer_quad_get(QTIMER_1,QTIMER1_TIMER2_C2 );          //»ñÈ¡FTM Õý½»½âÂë µÄÂö³åÊý(¸ºÊý±íÊ¾·´·½Ïò)
+	RightSpeed = qtimer_quad_get(QTIMER_1,QTIMER1_TIMER2_C2 );          //ï¿½ï¿½È¡FTM ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 	LeftSpeed = -qtimer_quad_get(QTIMER_1,QTIMER1_TIMER0_C0 );
 	qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER0_C0 );
 	qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER2_C2 );
 	
+		if (MPWM < -35)	//ï¿½ï¿½×ª
+	{
+		setLeftSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM));
+		setRightSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM)) * (0.97530982 - 0.00425803 * abs(MPWM));
+	} else if(MPWM > 35){	//ï¿½ï¿½×ª
+		setRightSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM));
+		setLeftSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM)) * (0.97530982 - 0.00425803 * abs(MPWM));
+	}
 
-	if (MPWM < -35)	//ÓÒ×ª
-	{
-	setLeftSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM));
-	setRightSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM)) * (0.97530982 - 0.00425803 * abs(MPWM));
-} else if(MPWM > 35){	//×ó×ª
-	setRightSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM));
-	setLeftSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM)) * (0.97530982 - 0.00425803 * abs(MPWM));
-}	else {
-	setRightSpeed_L = SetLeftSpeed;
-	setLeftSpeed_L = SetLeftSpeed; 
-}	
-/*	if (MPWM < -35)	//ÓÒ×ª
-	{
-		setLeftSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00825803 * abs(MPWM));
-		setRightSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00825803 * abs(MPWM)) * (0.97530982 - 0.00825803 * abs(MPWM));
-	} else if(MPWM > 35){	//×ó×ª
-		setRightSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00825803 * abs(MPWM));
-		setLeftSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00825803 * abs(MPWM)) * (0.97530982 - 0.00825803 * abs(MPWM));
-	}	else {
-		setRightSpeed_L = SetLeftSpeed;
-		setLeftSpeed_L = SetLeftSpeed; 
-	}	*/
-	
-	if(speedStatus[nowPos] == 0) //½øÍä³öÍä×´Ì¬
-	{
-		setRightSpeed_L = 0.6 * setRightSpeed_L;
-	}
-	else if(speedStatus[nowPos] == 8)	//ÍäµÀ
-	{
-		setRightSpeed_L = 0.8 * setRightSpeed_L;
-	}
-	
+
+    else
+    {
+      setRightSpeed_L=SetRightSpeed;
+      setLeftSpeed_L=SetLeftSpeed;
+    }
+
+    if(abs(angle_ring)>270&&abs(angle_ring)<355)
+    {
+      setRightSpeed_L=setRightSpeed_L*0.7;
+      setLeftSpeed_L=setLeftSpeed_L*0.7;
+    }
+      
 	PWML+=PID_control(&pid_l,setLeftSpeed_L,LeftSpeed);
 	PWMR+=PID_control(&pid_r,setRightSpeed_L,RightSpeed);
 	
 	leftSpeedInt += LeftSpeed;
 	rightSpeedInt += RightSpeed;
 	
-	PWML=range(PWML,0,5000);
-	PWMR=range(PWMR,0,5000);
+	PWML=range(PWML,-5000,5000);
+	PWMR=range(PWMR,-5000,5000);
 }
 
 void setSpeed() 
 {
-	/***********************
-	StopFlag==1       pwm=0
-	StopFlag==0       pwm=PWM
-	chukuFlag==0      pwm=0
-	chukuFlag==1      pwm=3000
-	chukuFlag==2      pwm=PWM
-	rukuFlag==0       pwm=PWM
-	rukuFlag==1       pwm=3000
-	rukuFlag==2       pwm=3000
-	rukuFlag==3       pwm=0
-	***********************/
-	PWML=range(PWML,0,5000);
-	PWMR=range(PWMR,0,5000);
-	
-	
-	if(chukuFlag==0||rukuFlag==3)//ÔÚ¿âÖÐ
-		PWML=PWMR=0;
-	else if(chukuFlag==1 && recording == 1)
-		PWML=PWMR=3000;// ³ö¿âËÙ¶È
-	else if(chukuFlag==1 && recording == 0)
-		PWML=PWMR=5000;// ³ö¿âËÙ¶È
-	else if(rukuFlag==1||rukuFlag==2)
-		PWML=PWMR=1500;//Èë¿âËÙ¶È
-	else//Õý³£ÐÐÊ»
-	{
-		if(StopFlag==1)
-		{PWML=PWMR=0;/*StopCar();*/}
-	}
-	
-	
-	
-	pwm_duty(PWM1_MODULE0_CHB_D13,0);//×ó·´
-	pwm_duty(PWM1_MODULE0_CHA_D12,PWML);//×óÕý
-	pwm_duty(PWM1_MODULE1_CHB_D15,PWMR);//ÓÒÕý
-	pwm_duty(PWM1_MODULE1_CHA_D14,0);//ÓÒ·´
-	
-	
+/***********************
+StopFlag==1       pwm=0
+StopFlag==0       pwm=PWM
+chukuFlag==0      pwm=0
+chukuFlag==1      pwm=3000
+chukuFlag==2      pwm=PWM
+rukuFlag==0       pwm=PWM
+rukuFlag==1       pwm=3000
+rukuFlag==2       pwm=3000
+rukuFlag==3       pwm=0
+***********************/
+  PWML=range(PWML,-5000,5000);
+  PWMR=range(PWMR,-5000,5000);
+  
+    
+  if(chukuFlag==0||rukuFlag==3)//ï¿½Ú¿ï¿½ï¿½ï¿½
+    PWML=PWMR=0;
+  else if(chukuFlag==1)
+    PWML=PWMR=3000;// ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
+  else if(rukuFlag==1||rukuFlag==2)
+    PWML=PWMR=2000;//ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
+  else//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê»
+  {
+    if(StopFlag==1)
+    {PWML=PWMR=0;/*StopCar();*/}
+  }
+  
+  
+  if(PWML>0)
+  {
+    pwm_duty(PWM1_MODULE0_CHB_D13,0);//ï¿½ï¿½
+    pwm_duty(PWM1_MODULE0_CHA_D12,PWML);//ï¿½ï¿½ï¿½ï¿½
+  }
+  else
+  {
+    pwm_duty(PWM1_MODULE0_CHB_D13,-PWML);//ï¿½ï¿½
+    pwm_duty(PWM1_MODULE0_CHA_D12,0);//ï¿½ï¿½ï¿½ï¿½
+  }
+  
+  if(PWMR>0)
+  {
+    pwm_duty(PWM1_MODULE1_CHB_D15,PWMR);//ï¿½ï¿½ï¿½ï¿½
+    pwm_duty(PWM1_MODULE1_CHA_D14,0);//ï¿½Ò·ï¿½
+  }
+  else
+  {
+    pwm_duty(PWM1_MODULE1_CHB_D15,0);//ï¿½ï¿½ï¿½ï¿½
+    pwm_duty(PWM1_MODULE1_CHA_D14,-PWMR);//ï¿½Ò·ï¿½
+  }
+
 }
