@@ -32,7 +32,7 @@ void SpeedControl()
 	LeftSpeed = -qtimer_quad_get(QTIMER_1,QTIMER1_TIMER0_C0 );
 	qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER0_C0 );
 	qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER2_C2 );
-	
+	/*
 		if (MPWM < -35)	//��ת
 	{
 		setLeftSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM));
@@ -41,18 +41,28 @@ void SpeedControl()
 		setRightSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM));
 		setLeftSpeed_L = (2 * SetLeftSpeed) / (1.97530982 - 0.00425803 * abs(MPWM)) * (0.97530982 - 0.00425803 * abs(MPWM));
 	}
+
+
     else
     {
       setRightSpeed_L=SetRightSpeed;
       setLeftSpeed_L=SetLeftSpeed;
-    }
-
-    if(abs(angle_ring)>300&&abs(angle_ring)<ring_over)
+    }*/
+      setRightSpeed_L=SetRightSpeed;
+      setLeftSpeed_L=SetLeftSpeed;
+    if(abs(angle_ring)>290&&abs(angle_ring)<355)//�����ٶ�
     {
       setRightSpeed_L=setRightSpeed_L*0.8;
       setLeftSpeed_L=setLeftSpeed_L*0.8;
     }
-      
+	
+	if(hillFlag==3)
+	{
+	  setRightSpeed_L=setRightSpeed_L*0.8;
+	  setLeftSpeed_L=setLeftSpeed_L*0.8;
+	}
+
+
 	PWML+=PID_control(&pid_l,setLeftSpeed_L,LeftSpeed);
 	PWMR+=PID_control(&pid_r,setRightSpeed_L,RightSpeed);
 	
@@ -83,9 +93,9 @@ rukuFlag==3       pwm=0
   if(chukuFlag==0||rukuFlag==3)//�ڿ���
     PWML=PWMR=0;
   else if(chukuFlag==1)
-    PWML=PWMR=3000;// �����ٶ�
+    PWML=PWMR=4000;// �����ٶ�
   else if(rukuFlag==1||rukuFlag==2)
-    PWML=PWMR=2000;//����ٶ�
+	PWML=PWMR=3000;// ����ٶ�
   else//������ʻ
   {
     if(StopFlag==1)
