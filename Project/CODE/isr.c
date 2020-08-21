@@ -13,7 +13,7 @@ int gyro_z_i = 0;
 int recordNum = 0;
 int ringContinue = 0;
 float OSC[8]={0.0};
-
+int Count=0;
 float Yaw,Pitch,Roll;
 
 void CSI_IRQHandler(void)
@@ -24,6 +24,7 @@ void CSI_IRQHandler(void)
 
 void PIT_1MS()
 {
+	Count++;
 	ADCSample(pit);
 }
 

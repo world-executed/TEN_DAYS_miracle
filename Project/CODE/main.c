@@ -122,8 +122,8 @@ void CarBegin()
 void RecordBegin()
 {
 	AllZero();
-	SetLeftSpeed = 30;
-	SetRightSpeed = 30;
+	SetLeftSpeed = 40;
+	SetRightSpeed = 40;
 	chukuFlag = 1;
 	oled_fill(0x00);
 	recording = 1;

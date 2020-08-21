@@ -181,7 +181,7 @@ void Flat8()
 		
 		if(status[i] != 8 && is8changable == 1)
 		{
-			for(int j = i; j < i + 50; j++)
+			for(int j = i; j < i + 80; j++)
 				status[j] = 1;
 			is8changable = 0;
 		}

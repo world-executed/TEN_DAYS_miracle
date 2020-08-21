@@ -52,7 +52,7 @@ void MainPage_Show()
 	oled_p6x8str(18,1,"v");            oled_printf_int32(30,1,SetLeftSpeed,4);
 	oled_p6x8str(18,2,"p");            oled_printf_int32(30,2,(int)(dirpid.p* 100),4);
 	oled_p6x8str(18,3,"d");            oled_printf_int32(30,3,dirpid.d * 100,4);	
-	oled_p6x8str(18,4,"gi");           oled_printf_int32(30,4,asin(acc[0]) * 57.3,4);             
+	oled_p6x8str(18,4,"RO");           oled_printf_int32(30,4,ring_over,4);             
 	oled_p6x8str(18,5,"pK");           oled_printf_int32(30,5,speedK * 100,4);
 	oled_p6x8str(18,6,"re");           oled_printf_int32(30,6,relation * 100,4);
 	oled_p6x8str(18,7,"*BACK*");
@@ -114,7 +114,7 @@ void MainPage()
 		//case 6:
 			//relation-=0.01;relation=relation<0?0:relation;oled_printf_int32(30,3,(int)(relation*100),4);  break;
 		case 4:
-			sp-=0.01;sp=sp<0?0:sp;oled_printf_int32(30,4,(int)(sp*100),4);break;
+			ring_over-=1;oled_printf_int32(30,4,ring_over,4);break;
 		case 5:
 			lp-=0.01;lp=lp<0?0:lp;oled_printf_int32(30,5,(int)(lp*100),4);break;
         case 6:
@@ -128,10 +128,9 @@ void MainPage()
 	
 	if(key_check(KEY_R) ==  KEY_DOWN)
 	{
-
 		switch(cursor)
 		{
-        case 0:
+       case 0:
           micro_adj=0;break;
 		case 1:
 			SetLeftSpeed+=5;SetRightSpeed+=5;oled_printf_int32(30,1,SetLeftSpeed,4);break;
@@ -141,7 +140,7 @@ void MainPage()
 			//dirpid.d+=0.01;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
           ring_servo+=1;oled_printf_int32(30,3,ring_servo,4);  break;
 		case 4:
-			sp+=0.01;oled_printf_int32(30,4,(int)(sp*100),4);break;
+			ring_over+=1;oled_printf_int32(30,4,ring_over,4);break;
 		case 5:
 			lp+=0.01;oled_printf_int32(30,5,(int)(lp*100),4);break;
 		case 6:
@@ -240,7 +239,7 @@ void All_Show()
 	
 	oled_p6x8str(42,1,"Mo");           oled_printf_int32(54,1,MPWM,4);
 	oled_p6x8str(42,2,"Er");           oled_printf_int32(54,2,(int)DirError,4);
-	//oled_p6x8str(42,3,"RM");           oled_printf_int32(54,3,roadMode,4);	
+	oled_p6x8str(42,3,"Cl");           oled_printf_int32(54,3,Count/1000,4);	
 	oled_p6x8str(42,4,"Ay");           oled_printf_int32(54,4,angle_y,4);             
 	oled_p6x8str(42,5,"ti");           oled_printf_int32(54,5,gyro_x_i / 10000,4);
 	oled_p6x8str(42,6,"IL");           oled_printf_int32(54,6,(int)(leftSpeedInt / 10),4);
@@ -407,7 +406,7 @@ void Record3_Show()
 {
 	oled_p6x8str(0,cursor + 2,"->");
 	oled_p6x8str(0,0,"--FINISH CALCULATE--");
-	oled_p6x8str(18,2,"k");            oled_printf_int32(30,2,speedK * 100,4);
+	oled_p6x8str(18,2,"RO");            oled_printf_int32(30,2,ring_over,4);
 	oled_p6x8str(18,3,"v");            oled_printf_int32(30,3,SetLeftSpeed,4);
 	oled_p6x8str(18,4,"p");            oled_printf_int32(30,4,(int)(static_p * 100),4);
 	oled_p6x8str(18,5,"re");           oled_printf_int32(30,5,relation * 100,4);
@@ -457,7 +456,7 @@ void Record3()
 		switch(cursor+ 2)
 		{
 		case 2:
-			speedK-=0.01;speedK=speedK<0?0:speedK;oled_printf_int32(30,2,speedK * 100,4);break;
+			ring_over-=1;ring_over=ring_over<0?0:ring_over;oled_printf_int32(30,2,ring_over,4);break;
 		case 3:
 			SetLeftSpeed-=5;SetRightSpeed-=5;SetLeftSpeed=SetLeftSpeed<0?0:SetLeftSpeed;SetRightSpeed=SetRightSpeed<0?0:SetRightSpeed;oled_printf_int32(30,3,SetLeftSpeed,4);break;
 		case 4:
@@ -474,9 +473,9 @@ void Record3()
 		switch(cursor+ 2)
 		{
 		case 2:
-			speedK+=0.01;speedK=speedK>1?1:speedK;oled_printf_int32(30,2,speedK * 100,4);break;
+			ring_over+=1;oled_printf_int32(30,2,ring_over,4);break;
 		case 3:
-			SetLeftSpeed+=5;SetRightSpeed+=5;oled_printf_int32(30,2,SetLeftSpeed,4);break;
+			SetLeftSpeed+=5;SetRightSpeed+=5;oled_printf_int32(30,3,SetLeftSpeed,4);break;
 		case 4:
 			static_p+=0.01;oled_printf_int32(30,4,(int)(static_p*100),4);  break;
 		case 5:
@@ -659,7 +658,6 @@ void statusAdjust()
 			break;
 		}
 	}
-	
 }
 
 

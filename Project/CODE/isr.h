@@ -40,7 +40,7 @@ extern int16 angle;
 extern uint8 curve_to_straight;
 extern int16 curve_judge_th;
 float angle_calc(float angle_m, float gyro_m);
-
+extern int Count;
 extern int CountNum;
 extern int roadMode;
 extern int gyro_x_i;

@@ -47,7 +47,7 @@ void SpeedControl()
       setLeftSpeed_L=SetLeftSpeed;
     }
 
-    if(abs(angle_ring)>300&&abs(angle_ring)<430)
+    if(abs(angle_ring)>300&&abs(angle_ring)<ring_over)
     {
       setRightSpeed_L=setRightSpeed_L*0.8;
       setLeftSpeed_L=setLeftSpeed_L*0.8;

@@ -1,6 +1,8 @@
 #ifndef _RING_H_
 #define _RINF_H_
 
+extern int ring_over;
+
 extern uint8 ringstate;
 extern uint8 inring_st;
 extern uint8 inring_nd;

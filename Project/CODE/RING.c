@@ -12,10 +12,11 @@ uint8 ring_servo=55;
 int RMPWM=0;
 int count=0;
 int angle_ring;
+int ring_over = 430;
+
 void RingProcess()
 {
-
-  static float gyro_x_i_ring;
+	static float gyro_x_i_ring;
   if(ringstate==0&&ADC[0]>1500&&ADC[1]>2700&&ADC[4]+ADC[5]>6000/*ringstate==0&&ADC[0]>2000&&ADC[1]>2600&&(hillFlag==0||hillFlag==4)*/)//youhuan  //1000,2400
     ringflag_st=1;
   else
@@ -41,7 +42,7 @@ void RingProcess()
     //static_p=2.4;
 //dirpid.p=sp;
   }  
-  if(abs(angle_ring)>430)
+  if(abs(angle_ring)>ring_over)
   {
     inring_st=0;  
     gyro_x_i_ring=angle_ring=RMPWM=count=0;
