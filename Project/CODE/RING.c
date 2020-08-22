@@ -8,8 +8,8 @@ uint8 inring_st=0;
 uint8 inring_nd=0;
 uint8 ringstate=0;
 
-int ring_over = 360;
-int ADC_ring_th = 1900;
+int ring_over = 355;
+int ADC_ring_th = 2700;
 
 
 uint8 ring_servo=55;  //°ë¾¶100£º´ò½Ç40¡£°ë¾¶50£º´ò½Ç60¡£

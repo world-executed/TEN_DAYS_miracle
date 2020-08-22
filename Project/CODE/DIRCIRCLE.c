@@ -14,7 +14,7 @@ int16 ADCLL0=0;
 int16 ADCRR0=0;
 
 float rela = 0.0;
-float relation = 1.0;
+float relation = 0.5;
 int16 ADCL=0;
 int16 ADCR=0;
 int16 ADCLL=0;

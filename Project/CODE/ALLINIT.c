@@ -19,7 +19,7 @@ void PID_init()
 	pid_l.err=0;
     pid_l.lasterr=0;
     pid_l.preverr=0;
-    pid_l.p=200;
+    pid_l.p=100;
     pid_l.i=10;
     pid_l.d=0;
     
@@ -27,7 +27,7 @@ void PID_init()
     pid_r.err=0;
     pid_r.lasterr=0;
     pid_r.preverr=0;
-    pid_r.p=200;
+    pid_r.p=100;
     pid_r.i=10;
     pid_r.d=0;
     
@@ -38,8 +38,6 @@ void PID_init()
     dirpid.err=0;
     dirpid.lasterr=0;
     dirpid.preverr=0;
-    
-
 }
 
 void AllInit()

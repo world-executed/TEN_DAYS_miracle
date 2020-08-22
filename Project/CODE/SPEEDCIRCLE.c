@@ -1,7 +1,7 @@
 #include "headfile.h"
 
-int16 SetLeftSpeed  = 0;
-int16 SetRightSpeed = 0;
+int16 SetLeftSpeed  = 60;
+int16 SetRightSpeed = 60;
 int setLeftSpeed_L = 0;
 int setRightSpeed_L = 0;
 int leftSpeedInt = 0;
@@ -15,6 +15,7 @@ int FTMint_fin=163000;
 PID pid_l,pid_r;
 int ringBeginNum = 0;
 int ringNum = 0;
+int prev = 1000;
 
 int16 PID_control(PID *pid,int16 goalspeed,int16 actualspeed)
 {
@@ -96,10 +97,10 @@ void SpeedControl()
 	}
 	
 	
-	if((leftSpeedInt+rightSpeedInt)/2>FTMint_fin-5000&&FTMfin_mark)
+	if((leftSpeedInt+rightSpeedInt)/2>FTMint_fin-prev&&FTMfin_mark)
 		{
-			setRightSpeed_L=setRightSpeed_L>60?60:setRightSpeed_L;
-			setLeftSpeed_L=setLeftSpeed_L>60?60:setLeftSpeed_L;
+			setRightSpeed_L=setRightSpeed_L>45?45:setRightSpeed_L;
+			setLeftSpeed_L=setLeftSpeed_L>45?45:setLeftSpeed_L;
 		}
 	PWML+=PID_control(&pid_l,setLeftSpeed_L,LeftSpeed);
 	PWMR+=PID_control(&pid_r,setRightSpeed_L,RightSpeed);
@@ -133,7 +134,7 @@ rukuFlag==3       pwm=0
   else if(chukuFlag==1)
     PWML=PWMR=6000;// �����ٶ�
   else if(rukuFlag==1||rukuFlag==2)
-	PWML=PWMR=4000;// ����ٶ�
+	PWML=PWMR=3500;// ����ٶ�
   else//������ʻ
   {
     if(StopFlag==1)

@@ -93,7 +93,7 @@ void PIT_5MS()
 	}
 	
 	if(inring_st)
-		dirpid.p=sp;
+		dirpid.p=2*sp;
 	dip[0]=gpio_get(C28); //1you
 	dip[1]=gpio_get(C27); //0zuo
 	dip[2]=gpio_get(C26);
@@ -183,17 +183,17 @@ void PIT_5MS()
 		}
 	}
 	
-	/*
-	OSC[0]=ADCL;
-	OSC[1]=ADCR;
+	
+	//OSC[0]=angle_y;
+	/*OSC[1]=ADCR;
 	OSC[2]=gyro_x_i / 100;
 	OSC[3]=MPWM * 10;
 	OSC[4]=DirError * 10;
 	OSC[5]=ADCLL;
 	OSC[6]=leftSpeedInt/10;
-	OSC[7]=rightSpeedInt/10;
-	vcan_sendware(OSC,sizeof(OSC));
-	*/
+	OSC[7]=rightSpeedInt/10;*/
+	//vcan_sendware(OSC,sizeof(OSC));
+	
 	
 	hillProcess();
 	chuku();

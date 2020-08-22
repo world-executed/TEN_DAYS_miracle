@@ -83,7 +83,7 @@ void MainPage_Show_2()
 	oled_p6x8str(18,2,"R ");            oled_printf_int32(30,2,ring_servo_bias,4);
 	oled_p6x8str(18,3,"dt");            oled_printf_int32(30,3,speedStatusInt,4);	
 	oled_p6x8str(18,4,"BM");			oled_printf_int32(30,4,FTMint_fin/100,4);
-	oled_p6x8str(18,5,"Fm");			oled_printf_int32(30,5,FTMfin_mark,4);	
+	oled_p6x8str(18,5,"pr");			oled_printf_int32(30,5,prev,4);	
 	oled_p6x8str(18,6,"><");			oled_printf_int32(30,6,ADC_ring_th,4);	
 	oled_p6x8str(18,7,"go on  ");
 	
@@ -239,6 +239,8 @@ void MainPage_2()
 			ring_servo_bias-=0.01;ring_servo_bias=ring_servo_bias<0?0:ring_servo_bias;oled_printf_int32(30,2,ring_servo_bias,4);  break;
 		case 3:
           speedStatusInt-=1;oled_printf_int32(30,3,speedStatusInt,4);  break;
+		case 5:
+          prev-=100;oled_printf_int32(30,5,prev,4);  break;
 		case 6:
           ADC_ring_th-=10;oled_printf_int32(30,6,ADC_ring_th,4);  break;
 		default:
@@ -258,6 +260,8 @@ void MainPage_2()
 			ring_servo_bias+=0.01;oled_printf_int32(30,2,ring_servo_bias,4);  break;
 		case 3:
           speedStatusInt+=1;oled_printf_int32(30,3,speedStatusInt,4);  break;
+		case 5:
+          prev+=100;oled_printf_int32(30,5,prev,4);  break;
 		case 6:
           ADC_ring_th+=10;oled_printf_int32(30,6,ADC_ring_th,4);  break;
 		default:
@@ -271,7 +275,7 @@ void MainPage_2()
 		{
 		case 0:
 			CarBegin();cursor = 0;break;
-        case 1:case 2:case 3:micro_adj=micro_adj==1?0:1;break;
+        case 1:case 2:case 3:case 5:case 6:micro_adj=micro_adj==1?0:1;break;
 		case 4:FTMfin_mark=0;break;
 		case 7:
 			page = 5;cursor = 0;oled_fill(0x00);break;
@@ -554,6 +558,7 @@ void Record3()
 	{
 		switch(cursor + 2)
 		{
+		case 2:case 3:case 4:micro_adj=micro_adj==1?0:1;break;
 		case 6:
 			InmodeBegin();cursor = 0;oled_fill(0x00);break;
 		case 7:
@@ -579,9 +584,9 @@ void Record3()
 		default:
 			break;
 		}
-	}
+	}while(!key_check(KEY_L)&&micro_adj);
 	
-	else if(key_check(KEY_R) ==  KEY_DOWN)
+	if(key_check(KEY_R) ==  KEY_DOWN)
 	{
 		switch(cursor+ 2)
 		{
@@ -596,7 +601,7 @@ void Record3()
 		default:
 			break;
 		}
-	}
+	}while(!key_check(KEY_R)&&micro_adj);
 }
 
 void Camera_Show()

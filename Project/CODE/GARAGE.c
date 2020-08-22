@@ -225,30 +225,7 @@ void ruku()
   if(mt9v03x_csi_finish_flag)
   {
     mt9v03x_csi_finish_flag=0;
-    /*
-    //例如访问第10行 50列的点，mt9v03x_csi_image[10][50]就可以了
-    for(int i=0;i<128*3;i++)
-    {
-    banmaxian[i]=mt9v03x_csi_image[i/128+20][i%128];
-    banmaxian_b[i]=mt9v03x_csi_image[i/128+50][i%128];
-  }
-    jumpnum=0;jumpnum_b=0;
-    for(int i=1;i<128*3;i++)
-    {
-    
-    if((banmaxian[i-1]<110&&banmaxian[i]>110)||(banmaxian[i-1]>110&&banmaxian[i]<110))
-    jumpnum++;
-    if((banmaxian_b[i-1]<110&&banmaxian_b[i]>110)||(banmaxian_b[i-1]>110&&banmaxian_b[i]<110))
-    jumpnum_b++;
-  }
-    
-    
-    
-    if(jumpnum>20&&hillFlag==3&&rukuFlag==0)//已经经过坡道
-    rukuFlag=1;//预识别
-    if(jumpnum_b>16&&hillFlag==3&&rukuFlag<=1)
-    rukuFlag=2;
-    */
+
     check_zebra_line();
     if(Zebra_line&&hillFlag==4&&rukuFlag<=1)
       rukuFlag=2;
@@ -341,7 +318,7 @@ void check_zebra_line()
   
   
   black_blocks = 0;
-  startline=(int)range(90-SetLeftSpeed+startline_cor,0,61);
+  startline=(int)range(55+startline_cor,0,61);
   for (uint8 y = startline; y < startline+3; y++)
   {
     
@@ -381,3 +358,11 @@ void blink()
 		gpio_set(C18,0);
 		
 }
+/*
+int angle_cor_count=0;
+void angle_correction()
+{
+	angle_cor_count++;
+	angle_cor_count%=200;
+	if()
+}*/

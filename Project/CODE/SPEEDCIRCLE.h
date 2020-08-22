@@ -16,6 +16,7 @@ extern int leftSpeedInt;
 extern int rightSpeedInt;
 extern int FTMint_fin;
 extern uint8 FTMfin_mark;
+extern int prev;
 typedef struct PID{
 
     int16 err;
