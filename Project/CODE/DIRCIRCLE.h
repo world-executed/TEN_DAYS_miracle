@@ -12,7 +12,7 @@ extern int16 ADCR;
 extern int16 ADCLY;
 extern int16 ADCRY;
 
-
+extern int ring_servo_bias;
 
 extern int16 MPWM;
 extern float DirError;

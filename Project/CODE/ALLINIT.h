@@ -1,7 +1,7 @@
 #ifndef _ALLINIT_H_
 #define _ALLINIT_H_
 
-#define GYRO360 710000;
+extern int32 GYRO360;
 extern uint8 dip[4];	
 extern int32 gyro_offset[3];
 extern int32 acc_offset[3];

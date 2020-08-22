@@ -37,7 +37,7 @@ int kTestThrL = 10;			//б�ʼ����ֵ-low
 int kFlatThr = 10;			//б���˲������ֵ
 int speedStatusInt = 20;
 //8int status[4600] = {0};		//״̬�洢����					
-							//note:	1->ֱ��; 6->����� ;9->�����; 7->����� ; 4->ʮ�ֻ���; 8->Բ��; 0->δ��;
+//note:	1->ֱ��; 6->����� ;9->�����; 7->����� ; 4->ʮ�ֻ���; 8->Բ��; 0->δ��;
 int speedStatus[calNum] = {0};
 int eleArray[eleLen] = {0};		//Ԫ�ش洢���� 
 int eleBegin[eleLen] = {0};		//Ԫ�ؿ�ʼ����
@@ -88,6 +88,7 @@ int point_status[128];
 int pixel_status[calNum] ={0};
 int print_status = 127 * speed;
 
+int ring8num = 0;
 
 //��������������
 int ScanCalculate() 
@@ -103,7 +104,7 @@ int ScanCalculate()
 		}
 	}
 	
-		for(int i = 0; i < calNum - interval; i++)	
+	for(int i = 0; i < calNum - interval; i++)	
 	{
 		if(status[i] < 50)
 		{
@@ -113,7 +114,7 @@ int ScanCalculate()
 				status[i] -=1;			//�����
 		}
 	}
-
+	
 	Flat90();
 	Flat0();
 	Flat2();
@@ -124,7 +125,7 @@ int ScanCalculate()
 	Flat1();
 	
 	
-
+	
 	for(int i = 0; i < calNum; i++)
 	{
 		switch(status[i])
@@ -139,22 +140,22 @@ int ScanCalculate()
 		if(status[i] > 50)
 			status[i] = 8;
 	}
-
+	
 	Flat8();
-
+	
 	//statusShrink();
-			
+	
 	for(int i = 0; i < calNum; i++)
 	{
 		if(status[i] == 6 || status[i] == 8)
-			servo_tem[i] = 600;
+			servo_tem[i] = 500;
 		else if(status[i] == 9)
-			servo_tem[i] = -600;
+			servo_tem[i] = -500;
 		else if(status[i] == 1)
 			servo_tem[i] = 0;
 	}	
 	SpeedStatus();
-
+	
 	elementFind();
 	eachLenth();
 	//aveServo();
@@ -162,13 +163,8 @@ int ScanCalculate()
 	
 	for(int i = 0; i < calNum; i++)
 	{
-		/*
-		printf("%d,",eleArray[i]);
-		printf("%d-",eleBegin[i]);
-		printf("%d\t",eleEnd[i]);
-		printf("%d\n",eleLenth[i]);
-		*/
-		printf("%d,",status[i] * 100);
+		if(status[i] == 8)
+			ring8num += 1;
 	}
 }
 
@@ -232,9 +228,9 @@ void SpeedStatus()
 /*
 void statusDelay(int period)
 {
-	for(int j = 0; j < period; j++)
-		for(int i = 0; i < allNum; i++)
-			status_tem[i] = status[i + 1];
+for(int j = 0; j < period; j++)
+for(int i = 0; i < allNum; i++)
+status_tem[i] = status[i + 1];
 }
 */
 //��ȥת�����еĳ����� 
@@ -376,7 +372,7 @@ void Flat26()
 //��ȥû������ת��ĳ�����״̬
 void Flat2()
 {
-		//�˲�---����
+	//�˲�---����
 	int firstValue = 0;
 	int secondValue = 0;
 	int valueSwitch = 1;
@@ -394,7 +390,7 @@ void Flat2()
 			for(int j = (firstValue + 1); j < secondValue; j++)
 			{
 				if(status[j] == 6)
-				flatFlag = 0;
+					flatFlag = 0;
 			}
 			if(flatFlag)
 				for(int j = (firstValue + 1); j < secondValue; j++)
@@ -410,7 +406,7 @@ void Flat2()
 void Flat0()
 {
 	
-		//�˲�---����
+	//�˲�---����
 	int firstValue = 0;
 	int secondValue = 0;
 	int valueSwitch = 1;
@@ -428,7 +424,7 @@ void Flat0()
 			for(int j = (firstValue + 1); j < secondValue; j++)
 			{
 				if(status[j] == 9)
-				flatFlag = 0;
+					flatFlag = 0;
 			}
 			if(flatFlag)
 				for(int p = (firstValue + 1); p < secondValue; p++)
@@ -499,44 +495,44 @@ void eachLenth()
 //��������� 
 void aveServo()
 {
-	for(int i = 0; i < eleNum; i++)
-	{
-		if(eleArray[i] == 6)
-		{
-			int sum = 0;
-			int ave = 0;
+for(int i = 0; i < eleNum; i++)
+{
+if(eleArray[i] == 6)
+{
+int sum = 0;
+int ave = 0;
 
-			int lenth = eleEnd[i] - eleBegin[i];
-			int det = centerK * lenth / 100;
-			for(int j = eleBegin[i]; j < eleEnd[i]; j++)
-			{
-				sum += servo[j];
+int lenth = eleEnd[i] - eleBegin[i];
+int det = centerK * lenth / 100;
+for(int j = eleBegin[i]; j < eleEnd[i]; j++)
+{
+sum += servo[j];
 			}
-			ave = sum / lenth / 10;
-			
-			for(int k = eleBegin[i]; k < eleEnd[i]; k++)
-			servoShould[k] = ave;
+ave = sum / lenth / 10;
+
+for(int k = eleBegin[i]; k < eleEnd[i]; k++)
+servoShould[k] = ave;
 		}
 		else if(eleArray[i] == 9)
-		{
-			int sum = 0;
-			int ave = 0;
-			
-			int lenth = eleEnd[i] - eleBegin[i];
-			int det = centerK * lenth / 100;
-			for(int j = eleBegin[i]; j < eleEnd[i]; j++)
-			{
-				sum += servo[j];
+{
+int sum = 0;
+int ave = 0;
+
+int lenth = eleEnd[i] - eleBegin[i];
+int det = centerK * lenth / 100;
+for(int j = eleBegin[i]; j < eleEnd[i]; j++)
+{
+sum += servo[j];
 			}
-			ave = sum / lenth / 10;
-			
-			for(int k = eleBegin[i]; k < eleEnd[i]; k++)
-			servoShould[k] = ave;
+ave = sum / lenth / 10;
+
+for(int k = eleBegin[i]; k < eleEnd[i]; k++)
+servoShould[k] = ave;
 		}
 		else if(eleArray[i] == 1)
-		{
-			for(int k = eleBegin[i]; k < eleEnd[i]; k++)
-			servoShould[k] = 0;
+{
+for(int k = eleBegin[i]; k < eleEnd[i]; k++)
+servoShould[k] = 0;
 		}
 	}
 }
@@ -622,31 +618,31 @@ void scroll_status()
 {
 	if(key_check(KEY_R) ==  KEY_DOWN && print_status < calNum)
 	{
-	  for(int i = 0; i < 127; i++)
-	  {
-		point_status[i] = point_status[i+1];
-	  }
-	  point_status[127] = pixel_status[print_status];
-	  print_status += speed;
+		for(int i = 0; i < 127; i++)
+		{
+			point_status[i] = point_status[i+1];
+		}
+		point_status[127] = pixel_status[print_status];
+		print_status += speed;
 	}
 	else if(key_check(KEY_L) ==  KEY_DOWN && print_status >= 127 * speed)
 	{
-	  for(int i = 127; i > 0; i--)
-	  {
-		point_status[i] = point_status[i-1];
-	  }
-	  point_status[0] = pixel_status[print_status - 127 * speed];
-	  print_status -= speed;
+		for(int i = 127; i > 0; i--)
+		{
+			point_status[i] = point_status[i-1];
+		}
+		point_status[0] = pixel_status[print_status - 127 * speed];
+		print_status -= speed;
 	}
 }
 
 void init_status(int max, int min)
 {
-  	for(int i = 0; i < calNum; i++)
+	for(int i = 0; i < calNum; i++)
 	{
-  		pixel_status[i] = (int)(((float)status[i] / (max - min)) * 63 + 0.5);         //0~63
+		pixel_status[i] = (int)(((float)status[i] / (max - min)) * 63 + 0.5);         //0~63
 	}
-  
+	
 	for(int k = 0; k < 128; k += 1)
 	{
 		point_status[k] = pixel_status[k * speed];
@@ -656,32 +652,32 @@ void init_status(int max, int min)
 
 void printPoint_status()
 {
-  int pixel,line,set = 0;
-  
-  for(int i = 0; i < 128; i++)            //��
-  {
-    for(int j = 0;j<8;j++)
-      oled_putpixel(i,j,0);
-    int number = 1;
-    pixel = point_status[i];
-    line = pixel / 8;
-    line = range(line, 0, 7);
-    set = pixel % 8;
-    for(set;set > 0;set--)
-      number = number * 2;
-    if(line!=7 || i > 30)
-      oled_putpixel(i,line,number);
-  }
+	int pixel,line,set = 0;
+	
+	for(int i = 0; i < 128; i++)            //��
+	{
+		for(int j = 0;j<8;j++)
+			oled_putpixel(i,j,0);
+		int number = 1;
+		pixel = point_status[i];
+		line = pixel / 8;
+		line = range(line, 0, 7);
+		set = pixel % 8;
+		for(set;set > 0;set--)
+			number = number * 2;
+		if(line!=7 || i > 30)
+			oled_putpixel(i,line,number);
+	}
 }
 
 void waveScan_status()
 {
-  if(!flag_status)
-    init_status(10,-1);
-  scroll_status();
-  printPoint_status();
-  //oled_p6x8str(0,7,"     ");
-  //oled_printf_int32(0,7,ADCRR,4);
+	if(!flag_status)
+		init_status(10,-1);
+	scroll_status();
+	printPoint_status();
+	//oled_p6x8str(0,7,"     ");
+	//oled_printf_int32(0,7,ADCRR,4);
 }
 
 
@@ -690,35 +686,53 @@ int point_camara[128];
 
 void initCamaraWave(int max, int min, int line)
 {
-  	for(int i = 0; i < 128; i++)
+	for(int i = 0; i < 128; i++)
 	{
-  		point_camara[i] = (int)(((float)mt9v03x_csi_image[line][i] / (max - min)) * 63 + 0.5);         //0~63
+		point_camara[i] = (int)(((float)mt9v03x_csi_image[line][i] / (max - min)) * 63 + 0.5);         //0~63
 	}
 }
 
 void printPoint_camara()
 {
-  int pixel,line,set = 0;
-  
-  for(int i = 0; i < 128; i++)            //��
-  {
-    for(int j = 0;j<8;j++)
-      oled_putpixel(i,j,0);
-    int number = 1;
-    pixel = point_camara[i];
-    line = pixel / 8;
-    line = range(line, 0, 7);
-    set = pixel % 8;
-    for(set;set > 0;set--)
-      number = number * 2;
-    if(line!=7 || i > 30)
-      oled_putpixel(i,line,number);
-  }
+	int pixel,line,set = 0;
+	
+	for(int i = 0; i < 128; i++)            //��
+	{
+		for(int j = 0;j<8;j++)
+			oled_putpixel(i,j,0);
+		int number = 1;
+		pixel = point_camara[i];
+		line = pixel / 8;
+		line = range(line, 0, 7);
+		set = pixel % 8;
+		for(set;set > 0;set--)
+			number = number * 2;
+		if(line!=7 || i > 30)
+			oled_putpixel(i,line,number);
+	}
 }
 
-void waveScan_Camara(int line)
+void waveScan_Camara(int Cline)
 {
-  initCamaraWave(256,0,line);
-  printPoint_camara();
+	initCamaraWave(256,0,Cline);
+	printPoint_camara();
+
+	int th_line = (int)((th / 255.0) * 63 + 0.5);         //0~63
+	int pixel,line,set = 0;
+	for(int i = 0; i < 128; i++)            //��
+	{
+		for(int j = 0;j<8;j++)
+			oled_putpixel(i,j,0);
+		int number = 1;
+		pixel = th_line;
+		line = pixel / 8;
+		line = range(line, 0, 7);
+		set = pixel % 8;
+		for(set;set > 0;set--)
+			number = number * 2;
+		if(line!=7 || i > 30)
+			oled_putpixel(i,line,number);
+	}
+	  oled_p6x8str(0,0,"   ");oled_printf_int32(0,0,th,3);
 }
 

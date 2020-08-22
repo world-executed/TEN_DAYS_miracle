@@ -15,6 +15,7 @@ extern int servo_tem[calNum];
 extern int servo[calNum];
 extern int status_tem[calNum];
 extern int speedStatus[calNum];
+extern int speedStatusInt;
 
 extern int nowPos;
 extern int recordMode;
@@ -22,7 +23,7 @@ extern int finishFlag;
 extern int eleArray[eleLen];
 extern int nowEleNum;
 extern int recording;
-
+extern int ring8num;
 
 int ScanCalculate();
 void PosCalculate();

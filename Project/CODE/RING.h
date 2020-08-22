@@ -2,6 +2,8 @@
 #define _RINF_H_
 
 extern int ring_over;
+extern float gyro_x_i_ring;
+extern int ADC_ring_th;
 
 extern uint8 ringstate;
 extern uint8 inring_st;
@@ -15,4 +17,5 @@ void ringjudge_st();
 void ringjudge_nd();
 void ring_int();
 void RingProcess();
+
 #endif

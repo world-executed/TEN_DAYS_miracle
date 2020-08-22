@@ -1,22 +1,25 @@
 #include "headfile.h"
 
 uint8 hillFlag=0;
-int FANGXIANG=1;//1ÎªË³Ê±ï¿½ë£¬-1Îªï¿½ï¿½Ê±ï¿½ï¿½
+int FANGXIANG=1;//1ÎªË³Ê±Õë£¬-1ÎªÄæÊ±Õë
 uint8 chukuFlag=0;
 uint8 rukuFlag=0;
-uint8 th=128;
+uint8 th=110;
 uint8 jumpnum=0;
 uint8 jumpnum_b=0;
 int32 gyro_x_i_ruku=0;
 uint8 Zebra_line = 0;
 uint8 startline=40;
-
+int8 startline_cor=0;
 float angle_x=0;
 float angle_y=0;
 
+
+
+
 /*
-float acc_ratio = 1.6;      //ï¿½ï¿½ï¿½Ù¶È¼Æ±ï¿½ï¿½ï¿½    
-float gyro_ratio = 4.08;    //ï¿½ï¿½ï¿½ï¿½ï¿½Ç±ï¿½ï¿½ï¿½   
+float acc_ratio = 1.6;      //¼ÓËÙ¶È¼Æ±ÈÀý    
+float gyro_ratio = 4.08;    //ÍÓÂÝÒÇ±ÈÀý   
 float Complementary_filter(float angle_m, float gyro_m, uint8 i)    
 {    
 float temp_angle;               
@@ -26,22 +29,22 @@ float error_angle;
 static float last_angle[2];    
 static uint8 first_angle[2];    
 
-if(!first_angle[i])//ï¿½Ð¶ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½    
+if(!first_angle[i])//ÅÐ¶ÏÊÇ·ñÎªµÚÒ»´ÎÔËÐÐ±¾º¯Êý    
 {    
-//ï¿½ï¿½ï¿½ï¿½Çµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½Ï´Î½Ç¶ï¿½Öµï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ÖµÒ»ï¿½ï¿½    
+//Èç¹ûÊÇµÚÒ»´ÎÔËÐÐ£¬Ôò½«ÉÏ´Î½Ç¶ÈÖµÉèÖÃÎªÓë¼ÓËÙ¶ÈÖµÒ»ÖÂ    
 first_angle[i] = 1;    
 last_angle[i] = angle_m;    
   }    
 
 gyro_now = gyro_m * gyro_ratio;    
 
-//ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ù¶ï¿½Öµ×ªï¿½ï¿½Îªï¿½Ç¶ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ÎµÄ½Ç¶ï¿½Öµï¿½ï¿½Æ«ï¿½ï¿½    
+//¸ù¾Ý²âÁ¿µ½µÄ¼ÓËÙ¶ÈÖµ×ª»»Îª½Ç¶ÈÖ®ºóÓëÉÏ´ÎµÄ½Ç¶ÈÖµÇóÆ«²î    
 error_angle = (angle_m - last_angle[i])*acc_ratio;  
 
-//ï¿½ï¿½ï¿½ï¿½Æ«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ä½Ç¶ï¿½Öµï¿½ï¿½ï¿½ãµ±Ç°ï¿½Ç¶ï¿½Öµ    
+//¸ù¾ÝÆ«²îÓëÍÓÂÝÒÇ²âÁ¿µÃµ½µÄ½Ç¶ÈÖµ¼ÆËãµ±Ç°½Ç¶ÈÖµ    
 temp_angle = last_angle[i] + (error_angle + gyro_now)*0.005;   
 
-//ï¿½ï¿½ï¿½æµ±Ç°ï¿½Ç¶ï¿½Öµ    
+//±£´æµ±Ç°½Ç¶ÈÖµ    
 last_angle[i] = temp_angle;  
 
 return temp_angle;    
@@ -55,8 +58,8 @@ static float angle_x_gyro;
 static float angle_x_acc;
 static float angle_y_gyro;
 static float angle_y_acc;
-get_accdata();	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ù¶È¼ï¿½ï¿½ï¿½ï¿½ï¿½
-get_gyro();		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+get_accdata();	//»ñÈ¡¼ÓËÙ¶È¼ÆÊý¾Ý
+get_gyro();		//»ñÈ¡ÍÓÂÝÒÇÊý¾Ý
 acc[0]=mpu_acc_x;
 acc[1]=mpu_acc_y;
 acc[2]=mpu_acc_z;
@@ -87,8 +90,8 @@ float Complementary_filter_1_order(float angle_m, float gyro_m)
 }
 
 
-float acc_ratio = 1.0;      //ï¿½ï¿½ï¿½Ù¶È¼Æ±ï¿½ï¿½ï¿½    
-float gyro_ratio = 4.08;    //ï¿½ï¿½ï¿½ï¿½ï¿½Ç±ï¿½ï¿½ï¿½  
+float acc_ratio = 1.0;      //¼ÓËÙ¶È¼Æ±ÈÀý    
+float gyro_ratio = 4.08;    //ÍÓÂÝÒÇ±ÈÀý  
 float Complementary_filter(float angle_m, float gyro_m)    
 {    
   float temp_angle;               
@@ -98,9 +101,9 @@ float Complementary_filter(float angle_m, float gyro_m)
   static float last_angle;    
   static uint8 first_angle;    
   
-  if(!first_angle)//ï¿½Ð¶ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½    
+  if(!first_angle)//ÅÐ¶ÏÊÇ·ñÎªµÚÒ»´ÎÔËÐÐ±¾º¯Êý    
   {    
-    //ï¿½ï¿½ï¿½ï¿½Çµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½Ï´Î½Ç¶ï¿½Öµï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ÖµÒ»ï¿½ï¿½    
+    //Èç¹ûÊÇµÚÒ»´ÎÔËÐÐ£¬Ôò½«ÉÏ´Î½Ç¶ÈÖµÉèÖÃÎªÓë¼ÓËÙ¶ÈÖµÒ»ÖÂ    
     first_angle = 1;    
     //last_angle = angle_m; 
     last_angle=gyro_m;
@@ -108,13 +111,13 @@ float Complementary_filter(float angle_m, float gyro_m)
   
   gyro_now = gyro_m * gyro_ratio;    
   
-  //ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ù¶ï¿½Öµ×ªï¿½ï¿½Îªï¿½Ç¶ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ÎµÄ½Ç¶ï¿½Öµï¿½ï¿½Æ«ï¿½ï¿½    
+  //¸ù¾Ý²âÁ¿µ½µÄ¼ÓËÙ¶ÈÖµ×ª»»Îª½Ç¶ÈÖ®ºóÓëÉÏ´ÎµÄ½Ç¶ÈÖµÇóÆ«²î    
   error_angle = (angle_m - last_angle)*acc_ratio;  
   
-  //ï¿½ï¿½ï¿½ï¿½Æ«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ä½Ç¶ï¿½Öµï¿½ï¿½ï¿½ãµ±Ç°ï¿½Ç¶ï¿½Öµ    
+  //¸ù¾ÝÆ«²îÓëÍÓÂÝÒÇ²âÁ¿µÃµ½µÄ½Ç¶ÈÖµ¼ÆËãµ±Ç°½Ç¶ÈÖµ    
   temp_angle = last_angle + (error_angle + gyro_now)*0.005;   
   
-  //ï¿½ï¿½ï¿½æµ±Ç°ï¿½Ç¶ï¿½Öµ    
+  //±£´æµ±Ç°½Ç¶ÈÖµ    
   last_angle = temp_angle;  
   
   return temp_angle;    
@@ -130,8 +133,8 @@ void MPU6050()
   static float angle_y_acc;
   
   static float angle_y_bias=91;
-  get_accdata();	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ù¶È¼ï¿½ï¿½ï¿½ï¿½ï¿½
-  get_gyro();		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  get_accdata();	//»ñÈ¡¼ÓËÙ¶È¼ÆÊý¾Ý
+  get_gyro();		//»ñÈ¡ÍÓÂÝÒÇÊý¾Ý
   acc[0]=mpu_acc_x;
   acc[1]=mpu_acc_y;
   acc[2]=mpu_acc_z;
@@ -141,14 +144,14 @@ void MPU6050()
   
   gyro_x_i+=gyro[0];
   angle_x_gyro=gyro_x_i*360.0/GYRO360;
-  angle_x=angle_x_gyro;//ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ë²ï¿½
+  angle_x=angle_x_gyro;//²»ÓÃ»¥²¹ÂË²¨
   
   
   gyro_y_i+=gyro[1];
   angle_y_gyro=gyro_y_i*360.0/GYRO360;
   angle_y_acc=angle_y_bias-atan2(acc[0],acc[2])*57.3;
   angle_y=angle_y_gyro;
-  //angle_y=Complementary_filter_1_order(angle_y_acc,angle_y_gyro);//Ê¹ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ë²ï¿½
+  //angle_y=Complementary_filter_1_order(angle_y_acc,angle_y_gyro);//Ê¹ÓÃ»¥²¹ÂË²¨
 }
 
 
@@ -159,7 +162,7 @@ void hillProcess()
   for(uint8 i = 0;i<64;i++)
     for(uint8 j=0;j<128;j++)
       if(mt9v03x_csi_image[i][j]>100)
-        vision_loss++;//ï¿½×µï¿½ï¿½ï¿½ï¿½
+        vision_loss++;//°×µã¼ÆÊý
   
   if(vision_loss>64*128-5&&hillFlag==0&&chukuFlag==2)
     hillFlag=1;
@@ -171,7 +174,7 @@ void hillProcess()
   {
     hill_prev_int++;
   }
-  if(hill_prev_int>500)//500ï¿½ï¿½ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  if(hill_prev_int>500)//500¸öÖÜÆÚºó»¹ÊÇÃ»ÓÐÉÏÆÂ
   {
     hillFlag=0;
     hill_prev_int=0;
@@ -181,16 +184,16 @@ void hillProcess()
 */
   static uint16 hill_int;
   if(angle_y>15&&hillFlag==0&&chukuFlag==2)
-    hillFlag=2;//ï¿½ï¿½ï¿½ï¿½
+    hillFlag=2;//ÉÏÆÂ
   if(hillFlag==2&&hill_int==0)
     hill_int++;
   if(hill_int)
   {
     
     hill_int++;
-    if(hill_int==140-SetLeftSpeed)
+    if(hill_int==160-SetLeftSpeed)
       hillFlag=3;
-    if(hill_int==140-SetLeftSpeed+30)
+    if(hill_int==160-SetLeftSpeed+30)
     {
       hillFlag=4;
       hill_int=0;
@@ -200,7 +203,7 @@ void hillProcess()
   }/*
   if(angle_y>20&&hillFlag==1)
   {
-    hillFlag=2;//ï¿½ï¿½ï¿½ï¿½
+    hillFlag=2;//ÉÏÆÂ
     hill_prev_int=0;
   }
   if(angle_y<-3&&hillFlag==2)
@@ -217,13 +220,13 @@ void ruku()
   
   //static uint8 banmaxian[128*3]={0};
   //static uint8 banmaxian_b[128*3]={0};
-  
+  blink();
   
   if(mt9v03x_csi_finish_flag)
   {
     mt9v03x_csi_finish_flag=0;
     /*
-    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½10ï¿½ï¿½ 50ï¿½ÐµÄµã£¬mt9v03x_csi_image[10][50]ï¿½Í¿ï¿½ï¿½ï¿½ï¿½ï¿½
+    //ÀýÈç·ÃÎÊµÚ10ÐÐ 50ÁÐµÄµã£¬mt9v03x_csi_image[10][50]¾Í¿ÉÒÔÁË
     for(int i=0;i<128*3;i++)
     {
     banmaxian[i]=mt9v03x_csi_image[i/128+20][i%128];
@@ -241,8 +244,8 @@ void ruku()
     
     
     
-    if(jumpnum>20&&hillFlag==3&&rukuFlag==0)//ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
-    rukuFlag=1;//Ô¤Ê¶ï¿½ï¿½
+    if(jumpnum>20&&hillFlag==3&&rukuFlag==0)//ÒÑ¾­¾­¹ýÆÂµÀ
+    rukuFlag=1;//Ô¤Ê¶±ð
     if(jumpnum_b>16&&hillFlag==3&&rukuFlag<=1)
     rukuFlag=2;
     */
@@ -255,7 +258,7 @@ void ruku()
   
   if(rukuFlag==2)
   {
-    
+
     gyro_x_i_ruku+=gyro[0];
     int angle_ruku=gyro_x_i_ruku*360.0/GYRO360;
     pwm_duty(PWM4_MODULE2_CHA_C30,80*FANGXIANG+SERVO_MID);
@@ -267,15 +270,21 @@ void ruku()
     }
   }
   
+  if(rukuFlag==2&&FTMfin_mark==0)
+  {
+	  FTMint_fin=(leftSpeedInt+rightSpeedInt)/2;
+	  FTMfin_mark=1;
+  }
+  
   
 }
 void chuku()
 {
   
-  if(dip[3])//4ï¿½Å²ï¿½ï¿½ë¿ªï¿½Ø¿ï¿½ï¿½Å£ï¿½ÎªË³Ê±ï¿½ï¿½
-  FANGXIANG=1;
-  else
-  FANGXIANG=-1;
+	if(dip[3])//4ºÅ²¦Âë¿ª¹Ø¿ª×Å£¬ÎªË³Ê±Õë
+		FANGXIANG=1;
+	else
+		FANGXIANG=-1;
   
   
   
@@ -285,6 +294,8 @@ void chuku()
     int8 servo_bias=100-(int)(FANGXIANG*angle_x*0.9);
     servo_bias=range(servo_bias,-70,70);
     
+
+	
     if(abs(angle_x)<70)
     {
       pwm_duty(PWM4_MODULE2_CHA_C30,servo_bias*FANGXIANG+SERVO_MID);
@@ -303,23 +314,23 @@ void StopCar()
 {
   pwm_duty(PWM4_MODULE2_CHA_C30,SERVO_MID);
   
-  pwm_duty(PWM1_MODULE0_CHB_D13,0);//ï¿½ï¿½
-  pwm_duty(PWM1_MODULE0_CHA_D12,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHA_D14,0);//ï¿½Ò·ï¿½
+  pwm_duty(PWM1_MODULE0_CHB_D13,0);//×ó·´
+  pwm_duty(PWM1_MODULE0_CHA_D12,0);//×óÕý
+  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ÓÒÕý
+  pwm_duty(PWM1_MODULE1_CHA_D14,0);//ÓÒ·´
   systick_delay_ms(5);
 
-  pwm_duty(PWM1_MODULE0_CHB_D13,7000);//ï¿½ï¿½
-  pwm_duty(PWM1_MODULE0_CHA_D12,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHA_D14,7000);//ï¿½Ò·ï¿½
+  pwm_duty(PWM1_MODULE0_CHB_D13,8000);//×ó·´
+  pwm_duty(PWM1_MODULE0_CHA_D12,0);//×óÕý
+  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ÓÒÕý
+  pwm_duty(PWM1_MODULE1_CHA_D14,8000);//ÓÒ·´
   systick_delay_ms(250);
 
   
-  pwm_duty(PWM1_MODULE0_CHB_D13,0);//ï¿½ï¿½
-  pwm_duty(PWM1_MODULE0_CHA_D12,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ï¿½ï¿½ï¿½ï¿½
-  pwm_duty(PWM1_MODULE1_CHA_D14,0);//ï¿½Ò·ï¿½
+  pwm_duty(PWM1_MODULE0_CHB_D13,0);//×ó·´
+  pwm_duty(PWM1_MODULE0_CHA_D12,0);//×óÕý
+  pwm_duty(PWM1_MODULE1_CHB_D15,0);//ÓÒÕý
+  pwm_duty(PWM1_MODULE1_CHA_D14,0);//ÓÒ·´
 }
 
 uint8 black_blocks;
@@ -330,19 +341,19 @@ void check_zebra_line()
   
   
   black_blocks = 0;
-  startline=(int)range(90-SetLeftSpeed,0,61);
+  startline=(int)range(90-SetLeftSpeed+startline_cor,0,61);
   for (uint8 y = startline; y < startline+3; y++)
   {
     
-    uint8 cursor = 0;    //Ö¸ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½Î±ï¿½
+    uint8 cursor = 0;    //Ö¸ÏòÕ»¶¥µÄÓÎ±ê
     for (uint8 x = 0; x <= 128; x++)
     {
-      if (mt9v03x_csi_image[y][x] <110)//ï¿½ï¿½É«
+      if (mt9v03x_csi_image[y][x] <th)//ºÚÉ«
       {
         cursor++;
         cursor%=40;
       }
-      else //ï¿½ï¿½É«
+      else //°×É«
       {
         if (cursor >= 5 && cursor <= 20)
           black_blocks++;
@@ -355,4 +366,18 @@ void check_zebra_line()
     Zebra_line = 1;
   else 
     Zebra_line = 0;
+}
+
+
+void blink()
+{
+	static int COUNT;
+	COUNT++;
+	COUNT%=50;
+	
+	if(rukuFlag||chukuFlag==1&&COUNT<25)
+		gpio_set(C18,1);
+	else
+		gpio_set(C18,0);
+		
 }

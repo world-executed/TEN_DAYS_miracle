@@ -45,17 +45,17 @@ float speedK = 0.5;
 
 void statusShowNumber();
 
-void MainPage_Show()
+void MainPage_Show_1()
 {
 	oled_p6x8str(0,cursor,"->");
 	oled_p6x8str(18,0,">>GO!<<");
-	oled_p6x8str(18,1,"v");            oled_printf_int32(30,1,SetLeftSpeed,4);
-	oled_p6x8str(18,2,"p");            oled_printf_int32(30,2,(int)(dirpid.p* 100),4);
-	oled_p6x8str(18,3,"d");            oled_printf_int32(30,3,dirpid.d * 100,4);	
+	oled_p6x8str(18,1,"v ");            oled_printf_int32(30,1,SetLeftSpeed,4);
+	oled_p6x8str(18,2,"p ");            oled_printf_int32(30,2,(int)(static_p * 100),4);
+	oled_p6x8str(18,3,"d ");            oled_printf_int32(30,3,dirpid.d * 100,4);	
 	oled_p6x8str(18,4,"RO");           oled_printf_int32(30,4,ring_over,4);             
-	oled_p6x8str(18,5,"pK");           oled_printf_int32(30,5,speedK * 100,4);
-	oled_p6x8str(18,6,"re");           oled_printf_int32(30,6,relation * 100,4);
-	oled_p6x8str(18,7,"*BACK*");
+	oled_p6x8str(18,5,"SC");           oled_printf_int32(30,5,startline_cor,4);
+	oled_p6x8str(18,6,"G3");           oled_printf_int32(30,6,GYRO360 /10000,4);
+	oled_p6x8str(18,7,"*BACK* ");
 	
 	for(int i = 0;i < 8;i++)
 		oled_p6x8str(62,i,"!");
@@ -75,15 +75,49 @@ void MainPage_Show()
 	oled_printf_int32(102,7,ADC[2],4);
 }
 
-void MainPage()
+void MainPage_Show_2()
 {
-	MainPage_Show();
+	oled_p6x8str(0,cursor,"->");
+	oled_p6x8str(18,0,">>GO!<<");
+	oled_p6x8str(18,1,"vp");            oled_printf_int32(30,1,pid_l.p,4);
+	oled_p6x8str(18,2,"R ");            oled_printf_int32(30,2,ring_servo_bias,4);
+	oled_p6x8str(18,3,"dt");            oled_printf_int32(30,3,speedStatusInt,4);	
+	oled_p6x8str(18,4,"BM");			oled_printf_int32(30,4,FTMint_fin/100,4);
+	oled_p6x8str(18,5,"Fm");			oled_printf_int32(30,5,FTMfin_mark,4);	
+	oled_p6x8str(18,6,"><");			oled_printf_int32(30,6,ADC_ring_th,4);	
+	oled_p6x8str(18,7,"go on  ");
+	
+	for(int i = 0;i < 8;i++)
+		oled_p6x8str(62,i,"!");
+	
+	oled_p6x8str(72,0,"MODE");            oled_printf_int32(102,0,eleArray[nowEleNum],4);
+	oled_p6x8str(72,1,"Servo");           oled_printf_int32(102,1,abs(MPWM),4);     
+	oled_p6x8str(72,2,"ring");           oled_printf_int32(102,2,ringstate,4);             
+	oled_p6x8str(72,3,"hill");           oled_printf_int32(102,3,hillFlag,4);
+	
+	oled_p6x8str(72,4,"---------");
+	
+	oled_printf_int32(72,5,ADCLL,4);
+	oled_printf_int32(102,5,ADCRR,4);
+	oled_printf_int32(72,6,ADC[4],4);
+	oled_printf_int32(102,6,ADC[5],4);
+	oled_printf_int32(72,7,ADC[1],4);
+	oled_printf_int32(102,7,ADC[2],4);
+}
+
+void MainPage_1()
+{
+	MainPage_Show_1();
 	
 	if(key_check(KEY_D) ==  KEY_DOWN)
 	{
 		oled_p6x8str(0,cursor,"  ");
 		cursor+=1;
-		cursor%=8;
+		if(cursor == 8)
+		{
+			page = 10;
+			cursor = 0;
+		}
 		oled_p6x8str(0,cursor,"->");
 		while(!key_check(KEY_D));
 	}
@@ -92,7 +126,10 @@ void MainPage()
 	{
 		oled_p6x8str(0,cursor,"  ");
 		if(cursor==0)
+		{
+			page = 10;
 			cursor=8;
+		}
 		cursor-=1;
 		oled_p6x8str(0,cursor,"->");
 		while(!key_check(KEY_U));
@@ -105,22 +142,17 @@ void MainPage()
         case 0:
           micro_adj=1;break;
 		case 1:
-			SetLeftSpeed-=5;SetRightSpeed-=5;SetLeftSpeed=SetLeftSpeed<0?0:SetLeftSpeed;SetRightSpeed=SetRightSpeed<0?0:SetRightSpeed;oled_printf_int32(30,1,SetLeftSpeed,4);break;
+			SetLeftSpeed-=2;SetRightSpeed-=2;SetLeftSpeed=SetLeftSpeed<0?0:SetLeftSpeed;SetRightSpeed=SetRightSpeed<0?0:SetRightSpeed;oled_printf_int32(30,1,SetLeftSpeed,4);break;
 		case 2:
-			static_p-=0.01;static_p=static_p<0?0:static_p;oled_printf_int32(30,2,(int)(dirpid.p*100),4);  break;
+			static_p-=0.01;static_p=static_p<0?0:static_p;oled_printf_int32(30,2,(int)(static_p*100),4);  break;
 		case 3:
-          ring_servo-=1;oled_printf_int32(30,3,ring_servo,4);  break;
-			//dirpid.d-=0.01;dirpid.d=dirpid.d<0?0:dirpid.d;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
-		//case 6:
-			//relation-=0.01;relation=relation<0?0:relation;oled_printf_int32(30,3,(int)(relation*100),4);  break;
+			dirpid.d-=0.01;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
 		case 4:
 			ring_over-=1;oled_printf_int32(30,4,ring_over,4);break;
 		case 5:
-			lp-=0.01;lp=lp<0?0:lp;oled_printf_int32(30,5,(int)(lp*100),4);break;
-        case 6:
-            startline-=1;oled_printf_int32(30,5,startline,4);break;
-          //ring_ratio-=0.1;oled_printf_int32(30,6,ring_ratio*10,4);break;
-          //dirpid.d-=0.01;oled_printf_int32(30,6,dirpid.d*100,4);break;
+			startline_cor-=1;oled_printf_int32(30,5,startline_cor,4);break;
+		case 6:
+          GYRO360-=10000;oled_printf_int32(30,6,GYRO360 / 10000,4);break;
 		default:
 			break;
 		}
@@ -133,21 +165,17 @@ void MainPage()
        case 0:
           micro_adj=0;break;
 		case 1:
-			SetLeftSpeed+=5;SetRightSpeed+=5;oled_printf_int32(30,1,SetLeftSpeed,4);break;
+			SetLeftSpeed+=2;SetRightSpeed+=2;oled_printf_int32(30,1,SetLeftSpeed,4);break;
 		case 2:
 			static_p+=0.01;oled_printf_int32(30,2,(int)(static_p*100),4);  break;
 		case 3:
-			//dirpid.d+=0.01;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
-          ring_servo+=1;oled_printf_int32(30,3,ring_servo,4);  break;
+			dirpid.d+=0.01;oled_printf_int32(30,3,(int)(dirpid.d*100),4);  break;
 		case 4:
 			ring_over+=1;oled_printf_int32(30,4,ring_over,4);break;
 		case 5:
-			lp+=0.01;oled_printf_int32(30,5,(int)(lp*100),4);break;
+			startline_cor+=1;oled_printf_int32(30,5,startline_cor,4);break;
 		case 6:
-          //ring_ratio+=0.1;oled_printf_int32(30,6,ring_ratio*10,4);break;
-          startline+=1;oled_printf_int32(30,5,startline,4);break;
-           //dirpid.d+=0.01;oled_printf_int32(30,6,dirpid.d*100,4);break;
-          //lation+=0.01;relation=relation>1?1:relation;oled_printf_int32(30,3,(int)(relation*100),4);  break;
+          GYRO360+=10000;oled_printf_int32(30,6,GYRO360 / 10000,4);break;
 		default:
 			break;
 		}
@@ -162,6 +190,91 @@ void MainPage()
         case 1:case 2:case 3:case 4:case 5:case 6:micro_adj=micro_adj==1?0:1;break;
 		case 7:
 			page = 1;cursor = 0;oled_fill(0x00);break;
+		default:
+			break;
+		}
+		while(!key_check(KEY_A));
+	}
+}
+
+void MainPage_2()
+{
+	MainPage_Show_2();
+	
+	if(key_check(KEY_D) ==  KEY_DOWN)
+	{
+		oled_p6x8str(0,cursor,"  ");
+		cursor+=1;
+		if(cursor == 8)
+		{
+			page = 0;
+			cursor = 0;
+		}
+		oled_p6x8str(0,cursor,"->");
+		while(!key_check(KEY_D));
+	}
+	
+	else if(key_check(KEY_U) ==  KEY_DOWN)
+	{
+		oled_p6x8str(0,cursor,"  ");
+		if(cursor==0)
+		{
+			page = 0;
+			cursor=8;
+		}
+		cursor-=1;
+		oled_p6x8str(0,cursor,"->");
+		while(!key_check(KEY_U));
+	}
+	
+	if(key_check(KEY_L) ==  KEY_DOWN)
+	{
+		switch(cursor)
+		{
+        case 0:
+          micro_adj=1;break;
+		case 1:
+			pid_l.p-=5;pid_r.p-=5;pid_l.p=pid_l.p<0?0:pid_l.p;pid_r.p=pid_r.p<0?0:pid_r.p;oled_printf_int32(30,1,pid_l.p,4);break;
+		case 2:
+			ring_servo_bias-=0.01;ring_servo_bias=ring_servo_bias<0?0:ring_servo_bias;oled_printf_int32(30,2,ring_servo_bias,4);  break;
+		case 3:
+          speedStatusInt-=1;oled_printf_int32(30,3,speedStatusInt,4);  break;
+		case 6:
+          ADC_ring_th-=10;oled_printf_int32(30,6,ADC_ring_th,4);  break;
+		default:
+			break;
+		}
+	}while(!key_check(KEY_L)&&micro_adj);
+	
+	if(key_check(KEY_R) ==  KEY_DOWN)
+	{
+		switch(cursor)
+		{
+       case 0:
+          micro_adj=0;break;
+		case 1:
+			pid_l.p+=5;pid_l.p+=5;oled_printf_int32(30,1,pid_l.p,4);break;
+		case 2:
+			ring_servo_bias+=0.01;oled_printf_int32(30,2,ring_servo_bias,4);  break;
+		case 3:
+          speedStatusInt+=1;oled_printf_int32(30,3,speedStatusInt,4);  break;
+		case 6:
+          ADC_ring_th+=10;oled_printf_int32(30,6,ADC_ring_th,4);  break;
+		default:
+			break;
+		}
+	}while(!key_check(KEY_R)&&micro_adj);
+	
+	if(key_check(KEY_A) ==  KEY_DOWN)
+	{
+		switch(cursor)
+		{
+		case 0:
+			CarBegin();cursor = 0;break;
+        case 1:case 2:case 3:micro_adj=micro_adj==1?0:1;break;
+		case 4:FTMfin_mark=0;break;
+		case 7:
+			page = 5;cursor = 0;oled_fill(0x00);break;
 		default:
 			break;
 		}
@@ -444,7 +557,7 @@ void Record3()
 		case 6:
 			InmodeBegin();cursor = 0;oled_fill(0x00);break;
 		case 7:
-			page = 4;cursor = 0;oled_fill(0x00);break;
+			page = 0;cursor = 0;oled_fill(0x00);break;
 		default:
 			break;
 		}
@@ -490,16 +603,20 @@ void Camera_Show()
 {
   
   oled_dis_bmp(64,128,*mt9v03x_csi_image,th);
-  oled_p6x8str(0,0,"   ");oled_printf_int32(0,0,th,3);
-  oled_p6x8str(0,1,"   ");oled_printf_int32(0,1,jumpnum,3);
+  oled_printf_int32(0,0,th,3);
+  oled_printf_int32(0,1,black_blocks,3);
+  oled_printf_int32(0,2,startline,3);
 }
 
 void Camera()
 {
 	if(camaraScanMode)
+	{
 		Camera_Show();
+		while(!key_check(KEY_U));
+	}
 	else
-		waveScan_Camara(20);
+		waveScan_Camara(startline + startline_cor);
 	
 	if(key_check(KEY_A) ==  KEY_DOWN)
 	{
@@ -745,7 +862,7 @@ void OLED_switch()
 {
 	switch(page)
 	{
-	case 0: MainPage();break;
+	case 0: MainPage_1();break;
 	case 1: Menu();break;
 	case 2: All();break;
 	case 3: Record1();break;
@@ -755,6 +872,7 @@ void OLED_switch()
 	case 7: Temshow();break;
 	case 8: statusShow();break;
 	case 9: ServoControl();break;
+	case 10: MainPage_2();break;
 	default:
 		break;
 	}

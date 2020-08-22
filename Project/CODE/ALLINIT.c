@@ -8,6 +8,7 @@ uint8 ring_r_st=80;				//��һ����������
 uint8 ring_r_nd=50;				//�ڶ�����������
 int32 gyro_offset[3]={0};		//���ٶȼ�ƫ��
 int32 acc_offset[3]={0};		//���ٶȼ�ƫ��
+int32 GYRO360 = 1120000;
 
 float sp = 0.0;
 float lp = 0.0;
@@ -15,11 +16,10 @@ float lp = 0.0;
 //PID������ʼ��
 void PID_init()
 {
-
-    pid_l.err=0;
+	pid_l.err=0;
     pid_l.lasterr=0;
     pid_l.preverr=0;
-    pid_l.p=55;
+    pid_l.p=200;
     pid_l.i=10;
     pid_l.d=0;
     
@@ -27,7 +27,7 @@ void PID_init()
     pid_r.err=0;
     pid_r.lasterr=0;
     pid_r.preverr=0;
-    pid_r.p=55;
+    pid_r.p=200;
     pid_r.i=10;
     pid_r.d=0;
     
@@ -60,7 +60,7 @@ void AllInit()
   
   PID_init();         //PID��ʼ��
   pit_init();                                 //��ʼ��PIT0����С����10ms
-  pit_interrupt_ms(PIT_CH0,1);
+  pit_interrupt_ms(PIT_CH0,5);
   NVIC_SetPriority(PIT_IRQn,15);
   
   oled_init();
@@ -77,11 +77,15 @@ void AllInit()
   adc_init(ADC_1,ADC1_CH6_B17,ADC_12BIT);
   adc_init(ADC_1,ADC1_CH8_B19,ADC_12BIT);
 
-  
+  gpio_init (C17, GPO,0,GPIO_PIN_CONFIG);
+  gpio_init (C18, GPO,0,GPIO_PIN_CONFIG);
+  gpio_init (B9, GPO,0,GPIO_PIN_CONFIG);
   gpio_init (D16, GPO,0,GPIO_PIN_CONFIG); //��������ʼ��
   oled_p6x8str(0,0,"Camera Initializing");
   
+  gpio_init (C16, GPO,0,GPIO_PIN_CONFIG);
   
+	
   mt9v03x_csi_init();//��ʼ������ͷ ʹ��CSI�ӿ�
   oled_p6x8str(0,2,"IIC Initializing");
   simiic_init();		//ģ��IIC��ʼ��
@@ -89,7 +93,6 @@ void AllInit()
 	mpu6050_init();		//��ʼ��������ٶȼ�������
   systick_delay_ms(200);
   oled_fill(0x00);
-
 
     gyro_offset[0]=-20;
     gyro_offset[1]=40;

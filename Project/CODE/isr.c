@@ -21,29 +21,37 @@ void CSI_IRQHandler(void)
 	CSI_DriverIRQHandler();     //����SDK�Դ����жϺ��� ���������������������õĻص�����
 	__DSB();                    //����ͬ������
 }
-
+/*
 void PIT_1MS()
 {
 	Count++;
-	ADCSample(pit);
-}
+	//ADCSample(pit);
+}*/
 
 void PIT_5MS()
 {
+	  ADC[0]=adc_mean_filter(ADC_1,ADC1_CH6_B17,1);//qianzuo
+	  ADC[1]=adc_mean_filter(ADC_1,ADC1_CH7_B18,1);//qianzuoxie
+	  ADC[2]=adc_mean_filter(ADC_1,ADC1_CH8_B19,1);//qianyouxie
+	  ADC[3]=adc_mean_filter(ADC_1,ADC1_CH5_B16,1);//qianyou
+	  ADC[4]=adc_mean_filter(ADC_1,ADC1_CH3_B14,1);//houzuo
+	  ADC[5]=adc_mean_filter(ADC_1,ADC1_CH4_B15,1);//houyou
+	
+	
 	SpeedControl();
 	
 	sp = static_p;
 	lp = static_p * speedK;
 	
-	if(inring_st)
-		gpio_set(D16,1);
+	if(inring_st || rukuFlag == 2)
+		gpio_set(C17,1);
 	else
-		gpio_set(D16,0);
+		gpio_set(C17,0);
 	
 	roadMode = 1;
 	//recordMode = 2;
 	
-	if(recordMode == 3)
+	if(recordMode == 3 && rukuFlag != 3)
 	{
 		PosCalculate();
 		/*
@@ -82,10 +90,6 @@ void PIT_5MS()
 			dirpid.p = 1.5 * sp;
 		}
 		
-		if(speedStatus[nowPos] == 0) //进弯出弯状态
-		{
-			gpio_set(D16,1);
-		}
 	}
 	
 	if(inring_st)
@@ -109,29 +113,38 @@ void PIT_5MS()
 		if(recordMode == 1)
 		{
 			dirpid.p = sp;
-			RDir_control(DirError, 1.0);
+			if(abs(angle_ring)>(ring_over*0.85)&&abs(angle_ring)<ring_over)//�����ٶ�
+			{
+				dirpid.p = 10 * sp;
+			}
+				RDir_control(DirError, 1.0);
 			//dirpid.p = static_p;
 		}
 		else if(recordMode == 3)
 		{
-			dirpid.p = sp;
+			//dirpid.p = sp;
 			//relatedCal();
-			relation = 0.5;
+			if(abs(angle_ring)>(ring_over*0.85)&&abs(angle_ring)<ring_over)//�����ٶ�
+			{
+				dirpid.p = 10 * sp;
+			}
 			RDir_control(DirError, relation);
 		}
 		CountNum = 0;
 	}
 	else
 	{
-		if(turnFlag == 1)
+		if(chukuFlag==2)
 		{
-			pwm_duty(PWM4_MODULE2_CHA_C30, 85+SERVO_MID);      //��ת
+			if(turnFlag == 1)
+			{
+				pwm_duty(PWM4_MODULE2_CHA_C30, 85+SERVO_MID);      //��ת
+			}
+			if(turnFlag == -1)
+			{
+				pwm_duty(PWM4_MODULE2_CHA_C30, -85+SERVO_MID);      //��ת
+			}
 		}
-		if(turnFlag == -1)
-		{
-			pwm_duty(PWM4_MODULE2_CHA_C30, -85+SERVO_MID);      //��ת
-		}
-		
 		CountNum++;
 		if (CountNum > 201)
 			CountNum = 1;
@@ -186,9 +199,13 @@ void PIT_5MS()
 	chuku();
 	ruku();
 	setSpeed();
-	
+
 	OLED_switch();
 	//statusShowNumber();
+	if(hillFlag==3||(leftSpeedInt+rightSpeedInt)/2>FTMint_fin-5000&&FTMfin_mark&&rukuFlag!=3)
+		gpio_set(D16,1);
+	else
+		gpio_set(D16,0);
 }
 
 
@@ -197,15 +214,7 @@ void PIT_IRQHandler(void)
 	
 	if(PIT_FLAG_GET(PIT_CH0))
 	{
-		
-		PIT_1MS();
-		pit++;
-		if(pit==5)
-		{
-			PIT_5MS();
-			pit=0;
-		}
-		
+		PIT_5MS();
 		PIT_FLAG_CLEAR(PIT_CH0);
 		
 	}

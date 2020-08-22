@@ -14,6 +14,8 @@ extern int setLeftSpeed_L;
 extern int setRightSpeed_L;
 extern int leftSpeedInt;
 extern int rightSpeedInt;
+extern int FTMint_fin;
+extern uint8 FTMfin_mark;
 typedef struct PID{
 
     int16 err;
@@ -26,5 +28,6 @@ extern PID pid_l,pid_r;
 int16 PID_control(PID *pid,int16 goalspeed,int16 actualspeed);
 void SpeedControl();
 void setSpeed();
+extern int ringNum;
 
 #endif

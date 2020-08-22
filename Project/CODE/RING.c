@@ -8,15 +8,20 @@ uint8 inring_st=0;
 uint8 inring_nd=0;
 uint8 ringstate=0;
 
-uint8 ring_servo=55;  //ï¿½ë¾¶100ï¿½ï¿½ï¿½ï¿½ï¿½40ï¿½ï¿½ï¿½ë¾¶50ï¿½ï¿½ï¿½ï¿½ï¿½60ï¿½ï¿½
+int ring_over = 360;
+int ADC_ring_th = 1900;
+
+
+uint8 ring_servo=55;  //°ë¾¶100£º´ò½Ç40¡£°ë¾¶50£º´ò½Ç60¡£
 int RMPWM=0;
 int count=0;
 int angle_ring;
+float gyro_x_i_ring = 0;
+  
 void RingProcess()
 {
 
-  static float gyro_x_i_ring;
-  if(ringstate==0&&ADC[FANGXIANG==1?1:2]>2700&&ADC[4]+ADC[5]>6000&&(hillFlag==0||hillFlag==4)/*ringstate==0&&ADC[0]>2000&&ADC[1]>2600&&(hillFlag==0||hillFlag==4)*/)//youhuan  //1000,2400
+  if(ringstate==0&&ADC[FANGXIANG==1?2:1]>ADC_ring_th&&ADC[4]+ADC[5]>6000&&(hillFlag==0||hillFlag==4)/*ringstate==0&&ADC[0]>2000&&ADC[1]>2600&&(hillFlag==0||hillFlag==4)*/)//youhuan  //1000,2400
     ringflag_st=1;
   else
     ringflag_st=0;
@@ -25,7 +30,7 @@ void RingProcess()
   
   if(ringflag_st&&readyinring_st==0)
   {
-    readyinring_st=1;//ï¿½ë»·ï¿½ï¿½ï¿½
+    readyinring_st=1;//Èë»·´ò½Ç
     inring_st=1;
     ringstate=1;
   }
@@ -37,27 +42,16 @@ void RingProcess()
     angle_ring=gyro_x_i_ring*360.0/GYRO360;
   }
   
-  if(readyinring_st&&abs(angle_ring)>30)
+  if(readyinring_st&&abs(angle_ring)>45)
   {
-    readyinring_st=0;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    readyinring_st=0;//½áÊø´ò½Ç
   }  
-  /*
-  if(abs(angle_ring)>180&&abs(angle_ring)<270)
-  {
-    RMPWM+=MPWM;
-    count++;
-  }
-  if(abs(angle_ring)>270&&abs(angle_ring)<330)
-  {
-    //MPWM=RMPWM/count;
-    //MPWM=(int)range(MPWM,-85,85);
-  }*/
   
   
-  if(abs(angle_ring)>355)
+  if(abs(angle_ring)>ring_over)
   {
     inring_st=0;  
-    gyro_x_i_ring=angle_ring=RMPWM=count=0;
+    gyro_x_i_ring=angle_ring=0;
   }
   
   

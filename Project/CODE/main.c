@@ -28,7 +28,7 @@ int16 gyro[3];
 
 
 	
-	int main(void)
+int main(void)
 {
   DisableGlobalIRQ();
   board_init();//・ｽ・ｽﾘｱ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽﾚｳ・ｽﾊｼ・ｽ・ｽMPU ﾊｱ・ｽ・ｽ ・ｽ・ｽ・ｽﾔｴ・ｽ・ｽ・ｽ
@@ -40,51 +40,6 @@ int16 gyro[3];
   {
     
   }
-}
-
-void modeSelect()
-{
-	if(roadMode == 1)
-	{
-		setLeftSpeed_L = SetLeftSpeed;
-		setRightSpeed_L = SetRightSpeed;
-	}
-	
-	if(roadMode == 9)             //・ｽ・ｽ・ｽ・ｽﾗｪﾖｱ・ｽ・ｽ
-	{
-		mode9num++;
-		if(mode9num > 15)
-		{
-			roadMode = 1;
-			dirpid.p = lp;
-			mode9num = 0;
-			//beep = 5;
-			setLeftSpeed_L = SetLeftSpeed;
-			setRightSpeed_L = SetRightSpeed;
-		}
-		
-	}
-	
-	if(roadMode == 1 && abs(ADCLL - ADCRR) > 800)                //ﾖｱ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
-	{
-		roadMode = 6;
-		//beep = 1;
-		dirpid.p = sp;
-		setLeftSpeed_L = 1.0 * SetLeftSpeed;
-		setRightSpeed_L = 1.0 * SetRightSpeed;
-	}
-	
-	if((roadMode == 6) /*&& (abs(ADCLL - normal)<300) && (abs(ADCRR - normal)<300)*/)       //・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ・ｽ
-	{
-		if(((ADCL0 - ADCR0)/ (ADCL - ADCR))< 0)		//・ｽ・ｽ・ｽ・ｽ・ｽﾟｵ・ｽ
-		{
-			roadMode = 9;
-			//beep = 1;
-		}
-	}
-
-  if(ADC[5] > 4000 && ADC[4] > 4000)
-    dirpid.p = lp;
 }
 
 void AllZero()
@@ -110,12 +65,16 @@ void AllZero()
 	chukuFlag = 0;
 	hillFlag = 0;
 	ringstate = 0;
+	gyro_x_i_ring = 0;
+	readyinring_st=0;
+	angle_ring=0;
+	ringNum = 0;
 }
 
 void CarBegin()
 {
 	AllZero();
-	chukuFlag = 2;
+	chukuFlag = 1;
 	recordMode = 1;
 }
 

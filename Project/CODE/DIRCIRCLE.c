@@ -28,34 +28,12 @@ int ADCLK = 0;
 int ADCRK = 0;
 int turnFlag = 0;
 int isTurnEnable = 0;
+int ring_servo_bias = 20;
 
 double pureError = 0.0;
 int LockFlag = 0;        //1Ϊ����
 
 DIRPID dirpid;
-/*
-void Dir_control(float error)
-{
-	dirpid.err=-error;
-
-  float tMPWM=dirpid.p*dirpid.err;
-  tMPWM+=dirpid.d*(dirpid.err-dirpid.lasterr);
-  
-  dirpid.lasterr=dirpid.err;
-  
-  
-  MPWM=(int)range(tMPWM,-85,85);
-    //���
-  if(readyinring_st)
-  {
-        ring_servo=SetLeftSpeed+20;
-      MPWM=ring_servo+range((ADC[4]-ADC[5])/200,-15,15);
-      MPWM=(int)range(MPWM,-85,85);
-      
-  }
-  pwm_duty(PWM4_MODULE2_CHA_C30, MPWM+SERVO_MID);
-}*/
-
 
 void RDir_control(float error, float relation)
 {
@@ -70,8 +48,8 @@ void RDir_control(float error, float relation)
 	
 	if(readyinring_st)
 	{
-		ring_servo=SetLeftSpeed+10;
-		MPWM=ring_servo+range((ADC[4]-ADC[5])/200,-15,15);
+		ring_servo=SetLeftSpeed+ring_servo_bias;
+		MPWM=-ring_servo*FANGXIANG+range((ADC[4]-ADC[5])/200,-15,15);
 	}
 	MPWM=(int)range(MPWM,-85,85);
 	pwm_duty(PWM4_MODULE2_CHA_C30, MPWM+SERVO_MID);
@@ -104,11 +82,6 @@ void DynamicPID()
 
 void GetError()
 {
-	ADCL0 = ADCL;
-	ADCR0 = ADCR;
-	ADCLL0= ADCLL;
-	ADCRR0= ADCRR;
-
 	ADCR =ADC[5];
 	ADCRR=ADC[3];
 	ADCLL=ADC[0];

@@ -11,13 +11,15 @@ extern uint8 Zebra_line;
 extern uint8 black_blocks;
 extern uint8 times;
 extern uint8 startline;
+extern int8 startline_cor;
 extern float angle_x;
 extern float angle_y;
+
 void MPU6050();
 void hillProcess();
 void ruku();
 void chuku();
 void StopCar();
 void check_zebra_line();
-
+void blink();
 #endif
